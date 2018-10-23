@@ -75,7 +75,7 @@ class ModJDSimpleContactFormHelper {
 
       $labels = [];
       foreach ($params->get('fields', []) as $field) {
-         $labels[$field->name] = ['label' => self::getLabelText($field), 'type', $field->type];
+         $labels[$field->name] = ['label' => self::getLabelText($field), 'type' => $field->type];
       }
 
       $values = [];
