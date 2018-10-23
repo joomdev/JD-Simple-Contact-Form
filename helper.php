@@ -75,7 +75,7 @@ class ModJDSimpleContactFormHelper {
 
       $labels = [];
       foreach ($params->get('fields', []) as $field) {
-         $labels[$field->name] = self::getLabelText($field);
+         $labels[$field->name] = ['label' => self::getLabelText($field), 'type', $field->type];
       }
 
       $values = [];
@@ -85,10 +85,18 @@ class ModJDSimpleContactFormHelper {
 
 
       $contents = [];
-      foreach ($labels as $name => $label) {
+      foreach ($labels as $name => $fld) {
+         $value = isset($values[$name]) ? $values[$name] : '';
+         if ($fld['type'] == 'checkbox') {
+            if (is_array($value)) {
+               $value = implode(',', $value);
+            }
+            $value = empty($value) ? 'unchecked' : 'checked';
+         }
+
          $contents[] = [
-             "value" => isset($values[$name]) ? $values[$name] : '',
-             "label" => $label,
+             "value" => $value,
+             "label" => $fld['label'],
              "name" => $name,
          ];
       }
