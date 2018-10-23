@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+   <fieldset name="fielditem" label="MOD_JDSCF_FIELDS_LBL">
+      <field
+         name="name"
+         type="text"
+         label="MOD_JDSCF_NAME_LBL"
+         description="MOD_JDSCF_NAME_DESC"
+         size="45"
+         pattern="^[a-zA-Z0-9_]*$"
+         required="true"
+      />
+      <field
+         name="type"
+         type="list"
+         required="true"
+         label="MOD_JDSCF_TYPE_LBL"
+         description="MOD_JDSCF_TYPE_DESC"
+      >
+         <option value="text">MOD_JDSCF_TYPE_TEXT_LBL</option>
+         <option value="textarea">MOD_JDSCF_TYPE_TEXTAREA_LBL</option>
+         <option value="radio">MOD_JDSCF_TYPE_RADIO_LBL</option>
+         <option value="checkbox">MOD_JDSCF_TYPE_CHECKBOX_LBL</option>
+         <option value="checkboxes">MOD_JDSCF_TYPE_CHECKBOXES_LBL</option>
+         <option value="list">MOD_JDSCF_TYPE_LIST_LBL</option>
+         <option value="email">MOD_JDSCF_TYPE_EMAIL_LBL</option>
+         <option value="number">MOD_JDSCF_TYPE_NUMBER_LBL</option>
+         <option value="url">MOD_JDSCF_TYPE_URL_LBL</option>
+      </field>
+      <field
+         name="label"
+         type="text"
+         filter="RAW"
+         label="MOD_JDSCF_LABEL_LBL"
+         description="MOD_JDSCF_LABEL_DESC"
+      />
+      <field
+         name="required"
+         type="radio"
+         label="MOD_JDSCF_REQUIRED_LBL"
+         description="MOD_JDSCF_REQUIRED_DESC"
+         class="btn-group btn-group-yesno"
+         default="0"
+      >
+         <option value="1">JYES</option>
+         <option value="0">JNO</option>
+      </field>
+      <field
+         name="show_label"
+         type="radio"
+         label="MOD_JDSCF_SHOW_LABEL_LBL"
+         description="MOD_JDSCF_SHOW_LABEL_DESC"
+         class="btn-group btn-group-yesno"
+         default="1"
+      >
+         <option value="1">JYES</option>
+         <option value="0">JNO</option>
+      </field>
+      <field
+         showon="type:list[OR]type:radio[OR]type:checkboxes"
+         name="options"
+         type="textarea"
+         label="MOD_JDSCF_OPTIONS_LBL"
+         description="MOD_JDSCF_OPTIONS_DESC"
+      />
+      <field
+         name="width"
+         type="list"
+         label="MOD_JDSCF_WIDTH_LBL"
+         description="MOD_JDSCF_WIDTH_DESC"
+      >
+         <option value="12">12</option>
+         <option value="10">10</option>
+         <option value="9">9</option>
+         <option value="8">8</option>
+         <option value="7">7</option>
+         <option value="6">6</option>
+         <option value="5">5</option>
+         <option value="4">4</option>
+         <option value="3">3</option>
+         <option value="2">2</option>
+      </field>
+      <field
+         showon="type:text[OR]type:number"
+         name="min_length"
+         type="number"
+         label="MOD_JDSCF_MIN_LENGTH_LBL"
+         description="MOD_JDSCF_MIN_LENGTH_DESC"
+      />
+      <field
+         showon="type:text[OR]type:number"
+         name="max_length"
+         type="number"
+         label="MOD_JDSCF_MAX_LENGTH_LBL"
+         description="MOD_JDSCF_MAX_LENGTH_DESC"
+      />
+      <field
+         showon="type:number"
+         name="min"
+         type="number"
+         label="MOD_JDSCF_MIN_LBL"
+         description="MOD_JDSCF_MIN_DESC"
+      />
+      <field
+         showon="type:number"
+         name="max"
+         type="number"
+         label="MOD_JDSCF_MAX_LBL"
+         description="MOD_JDSCF_MAX_DESC"
+      />
+   </fieldset>
+</form>
