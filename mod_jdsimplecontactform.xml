@@ -154,4 +154,7 @@
          </fieldset>
       </fields>
    </config>
+   <updateservers>
+      <server type="extension" priority="1" name="mod_jdsimplecontactform">https://cdn.joomdev.com/updates/mod_jdsimplecontactform.xml</server>
+   </updateservers>
 </extension>
