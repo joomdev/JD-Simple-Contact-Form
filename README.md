@@ -1,4 +1,12 @@
-# JD-Simple-Contact-Form
+[![Github All Releases](https://img.shields.io/github/downloads/joomdev/JD-Simple-Contact-Form/total.svg)](https://github.com/joomdev/JD-Simple-Contact-Form/releases)
+![AUR](https://img.shields.io/aur/license/yaourt.svg)
+[![GitHub release](https://img.shields.io/github/release/joomdev/JD-Simple-Contact-Form.svg)](https://github.com/joomdev/JD-Simple-Contact-Form/releases)
+
+# Requirements
+* Joomla: 3.8 +
+* PHP : 5.6+
+
+# JD Simple Contact Form
 JD Simple Contact form extension is simple form builder for a Joomla ideally suited for beginners and also meets the basic requirements for every developers and designers. It allows to create various types of form like mailing list, survey, contact and more.
 
 It includes:
@@ -13,7 +21,7 @@ It includes:
 * Ability to CC, BCC messages.
 * Ajax Submission.
 
-![Demo_Form](https://cdn.joomdev.com/documentation/JD-Simple_Contact_Form/images/Demo_form.png)
+![Demo_Form](https://cdn.joomdev.com/documentation/jd-simple-contact-form/images/demo_form.png)
 
 
 ## Customizing a Form
@@ -28,7 +36,7 @@ Submit button text | Here you can change the submit button text. Default is <cod
 Thankyou message | Enter a Thankyou message to be displayed after the submission. Use {field:name} & {field:value} to render dynamic values.
 Redirect URL | Enter URL to redirect users after submission. Use {field:name} & {field:value} to render dynamic values.
   
-![Basic_Settings](https://cdn.joomdev.com/documentation/JD-Simple_Contact_Form/images/Basic_settings.png)
+![Basic_Settings](https://cdn.joomdev.com/documentation/jd-simple-contact-form/images/basic_settings.png)
   
 ## Form Layout
 
@@ -54,14 +62,11 @@ It have 9 different flexible field types-
 
 **URL field** single-line input and accept only URL.
 
-![Form_Layout](https://cdn.joomdev.com/documentation/JD-Simple_Contact_Form/images/Form_Layout.png)
+![Form_Layout](https://cdn.joomdev.com/documentation/jd-simple-contact-form/images/form_layout.png)
 
 
 ## Email option
 
 You can customize a mail Templates for mail that is to be sent as a result of a form submission.
 
-![Email_options](https://cdn.joomdev.com/documentation/JD-Simple_Contact_Form/images/Email.options.png)
-
-
-
+![Email_options](https://cdn.joomdev.com/documentation/jd-simple-contact-form/images/email_options.png)
