@@ -18,7 +18,7 @@ if (!empty($message)) {
    $session->set('jdscf-message-' . $module->id, '');
 } else {
    ?>
-   <div class="jd-simple-contact-form">
+   <div class="jd-simple-contact-form <?php echo $moduleclass_sfx; ?>">
       <div id="jdscf-message-<?php echo $module->id; ?>"></div>
       <div class="simple-contact-form-loader module-<?php echo $module->id; ?> d-none">
          <div class="loading"></div>

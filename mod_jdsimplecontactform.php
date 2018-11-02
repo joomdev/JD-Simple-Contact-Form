@@ -15,4 +15,6 @@ $document = JFactory::getDocument();
 $document->addStylesheet(JURI::root() . 'media/mod_jdsimplecontactform/assets/css/style.css?v=' . $document->getMediaVersion());
 
 $layout = $params->get('layout', 'default');
+// Adding Module Class Suffix.
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 require JModuleHelper::getLayoutPath('mod_jdsimplecontactform', $layout);
