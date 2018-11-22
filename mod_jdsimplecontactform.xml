@@ -53,6 +53,17 @@
                <option value="0">JNO</option>
             </field>
             <field
+               name="captcha"
+               type="radio"
+               label="MOD_JDSCF_CAPTCHA_LBL"
+               description="MOD_JDSCF_CAPTCHA_DESC"
+               class="btn-group btn-group-yesno"
+               default="0"
+            >
+               <option value="1">JYES</option>
+               <option value="0">JNO</option>
+            </field>
+            <field
                name="submittext"
                type="text"
                default="Submit"

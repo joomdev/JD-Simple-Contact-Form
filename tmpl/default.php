@@ -11,6 +11,7 @@ $title = $params->get('title', '');
 $description = $params->get('description', '');
 $session = JFactory::getSession();
 $message = $session->get('jdscf-message-' . $module->id, '');
+$captcha = $params->get('captcha', 0);
 ?>
 <?php
 if (!empty($message)) {
@@ -35,6 +36,24 @@ if (!empty($message)) {
             ModJDSimpleContactFormHelper::renderForm($params);
             ?>
          </div>
+
+         <?php
+         if ($captcha) {
+            JPluginHelper::importPlugin('captcha');
+            $dispatcher = JEventDispatcher::getInstance();
+            $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
+            $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha');
+            $plugin_params = new JRegistry($plugin->params);
+            ?>
+            <div class="jdscf-row">
+               <div class="jdscf-col">
+                  <div class="form-group">
+                     <div id="jdscf_recaptcha_<?php echo $module->id; ?>" class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>" data-theme="<?php echo $plugin_params->get('theme2', ''); ?>" data-size="<?php echo $plugin_params->get('size', ''); ?>"></div>
+                  </div>
+               </div>
+            </div>
+         <?php } ?>
+
          <div class="jdscf-row">
             <?php
             $submit = new JLayoutFile('fields.submit', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');

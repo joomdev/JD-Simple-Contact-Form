@@ -69,9 +69,19 @@ class ModJDSimpleContactFormHelper {
       }
       $app = JFactory::getApplication();
       $jinput = $app->input->post;
+
       $jdscf = $jinput->get('jdscf', [], 'ARRAY');
       $id = $jinput->get('id', [], 'INT');
       $params = self::getModuleParams();
+
+      if ($params->get('captcha', 0)) {
+         JPluginHelper::importPlugin('captcha');
+         $dispatcher = JEventDispatcher::getInstance();
+         $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('recaptcha_response_field'));
+         if (!$check_captcha[0]) {
+            throw new \Exception(JText::_('Invalid Captcha'), 0);
+         }
+      }
 
       $labels = [];
       foreach ($params->get('fields', []) as $field) {
