@@ -34,12 +34,14 @@
                type="text"
                label="MOD_JDSCF_FORM_TITLE_LBL"
                description="MOD_JDSCF_FORM_TITLE_DESC"
+               filter="RAW"
             />
             <field
                name="description"
                type="textarea"
                label="MOD_JDSCF_FORM_DESCRIPTION_LBL"
                description="MOD_JDSCF_FORM_DESCRIPTION_DESC"
+               filter="RAW"
             />
             <field
                name="ajaxsubmit"
