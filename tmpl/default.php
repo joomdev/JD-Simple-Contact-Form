@@ -38,21 +38,42 @@ if (!empty($message)) {
          </div>
 
          <?php
+         $invisibleCaptcha = false;
          if ($captcha) {
             JPluginHelper::importPlugin('captcha');
             $dispatcher = JEventDispatcher::getInstance();
             $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
             $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha');
-            $plugin_params = new JRegistry($plugin->params);
-            ?>
-            <div class="jdscf-row">
-               <div class="jdscf-col">
-                  <div class="form-group">
-                     <div id="jdscf_recaptcha_<?php echo $module->id; ?>" class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>" data-theme="<?php echo $plugin_params->get('theme2', ''); ?>" data-size="<?php echo $plugin_params->get('size', ''); ?>"></div>
+            $attributes = [];
+            if (empty($plugin)) {
+               $invisibleCaptcha = true;
+               $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha_invisible');
+               $attributes['data-theme'] = $plugin_params->get('theme2', '');
+               $attributes['data-size'] = 'invisible';
+            } else {
+               $attributes['data-theme'] = $plugin_params->get('theme2', '');
+               $attributes['data-size'] = $plugin_params->get('size', '');
+            }
+            $attributeArray = [];
+            foreach ($attributes as $attributeKey => $attributeValue) {
+               $attributeArray[] = $attributeKey . '="' . $attributeValue . '"';
+            }
+            if (!empty($plugin)) {
+               $plugin_params = new JRegistry($plugin->params);
+               ?>
+               <div class="jdscf-row">
+                  <div class="jdscf-col">
+                     <div class="form-group">
+                        <div id="jdscf_recaptcha_<?php echo $module->id; ?>" class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>" <?php echo implode(' ', $attributeArray); ?>></div>
+                     </div>
                   </div>
                </div>
-            </div>
-         <?php } ?>
+               <?php
+            }else{
+               $invisibleCaptcha = false;
+            }
+         }
+         ?>
 
          <div class="jdscf-row">
             <?php

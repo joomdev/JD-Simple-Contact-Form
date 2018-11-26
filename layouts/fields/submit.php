@@ -9,7 +9,8 @@
 defined('_JEXEC') or die;
 extract($displayData);
 $buttonText = $params->get('submittext', 'JSUBMIT');
+$buttonClass = $params->get('submitclass', 'btn-primary');
 ?>
 <div class="jdscf-col">
-     <button type="submit" class="btn btn-primary"><?php echo JText::_($buttonText); ?></button>
+   <button type="submit" class="btn<?php echo!empty($buttonClass) ? ' ' . $buttonClass : ''; ?>"><?php echo JText::_($buttonText); ?></button>
 </div>

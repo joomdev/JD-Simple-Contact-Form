@@ -71,6 +71,13 @@
                description="MOD_JDSCF_FORM_SUBMIT_DESC"
             />
             <field
+               name="submitclass"
+               type="text"
+               label="MOD_JDSCF_SUBMITBTN_CLASS_LBL"
+               description="MOD_JDSCF_SUBMITBTN_CLASS_DESC"
+               default="btn-primary"
+            />
+            <field
                name="thankyou_message"
                type="editor"
                label="MOD_JDSCF_THANKYOU_MESSAGE_LBL"
@@ -82,9 +89,7 @@
                type="url"
                label="MOD_JDSCF_REDIRECT_LBL"
                description="MOD_JDSCF_REDIRECT_DESC"
-            >
-               <option value="">JDEFAULT</option>
-            </field>
+            />
          </fieldset>
          <fieldset name="fields" label="MOD_JDSCF_FORM_FIELDS_OPTIONS_LBL">
             <field name="fields" type="subform" formsource="modules/mod_jdsimplecontactform/forms/fielditem.xml" multiple="true" label="MOD_JDSCF_FIELDS_LBL" />
