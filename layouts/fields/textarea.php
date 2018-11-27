@@ -14,4 +14,4 @@ if ($field->required) {
    $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
 }
 ?>
-<textarea class="form-control" name="jdscf[<?php echo $field->name; ?>]" <?php echo implode(' ', $attrs); ?>></textarea>
+<textarea class="form-control" rows="<?php echo $field->textarearows; ?>" name="jdscf[<?php echo $field->name; ?>]" <?php echo implode(' ', $attrs); ?>></textarea>

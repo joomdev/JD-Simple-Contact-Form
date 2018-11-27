@@ -81,6 +81,14 @@
          <option value="2">2</option>
       </field>
       <field
+         showon="type:textarea"
+         name="textarearows"
+         type="number"
+         default="5"
+         label="MOD_JDSCF_TEXTAREA_ROWS_LBL"
+         description="MOD_JDSCF_TEXTAREA_ROWS_DESC"
+      />
+      <field
          showon="type:text[OR]type:number"
          name="min_length"
          type="number"
