@@ -126,8 +126,26 @@ class ModJDSimpleContactFormHelper {
          $title = ' : ' . $title;
       }
       // Sender
-      $email_from = !empty($params->get('email_from', '')) ? $params->get('email_from') : $config->get('mailfrom');
-      $email_name = !empty($params->get('email_name', '')) ? $params->get('email_name') : $config->get('fromname');
+      if (!empty($params->get('email_from', ''))) {
+         $email_from = $params->get('email_from', '');
+         $email_from = self::renderVariables($contents, $email_from);
+         if (!filter_var($email_from, FILTER_VALIDATE_EMAIL)) {
+            $email_from = $config->get('mailfrom');
+         }
+      } else {
+         $email_from = $config->get('mailfrom');
+      }
+
+      if (!empty($params->get('email_name', ''))) {
+         $email_name = $params->get('email_name', '');
+         $email_name = self::renderVariables($contents, $email_name);
+         if (empty($email_name)) {
+            $email_name = $config->get('fromname');
+         }
+      } else {
+         $email_name = $config->get('fromname');
+      }
+
       $sender = array($email_from, $email_name);
       $mailer->setSender($sender);
 
