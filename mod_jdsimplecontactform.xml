@@ -99,7 +99,7 @@
          <fieldset name="email" label="MOD_JDSCF_EMAIL_OPTIONS_LBL">
             <field
                name="email_from"
-               type="email"
+               type="text"
                label="MOD_JDSCF_EMAIL_FROM_LBL"
                description="MOD_JDSCF_EMAIL_FROM_DESC"
             />
