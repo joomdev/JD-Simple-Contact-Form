@@ -15,11 +15,11 @@ $captcha = $params->get('captcha', 0);
 ?>
 <?php
 if (!empty($message)) {
-   echo '<div class="jd-simple-contact-form">' . $message . '</div>';
+   echo '<div class="jd-simple-contact-form jd-simple-contact-message-'.$module->id.'">' . $message . '</div>';
    $session->set('jdscf-message-' . $module->id, '');
 } else {
    ?>
-   <div class="jd-simple-contact-form <?php echo $moduleclass_sfx; ?>">
+   <div class="jd-simple-contact-form jd-simple-contact-message-<?php echo $module->id; ?> <?php echo $moduleclass_sfx; ?>">
       <div id="jdscf-message-<?php echo $module->id; ?>"></div>
       <div class="simple-contact-form-loader module-<?php echo $module->id; ?> d-none">
          <div class="loading"></div>
@@ -107,7 +107,7 @@ if (!empty($message)) {
                         success: function (response) {
 
                            if (response.status == 'success') {
-                              $('.jd-simple-contact-form').html(response.data.message);
+                              $('.jd-simple-contact-message-<?php echo $module->id; ?>').html(response.data.message);
                               _loading.addClass('d-none');
                               if (response.data.redirect != '') {
                                  setTimeout(function () {
