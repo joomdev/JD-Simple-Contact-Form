@@ -83,7 +83,7 @@ if (!empty($message)) {
       <script>
          (function ($) {
             $(function () {
-               var showMessage = function (type, message) {
+               var showMessage<?php echo $module->id; ?> = function (type, message) {
                   type = type == 'error' ? 'danger' : type;
                   var _alert = '<div class="alert alert-' + type + '"><div>' + message + '</div></div>';
                   $('#jdscf-message-<?php echo $module->id; ?>').html(_alert);
@@ -116,12 +116,12 @@ if (!empty($message)) {
                               }
                            } else {
                               _loading.addClass('d-none');
-                              showMessage("error", response.message);
+                              showMessage<?php echo $module->id; ?>("error", response.message);
                            }
                         },
                         error: function (response) {
                            _loading.addClass('d-none');
-                           showMessage("error", response.message);
+                           showMessage<?php echo $module->id; ?>("error", response.message);
                         }
                      });
                   }
