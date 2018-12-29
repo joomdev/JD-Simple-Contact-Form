@@ -20,6 +20,9 @@ switch ($field->type) {
       $attrs[] = 'data-parsley-type="url"';
       break;
 }
+if (isset($field->placeholder) && !empty($field->placeholder)) {
+   $attrs[] = 'placeholder="' . $field->placeholder . '"';
+}
 if ($field->type == 'text' || $field->type == 'number') {
    if (!empty($field->min_length)) {
       $attrs[] = 'data-parsley-minlength="' . $field->min_length . '"';

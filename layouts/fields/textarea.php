@@ -13,5 +13,8 @@ if ($field->required) {
    $attrs[] = 'required';
    $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
 }
+if (isset($field->placeholder) && !empty($field->placeholder)) {
+   $attrs[] = 'placeholder="' . $field->placeholder . '"';
+}
 ?>
 <textarea class="form-control" rows="<?php echo $field->textarearows; ?>" name="jdscf[<?php echo $field->name; ?>]" <?php echo implode(' ', $attrs); ?>></textarea>

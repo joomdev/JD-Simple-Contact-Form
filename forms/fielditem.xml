@@ -81,6 +81,13 @@
          <option value="2">2</option>
       </field>
       <field
+         showon="type:text[OR]type:textarea[OR]type:email[OR]type:number[OR]type:url"
+         name="placeholder"
+         type="text"
+         label="MOD_JDSCF_PLACEHOLDER_LBL"
+         description="MOD_JDSCF_PLACEHOLDER_DESC"
+      />
+      <field
          showon="type:textarea"
          name="textarearows"
          type="number"
