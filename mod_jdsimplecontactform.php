@@ -14,6 +14,18 @@ require_once dirname(__FILE__) . '/helper.php';
 $document = JFactory::getDocument();
 $document->addStylesheet(JURI::root() . 'media/mod_jdsimplecontactform/assets/css/style.css?v=' . $document->getMediaVersion());
 
+// Adding custom css here
+
+$custom_css = (explode(".",$params->get('custom_css')));
+
+foreach($custom_css as $css){
+   if($css){
+      $style =  '.jd-simple-contact-message-'.$module->id.' '.'.'.$css;
+   }
+}
+
+$document->addStyleDeclaration($style);
+
 $layout = $params->get('layout', 'default');
 // Adding Module Class Suffix.
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
