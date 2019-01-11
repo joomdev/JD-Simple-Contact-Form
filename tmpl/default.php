@@ -15,7 +15,7 @@ $captcha = $params->get('captcha', 0);
 ?>
 <?php
 if (!empty($message)) {
-   echo '<div class="jd-simple-contact-form jd-simple-contact-message-'.$module->id.'">' . $message . '</div>';
+   echo '<div class="jd-simple-contact-form jd-simple-contact-message-' . $module->id . '">' . $message . '</div>';
    $session->set('jdscf-message-' . $module->id, '');
 } else {
    ?>
@@ -33,7 +33,7 @@ if (!empty($message)) {
       <form method="POST" action="<?php echo JURI::root(); ?>index.php?option=com_ajax&module=jdsimplecontactform&format=json&method=submit" data-parsley-validate data-parsley-errors-wrapper="<ul class='text-danger list-unstyled mt-2 small'></ul>" data-parsley-error-class="border-danger" data-parsley-success-class="border-success" id="simple-contact-form-<?php echo $module->id; ?>">
          <div class="jdscf-row">
             <?php
-            ModJDSimpleContactFormHelper::renderForm($params);
+            ModJDSimpleContactFormHelper::renderForm($params, $module);
             ?>
          </div>
 
@@ -78,6 +78,7 @@ if (!empty($message)) {
    </div>
    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
    <script src="//parsleyjs.org/dist/parsley.min.js"></script>
+   <script src="//cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
    <script> var jQuery_3_3_1 = $.noConflict(true);</script>
    <?php if ($params->get('ajaxsubmit', 0)) { ?>
       <script>
@@ -126,9 +127,14 @@ if (!empty($message)) {
                      });
                   }
                });
+      <?php
+      foreach (ModJDSimpleContactFormHelper::getJS($module->id) as $js) {
+         echo $js;
+      }
+      ?>
             });
          })(jQuery_3_3_1);
       </script>
    <?php } ?>
-   <?php
-}?>
+<?php }
+?>

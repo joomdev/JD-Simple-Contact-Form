@@ -11,14 +11,15 @@ defined('_JEXEC') or die;
 
 class ModJDSimpleContactFormHelper {
 
-   public static function renderForm($params) {
+   public static function renderForm($params, $module) {
       $fields = $params->get('fields', []);
       foreach ($fields as $field) {
-         self::renderField($field);
+         $field->id = \JFilterOutput::stringURLSafe('jdscf-' . $module->id . '-' . $field->name);
+         self::renderField($field, $module);
       }
    }
 
-   public static function renderField($field) {
+   public static function renderField($field, $module) {
       $label = new JLayoutFile('label', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
       $field_layout = self::getFieldLayout($field->type);
       $input = new JLayoutFile('fields.' . $field_layout, JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
@@ -26,7 +27,7 @@ class ModJDSimpleContactFormHelper {
       if ($field->type == 'checkbox') {
          $field->show_label = 0;
       }
-      echo $layout->render(['field' => $field, 'label' => $label->render(['field' => $field]), 'input' => $input->render(['field' => $field, 'label' => self::getLabelText($field)])]);
+      echo $layout->render(['field' => $field, 'label' => $label->render(['field' => $field]), 'input' => $input->render(['field' => $field, 'label' => self::getLabelText($field), 'module' => $module]), 'module' => $module]);
    }
 
    public static function getOptions($options) {
@@ -262,6 +263,20 @@ class ModJDSimpleContactFormHelper {
       }
       echo \json_encode($return);
       exit;
+   }
+
+   public static function addJS($js, $moduleid) {
+      if (!isset($GLOBALS['mod_jdscf_js_' . $moduleid])) {
+         $GLOBALS['mod_jdscf_js_' . $moduleid] = [];
+      }
+      $GLOBALS['mod_jdscf_js_' . $moduleid][] = $js;
+   }
+
+   public static function getJS($moduleid) {
+      if (!isset($GLOBALS['mod_jdscf_js_' . $moduleid])) {
+         return [];
+      }
+      return $GLOBALS['mod_jdscf_js_' . $moduleid];
    }
 
 }

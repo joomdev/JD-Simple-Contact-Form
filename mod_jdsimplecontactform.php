@@ -13,6 +13,7 @@ require_once dirname(__FILE__) . '/helper.php';
 
 $document = JFactory::getDocument();
 $document->addStylesheet(JURI::root() . 'media/mod_jdsimplecontactform/assets/css/style.css?v=' . $document->getMediaVersion());
+$document->addStylesheet('//cdn.jsdelivr.net/npm/pikaday/css/pikaday.css');
 
 $layout = $params->get('layout', 'default');
 // Adding Module Class Suffix.

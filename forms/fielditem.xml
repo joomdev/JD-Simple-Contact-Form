@@ -22,6 +22,7 @@
          <option value="radio">MOD_JDSCF_TYPE_RADIO_LBL</option>
          <option value="checkbox">MOD_JDSCF_TYPE_CHECKBOX_LBL</option>
          <option value="checkboxes">MOD_JDSCF_TYPE_CHECKBOXES_LBL</option>
+         <option value="calendar">MOD_JDSCF_TYPE_CALENDAR_LBL</option>
          <option value="list">MOD_JDSCF_TYPE_LIST_LBL</option>
          <option value="email">MOD_JDSCF_TYPE_EMAIL_LBL</option>
          <option value="number">MOD_JDSCF_TYPE_NUMBER_LBL</option>
@@ -81,7 +82,7 @@
          <option value="2">2</option>
       </field>
       <field
-         showon="type:text[OR]type:textarea[OR]type:email[OR]type:number[OR]type:url"
+         showon="type:text[OR]type:textarea[OR]type:email[OR]type:number[OR]type:url[OR]type:calendar"
          name="placeholder"
          type="text"
          label="MOD_JDSCF_PLACEHOLDER_LBL"
@@ -135,5 +136,19 @@
          <option value="inline">JGLOBAL_INLINE</option>
          <option value="vertical">JGLOBAL_VERTICAL</option>
       </field>
+      <field
+         showon="type:calendar"
+         name="calendar_min"
+         type="calendar"
+         label="MOD_JDSCF_OPTIONS_CALENDAR_MIN_LBL"
+         description="MOD_JDSCF_OPTIONS_CALENDAR_MIN_DESC"
+      />
+      <field
+         showon="type:calendar"
+         name="calendar_max"
+         type="calendar"
+         label="MOD_JDSCF_OPTIONS_CALENDAR_MAX_LBL"
+         description="MOD_JDSCF_OPTIONS_CALENDAR_MAX_DESC"
+      />
    </fieldset>
 </form>
