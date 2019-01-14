@@ -81,10 +81,10 @@ if (!empty($message)) {
    <script src="<?php echo JURI::root(); ?>media/mod_jdsimplecontactform/assets/js/moment.min.js"></script>
    <script src="//cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
    <script> var jQuery_3_3_1 = $.noConflict(true);</script>
+   <script>
+      (function ($) {
+         $(function () {
    <?php if ($params->get('ajaxsubmit', 0)) { ?>
-      <script>
-         (function ($) {
-            $(function () {
                var showMessage<?php echo $module->id; ?> = function (type, message) {
                   type = type == 'error' ? 'danger' : type;
                   var _alert = '<div class="alert alert-' + type + '"><div>' + message + '</div></div>';
@@ -128,14 +128,14 @@ if (!empty($message)) {
                      });
                   }
                });
-      <?php
-      foreach (ModJDSimpleContactFormHelper::getJS($module->id) as $js) {
-         echo $js;
-      }
-      ?>
-            });
-         })(jQuery_3_3_1);
-      </script>
    <?php } ?>
+   <?php
+   foreach (ModJDSimpleContactFormHelper::getJS($module->id) as $js) {
+      echo $js;
+   }
+   ?>
+         });
+      })(jQuery_3_3_1);
+   </script>
 <?php }
 ?>
