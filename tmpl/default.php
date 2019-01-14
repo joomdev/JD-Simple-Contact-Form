@@ -78,6 +78,7 @@ if (!empty($message)) {
    </div>
    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
    <script src="//parsleyjs.org/dist/parsley.min.js"></script>
+   <script src="<?php echo JURI::root(); ?>media/mod_jdsimplecontactform/assets/js/moment.min.js"></script>
    <script src="//cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
    <script> var jQuery_3_3_1 = $.noConflict(true);</script>
    <?php if ($params->get('ajaxsubmit', 0)) { ?>

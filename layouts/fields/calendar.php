@@ -25,14 +25,22 @@ if ($field->required) {
 <input type="text" name="jdscf[<?php echo $field->name; ?>]" class="form-control" <?php echo implode(' ', $attrs); ?> />
 
 <?php
-$js = 'var picker = new Pikaday({'
+$js = 'var jdscf_picker_' . $module->id . ' = new Pikaday({'
         . 'field: document.getElementById("' . $field->id . '")';
-if (isset($field->calendar_min) && !empty($field->calendar_min)) {
-   $js .= ',minDate: new Date("' . $field->calendar_min . '")';
+if (isset($field->calendar_min) && !empty($field->calendar_min) && $field->calendar_min != '0000-00-00 00:00:00') {
+   $js .= ',minDate: moment("' . $field->calendar_min . '").toDate()';
 }
-if (isset($field->calendar_max) && !empty($field->calendar_max)) {
-   $js .= ',maxDate: new Date("' . $field->calendar_max . '")';
+if (isset($field->calendar_max) && !empty($field->calendar_max) && $field->calendar_max != '0000-00-00 00:00:00') {
+   $js .= ',maxDate: moment("' . $field->calendar_max . '").toDate()';
 }
+if (isset($field->calendar_format) && !empty($field->calendar_format)) {
+   $js .= ',format: "' . $field->calendar_format . '"';
+} else {
+   $js .= ',format: "MM-DD-YYYY"';
+}
+
+$js .= ',defaultDate: moment("' . date('Y-m-d') . '").toDate(),setDefaultDate:true';
+
 $js .= '});';
 ModJDSimpleContactFormHelper::addJS($js, $module->id);
 ?>

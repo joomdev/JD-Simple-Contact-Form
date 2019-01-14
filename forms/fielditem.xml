@@ -150,5 +150,13 @@
          label="MOD_JDSCF_OPTIONS_CALENDAR_MAX_LBL"
          description="MOD_JDSCF_OPTIONS_CALENDAR_MAX_DESC"
       />
+      <field
+         showon="type:calendar"
+         name="calendar_format"
+         type="text"
+         label="MOD_JDSCF_OPTIONS_CALENDAR_DATE_FOMRAT_LBL"
+         description="MOD_JDSCF_OPTIONS_CALENDAR_DATE_FOMRAT_DESC"
+         hint="MM-DD-YYYY"
+      />
    </fieldset>
 </form>
