@@ -163,6 +163,14 @@
             />
 
             <field
+               name="custom_css"
+               type="textarea"
+               label="MOD_JDSCF_MODULE_CUSTOM_CSS_LABEL"
+               description="MOD_JDSCF_MODULE_CUSTOM_CSS_DESC"
+               rows="9"
+            />
+
+            <field
                name="moduleclass_sfx"
                type="textarea"
                label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
