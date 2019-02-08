@@ -104,13 +104,11 @@ class ModJDSimpleContactFormHelper {
             }
             $value = empty($value) ? 'unchecked' : 'checked';
          }
-
          if ($fld['type'] == 'textarea') {
             if ($value) {
                $value = nl2br($value);
             }
          }
-
          $contents[] = [
              "value" => $value,
              "label" => $fld['label'],
