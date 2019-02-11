@@ -15,11 +15,11 @@ class ModJDSimpleContactFormHelper {
       $fields = $params->get('fields', []);
       foreach ($fields as $field) {
          $field->id = \JFilterOutput::stringURLSafe('jdscf-' . $module->id . '-' . $field->name);
-         self::renderField($field, $module);
+         self::renderField($field, $module, $params);
       }
    }
 
-   public static function renderField($field, $module) {
+   public static function renderField($field, $module, $params) {
       $label = new JLayoutFile('label', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
       $field_layout = self::getFieldLayout($field->type);
       $input = new JLayoutFile('fields.' . $field_layout, JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
@@ -27,7 +27,7 @@ class ModJDSimpleContactFormHelper {
       if ($field->type == 'checkbox') {
          $field->show_label = 0;
       }
-      echo $layout->render(['field' => $field, 'label' => $label->render(['field' => $field]), 'input' => $input->render(['field' => $field, 'label' => self::getLabelText($field), 'module' => $module]), 'module' => $module]);
+      echo $layout->render(['field' => $field, 'label' => $label->render(['field' => $field]), 'input' => $input->render(['field' => $field, 'label' => self::getLabelText($field), 'module' => $module, 'params' => $params]), 'module' => $module]);
    }
 
    public static function getOptions($options) {
@@ -88,10 +88,17 @@ class ModJDSimpleContactFormHelper {
       foreach ($params->get('fields', []) as $field) {
          $labels[$field->name] = ['label' => self::getLabelText($field), 'type' => $field->type];
       }
-
+      $cc_emails = [];
       $values = [];
       foreach ($jdscf as $name => $value) {
-         $values[$name] = $value;
+         if(is_array($value)){
+            $values[$name] = $value['email'];
+            if(isset($value['cc']) && $value['cc'] == 1){
+               $cc_emails[] = $value['email'];
+            }
+         }else{
+            $values[$name] = $value;
+         }
       }
 
 
@@ -167,7 +174,12 @@ class ModJDSimpleContactFormHelper {
       }
       // CC
       $cc = !empty($params->get('email_cc', '')) ? $params->get('email_cc') : '';
-      $cc = explode(',', $cc);
+      $cc = empty($cc) ? [] : explode(",", $cc);
+      if(!empty($cc_emails)){
+         $cc = array_merge($cc, $cc_emails);
+         $cc = array_unique($cc);
+      }
+      
       if (!empty($cc)) {
          $mailer->addCc($cc);
       }
@@ -281,6 +293,17 @@ class ModJDSimpleContactFormHelper {
          return [];
       }
       return $GLOBALS['mod_jdscf_js_' . $moduleid];
+   }
+
+   public static function isCCMail($field, $params){
+      $sendcopy_email = $params->get('sendcopy_email', 0);
+      $sendcopyemail_field = $params->get('sendcopyemail_field', '');
+      $sendcopyemail_fields = explode(",", $sendcopyemail_field);
+      if($sendcopy_email && !empty($sendcopyemail_fields) && in_array($field->name, $sendcopyemail_fields)){
+         return true;
+      }else{
+         return false;
+      }
    }
 
 }

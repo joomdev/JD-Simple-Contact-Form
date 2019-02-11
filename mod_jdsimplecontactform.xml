@@ -145,6 +145,36 @@
                <option value="custom">JGLOBAL_CUSTOM</option>
             </field>
             <field
+               name="sendcopy_email"
+               type="radio"
+               label="MOD_JDSCF_SEND_COPY"
+               description="MOD_JDSCF_SEND_COPY_DESCRIPTION"
+               default="0"
+               class="btn-group"
+            >
+               <option value="1">Yes</option>
+               <option value="0">No</option>
+            </field>
+
+            <field
+               showon="sendcopy_email:1"
+               name="sendcopyemail_field"
+               default=""
+               type="text"
+               label="Enter Email Field Name" 
+               description=""
+            />
+
+            <field
+               showon="sendcopy_email:1"
+               name="sendcopyemailfield_title"
+               default=""
+               type="text"
+               label="Enter Send Copy Label" 
+               description=""
+            />
+
+            <field
                showon="email_template:custom"
                name="email_custom"
                type="editor"
@@ -168,7 +198,7 @@
                label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
                description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
                rows="3"
-            />
+            />            
          </fieldset>
       </fields>
    </config>
