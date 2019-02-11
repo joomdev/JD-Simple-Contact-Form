@@ -67,8 +67,8 @@ if (!empty($message)) {
 
          <div class="jdscf-row">
             <?php
-            $submit = new JLayoutFile('fields.submit', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
-            echo $submit->render(['params' => $params]);
+               $submit = new JLayoutFile('fields.submit', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
+               echo $submit->render(['params' => $params]);
             ?>
          </div>
          <input type="hidden" name="returnurl" value="<?php echo urlencode(JUri::getInstance()); ?>"/>

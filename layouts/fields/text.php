@@ -12,6 +12,7 @@ $attrs = [];
 switch ($field->type) {
    case 'email':
       $attrs[] = 'data-parsley-type="email"';
+      $isCCMail = ModJDSimpleContactFormHelper::isCCMail($field, $params);
       break;
    case 'number':
       $attrs[] = 'data-parsley-type="number"';
@@ -49,4 +50,9 @@ if ($field->required) {
    $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
 }
 ?>
-<input type="text" name="jdscf[<?php echo $field->name; ?>]" class="form-control" <?php echo implode(' ', $attrs); ?> />
+<input type="text" name="jdscf[<?php echo $field->name; ?>][email]" class="form-control" <?php echo implode(' ', $attrs); ?> />
+<?php
+if($field->type == 'email' && $isCCMail){ ?>
+   <label><input type="checkbox" name="jdscf[<?php echo $field->name; ?>][cc]" value="1" /> <?php echo JText::_($params->get('sendcopyemailfield_title', 'MOD_JDSCF_SEND_COPY_LBL_TITLE')); ?></label>
+<?php }
+?>
