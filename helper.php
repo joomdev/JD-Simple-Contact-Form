@@ -88,6 +88,7 @@ class ModJDSimpleContactFormHelper {
       foreach ($params->get('fields', []) as $field) {
          $labels[$field->name] = ['label' => self::getLabelText($field), 'type' => $field->type];
       }
+
       $cc_emails = [];
       $values = [];
       foreach ($jdscf as $name => $value) {
@@ -101,8 +102,8 @@ class ModJDSimpleContactFormHelper {
          }
       }
 
-
       $contents = [];
+      $attachments = [];
       foreach ($labels as $name => $fld) {
          $value = isset($values[$name]) ? $values[$name] : '';
          if ($fld['type'] == 'checkbox') {
@@ -111,11 +112,21 @@ class ModJDSimpleContactFormHelper {
             }
             $value = empty($value) ? 'unchecked' : 'checked';
          }
+         if ($fld['type'] == 'file') {
+            if(isset($_FILES['jdscf']['name'][$name])){
+               $value = $_FILES['jdscf']['name'][$name];
+               $uploaded = self::uploadFile($_FILES['jdscf']['name'][$name], $_FILES['jdscf']['tmp_name'][$name]);
+               if(!empty($uploaded)){
+                  $attachments[] = $uploaded;
+               }
+            }
+         }
          if ($fld['type'] == 'textarea') {
             if ($value) {
                $value = nl2br($value);
             }
          }
+
          $contents[] = [
              "value" => $value,
              "label" => $fld['label'],
@@ -192,6 +203,9 @@ class ModJDSimpleContactFormHelper {
       $mailer->isHtml(true);
       $mailer->Encoding = 'base64';
       $mailer->setBody($html);
+      foreach($attachments as $attachment){
+         $mailer->addAttachment($attachment);
+      }
       $send = $mailer->Send();
       if ($send !== true) {
          throw new \Exception(JText::_('MOD_JDSCFEMAIL_SEND_ERROR'));
@@ -304,6 +318,27 @@ class ModJDSimpleContactFormHelper {
       }else{
          return false;
       }
+   }
+
+   public static function uploadFile($name, $src) {
+      jimport('joomla.filesystem.file');
+      $filename = JFile::makeSafe($name);
+
+      $tmppath = JPATH_SITE . '/tmp';
+      if(!file_exists($tmppath.'/jdscf')){
+         mkdir($tmppath.'/jdscf',0777);
+      }
+      $folder = md5(time().'-'.$filename.rand(0,99999));
+      if(!file_exists($tmppath.'/jdscf/'.$folder)){
+         mkdir($tmppath.'/jdscf/'.$folder,0777);
+      }
+      $dest = $tmppath.'/jdscf/'.$folder.'/'.$filename;
+
+      $return = null;
+      if (JFile::upload($src, $dest)){
+         $return = $dest;
+      }
+      return $return;
    }
 
 }

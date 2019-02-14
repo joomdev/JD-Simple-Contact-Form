@@ -27,6 +27,7 @@
          <option value="email">MOD_JDSCF_TYPE_EMAIL_LBL</option>
          <option value="number">MOD_JDSCF_TYPE_NUMBER_LBL</option>
          <option value="url">MOD_JDSCF_TYPE_URL_LBL</option>
+         <option value="file">MOD_JDSCF_TYPE_FILE_LBL</option>
       </field>
       <field
          name="label"

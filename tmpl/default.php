@@ -12,6 +12,8 @@ $description = $params->get('description', '');
 $session = JFactory::getSession();
 $message = $session->get('jdscf-message-' . $module->id, '');
 $captcha = $params->get('captcha', 0);
+echo JPATH_SITE .'\tmp\test.pdf';
+echo "<hr>";
 ?>
 <?php
 if (!empty($message)) {
@@ -30,7 +32,7 @@ if (!empty($message)) {
       <?php if (!empty($description)) { ?>
          <p class="card-subtitle mb-2 text-muted"><?php echo JText::_($description); ?></p>
       <?php } ?>
-      <form method="POST" action="<?php echo JURI::root(); ?>index.php?option=com_ajax&module=jdsimplecontactform&format=json&method=submit" data-parsley-validate data-parsley-errors-wrapper="<ul class='text-danger list-unstyled mt-2 small'></ul>" data-parsley-error-class="border-danger" data-parsley-success-class="border-success" id="simple-contact-form-<?php echo $module->id; ?>">
+      <form method="POST" action="<?php echo JURI::root(); ?>index.php?option=com_ajax&module=jdsimplecontactform&format=json&method=submit" data-parsley-validate data-parsley-errors-wrapper="<ul class='text-danger list-unstyled mt-2 small'></ul>" data-parsley-error-class="border-danger" data-parsley-success-class="border-success" id="simple-contact-form-<?php echo $module->id; ?>" enctype="multipart/form-data">
          <div class="jdscf-row">
             <?php
             ModJDSimpleContactFormHelper::renderForm($params, $module);
@@ -95,17 +97,21 @@ if (!empty($message)) {
                }
                $('#simple-contact-form-<?php echo $module->id; ?>').on('submit', function (e) {
                   e.preventDefault();
+                  var formData = new FormData(this);
                   var _form = $(this);
                   var _id = 'simple-contact-form-<?php echo $module->id; ?>';
                   var _loading = $('.simple-contact-form-loader.module-<?php echo $module->id; ?>');
                   if (_form.parsley().isValid()) {
                      $.ajax({
                         url: '<?php echo JURI::root(); ?>index.php?option=com_ajax&module=jdsimplecontactform&format=json&method=submitForm',
-                        data: $(this).serialize(),
+                        data: formData,
                         type: 'POST',
                         beforeSend: function () {
                            _loading.removeClass('d-none');
                         },
+                        cache: false,
+                        contentType: false,
+                        processData: false,
                         success: function (response) {
 
                            if (response.status == 'success') {
