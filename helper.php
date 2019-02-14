@@ -113,7 +113,7 @@ class ModJDSimpleContactFormHelper {
             $value = empty($value) ? 'unchecked' : 'checked';
          }
          if ($fld['type'] == 'file') {
-            if(isset($_FILES['jdscf']['name'][$name])){
+            if(isset($_FILES['jdscf']['name'][$name])) {
                $value = $_FILES['jdscf']['name'][$name];
                $uploaded = self::uploadFile($_FILES['jdscf']['name'][$name], $_FILES['jdscf']['tmp_name'][$name]);
                if(!empty($uploaded)){

@@ -12,8 +12,6 @@ $description = $params->get('description', '');
 $session = JFactory::getSession();
 $message = $session->get('jdscf-message-' . $module->id, '');
 $captcha = $params->get('captcha', 0);
-echo JPATH_SITE .'\tmp\test.pdf';
-echo "<hr>";
 ?>
 <?php
 if (!empty($message)) {
