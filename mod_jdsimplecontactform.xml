@@ -161,7 +161,7 @@
                name="sendcopyemail_field"
                default=""
                type="text"
-               label="Enter Email Field Name" 
+               label="MOD_JDSCF_SEND_COPY_EMAIL_FIELD" 
                description=""
             />
 
@@ -170,7 +170,7 @@
                name="sendcopyemailfield_title"
                default=""
                type="text"
-               label="Enter Send Copy Label" 
+               label="MOD_JDSCF_SEND_COPY_LABEL" 
                description=""
             />
 
