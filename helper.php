@@ -104,6 +104,7 @@ class ModJDSimpleContactFormHelper {
 
       $contents = [];
       $attachments = [];
+      $errors = [];
       foreach ($labels as $name => $fld) {
          $value = isset($values[$name]) ? $values[$name] : '';
          if ($fld['type'] == 'checkbox') {
@@ -116,7 +117,11 @@ class ModJDSimpleContactFormHelper {
             if(isset($_FILES['jdscf']['name'][$name])) {
                $value = $_FILES['jdscf']['name'][$name];
                $uploaded = self::uploadFile($_FILES['jdscf']['name'][$name], $_FILES['jdscf']['tmp_name'][$name]);
-               if(!empty($uploaded)){
+               //filetype error
+               if(!$uploaded) {
+                  $errors = ['Unsupported Filetype'];
+               }
+               if(!empty($uploaded)) {
                   $attachments[] = $uploaded;
                }
             }
@@ -206,7 +211,17 @@ class ModJDSimpleContactFormHelper {
       foreach($attachments as $attachment){
          $mailer->addAttachment($attachment);
       }
-      $send = $mailer->Send();
+      if(!empty($errors)) {
+         $app = JFactory::getApplication();
+         //showing all the validation errors
+         foreach ($errors as $error) {
+            $app->enqueueMessage(\JText::_($error), 'error');
+         }
+      }
+      else {
+         $send = $mailer->Send();
+      }
+      
       if ($send !== true) {
          throw new \Exception(JText::_('MOD_JDSCFEMAIL_SEND_ERROR'));
       }
@@ -322,23 +337,35 @@ class ModJDSimpleContactFormHelper {
 
    public static function uploadFile($name, $src) {
       jimport('joomla.filesystem.file');
+      jimport('joomla.application.component.helper');
+
       $filename = JFile::makeSafe($name);
+      $filetype = JFile::getExt($filename);
 
-      $tmppath = JPATH_SITE . '/tmp';
-      if(!file_exists($tmppath.'/jdscf')){
-         mkdir($tmppath.'/jdscf',0777);
-      }
-      $folder = md5(time().'-'.$filename.rand(0,99999));
-      if(!file_exists($tmppath.'/jdscf/'.$folder)){
-         mkdir($tmppath.'/jdscf/'.$folder,0777);
-      }
-      $dest = $tmppath.'/jdscf/'.$folder.'/'.$filename;
+      $params = JComponentHelper::getParams('com_media');
+      $allowable = array_map('trim', explode(',', $params->get('upload_extensions')));
 
-      $return = null;
-      if (JFile::upload($src, $dest)){
-         $return = $dest;
+      if ($filetype == '' || $filetype == false || (!in_array($filetype, $allowable) ))
+      {
+         return false;
       }
-      return $return;
+      else
+      {
+         $tmppath = JPATH_SITE . '/tmp';
+         if(!file_exists($tmppath.'/jdscf')){
+            mkdir($tmppath.'/jdscf',0777);
+         }
+         $folder = md5(time().'-'.$filename.rand(0,99999));
+         if(!file_exists($tmppath.'/jdscf/'.$folder)){
+            mkdir($tmppath.'/jdscf/'.$folder,0777);
+         }
+         $dest = $tmppath.'/jdscf/'.$folder.'/'.$filename;
+
+         $return = null;
+         if (JFile::upload($src, $dest)){
+            $return = $dest;
+         }
+         return $return;
+      }      
    }
-
 }
