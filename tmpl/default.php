@@ -80,16 +80,13 @@ if (!empty($message)) {
    <script src="//parsleyjs.org/dist/parsley.min.js"></script>
    <script src="<?php echo JURI::root(); ?>media/mod_jdsimplecontactform/assets/js/moment.min.js"></script>
    <script src="//cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
-   <!-- <script>
-      var jdscf_picker_214 = new Pikaday({
-         field: document.getElementById("jdscf-214-date"),
-         minDate: moment("2019-02-19").toDate(),
-         maxDate: moment("2019-11-19").toDate(),
-         format: "MM-DD-YYYY",
-         defaultDate: moment("2019-02-19").toDate(),
-         setDefaultDate: true
-      });
-   </script> -->
+   <script>
+      <?php
+         foreach (ModJDSimpleContactFormHelper::getJS($module->id) as $js) {
+            echo $js;
+         }
+      ?>
+   </script>
    <script> var jQuery_3_3_1 = $.noConflict(true);</script>
    <?php if ($params->get('ajaxsubmit', 0)) { ?>
       <script>
@@ -132,21 +129,16 @@ if (!empty($message)) {
                               }
                            } else {
                               _loading.addClass('d-none');
-                              showMessage<?php echo $module->id; ?>("error", 'Something went wrong! Please try again.');
+                              showMessage<?php echo $module->id; ?>("error", "<?php echo JText::_("MOD_JDSCF_AJAX_ERROR_ON_SUBMIT")  ?>");
                            }
                         },
                         error: function (response) {
                            _loading.addClass('d-none');
-                           showMessage<?php echo $module->id; ?>("error", 'Something went wrong! Please try again.');
+                           showMessage<?php echo $module->id; ?>("error", "<?php echo JText::_("MOD_JDSCF_AJAX_ERROR_ON_SUBMIT"); ?>");
                         }
                      });
                   }
                });
-      <?php
-      foreach (ModJDSimpleContactFormHelper::getJS($module->id) as $js) {
-         echo $js;
-      }
-      ?>
             });
          })(jQuery_3_3_1);
       </script>

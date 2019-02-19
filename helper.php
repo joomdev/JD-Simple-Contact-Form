@@ -119,7 +119,7 @@ class ModJDSimpleContactFormHelper {
                $uploaded = self::uploadFile($_FILES['jdscf']['name'][$name], $_FILES['jdscf']['tmp_name'][$name]);
                //filetype error
                if(!$uploaded) {
-                  $errors[] = ['Unsupported Filetype'];
+                  $errors[] = JText::_('MOD_JDSCF_UNSUPPORTED_FILE_ERROR');
                }
                if(!empty($uploaded)) {
                   $attachments[] = $uploaded;
