@@ -119,7 +119,7 @@ class ModJDSimpleContactFormHelper {
                $uploaded = self::uploadFile($_FILES['jdscf']['name'][$name], $_FILES['jdscf']['tmp_name'][$name]);
                //filetype error
                if(!$uploaded) {
-                  $errors = ['Unsupported Filetype'];
+                  $errors[] = ['Unsupported Filetype'];
                }
                if(!empty($uploaded)) {
                   $attachments[] = $uploaded;
@@ -195,7 +195,7 @@ class ModJDSimpleContactFormHelper {
          $cc = array_merge($cc, $cc_emails);
          $cc = array_unique($cc);
       }
-      
+
       if (!empty($cc)) {
          $mailer->addCc($cc);
       }
@@ -221,7 +221,7 @@ class ModJDSimpleContactFormHelper {
       else {
          $send = $mailer->Send();
       }
-      
+
       if ($send !== true) {
          throw new \Exception(JText::_('MOD_JDSCFEMAIL_SEND_ERROR'));
       }
@@ -366,6 +366,6 @@ class ModJDSimpleContactFormHelper {
             $return = $dest;
          }
          return $return;
-      }      
+      }
    }
 }
