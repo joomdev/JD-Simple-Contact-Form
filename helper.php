@@ -106,21 +106,29 @@ class ModJDSimpleContactFormHelper {
       $attachments = [];
       $errors = [];
       foreach ($labels as $name => $fld) {
-         $value = isset($values[$name]) ? $values[$name] : '';
+         $value = isset($values[$name]) ? $values[$name] : '';    
+         
          if ($fld['type'] == 'checkbox') {
+            $value = $_POST['jdscf'][$name][cb];
+
             if (is_array($value)) {
                $value = implode(',', $value);
+            } else {
+               $value = $value;
             }
             $value = empty($value) ? 'unchecked' : 'checked';
          }
+
          if ($fld['type'] == 'file') {
             if(isset($_FILES['jdscf']['name'][$name])) {
                $value = $_FILES['jdscf']['name'][$name];
                $uploaded = self::uploadFile($_FILES['jdscf']['name'][$name], $_FILES['jdscf']['tmp_name'][$name]);
                //filetype error
-               if(!$uploaded) {
-                  $errors[] = JText::_('MOD_JDSCF_UNSUPPORTED_FILE_ERROR');
-               }
+               if(!empty($value)) {
+                  if(!$uploaded) {
+                     $errors[] = JText::_('MOD_JDSCF_UNSUPPORTED_FILE_ERROR');
+                  }
+               }               
                if(!empty($uploaded)) {
                   $attachments[] = $uploaded;
                }

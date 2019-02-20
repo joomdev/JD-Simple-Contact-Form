@@ -16,7 +16,7 @@ if ($field->required) {
 }
 ?>
 <div class="form-check form-check-inline">
-   <input class="form-check-input" type="checkbox" name="jdscf[<?php echo $field->name; ?>][]" value="1" id="<?php echo $field->name; ?>" <?php echo implode(' ', $attrs); ?> />
+   <input class="form-check-input" type="checkbox" name="jdscf[<?php echo $field->name; ?>][cb]" value="1" id="<?php echo $field->name; ?>" <?php echo implode(' ', $attrs); ?> />
    <label class="form-check-label" for="<?php echo $field->name; ?>">
       <?php echo $label; ?>
    </label>

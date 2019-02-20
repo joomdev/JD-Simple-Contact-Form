@@ -14,8 +14,11 @@ if ($field->required) {
    $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
 }
 $attrs[] = 'id="' . $field->name . '-file-input"';
+//fetching allowed types
+$params = JComponentHelper::getParams('com_media');
+$allowable = array_map('trim', explode(',', $params->get('upload_extensions')));
 ?>
 <div class="custom-file">
-   <input type="file" name="jdscf[<?php echo $field->name; ?>]" class="custom-file-input" <?php echo implode(' ', $attrs); ?>>
+   <input accept="<?php foreach ($allowable as $type) { echo ".".$type.","; } ?>" type="file" name="jdscf[<?php echo $field->name; ?>]" class="custom-file-input" <?php echo implode(' ', $attrs); ?>>
    <label class="custom-file-label" for="<?php echo $field->name; ?>-file-input"><?php echo JText::_('MOD_JDSCF_FILE_BTN_LBL'); ?></label>
 </div>
