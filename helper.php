@@ -92,12 +92,14 @@ class ModJDSimpleContactFormHelper {
       $cc_emails = [];
       $values = [];
       foreach ($jdscf as $name => $value) {
-         if(is_array($value)){
-            $values[$name] = $value['email'];
-            if(isset($value['cc']) && $value['cc'] == 1){
-               $cc_emails[] = $value['email'];
+         if(is_array($value)) {
+            if(isset($value['email'])) {
+               $values[$name] = $value['email'];
+               if(isset($value['cc']) && $value['cc'] == 1) {
+                  $cc_emails[] = $value['email'];
+               }
             }
-         }else{
+         } else {
             $values[$name] = $value;
          }
       }
@@ -106,11 +108,21 @@ class ModJDSimpleContactFormHelper {
       $attachments = [];
       $errors = [];
       foreach ($labels as $name => $fld) {
-         $value = isset($values[$name]) ? $values[$name] : '';    
+         $value = isset($values[$name]) ? $values[$name] : '';
          
-         if ($fld['type'] == 'checkbox') {
-            $value = $_POST['jdscf'][$name][cb];
-
+         if ($fld['type'] == 'checkboxes') {
+             
+            $value = $_POST['jdscf'][$name]['cbs'];
+            
+            if (is_array($value)) {
+               $value = implode(', ', $value);
+            } else {
+               $value = $value;
+            }
+         }
+        
+         if ($fld['type'] == 'checkbox') {            
+            $value = $_POST['jdscf'][$name]['cb'];
             if (is_array($value)) {
                $value = implode(',', $value);
             } else {
@@ -347,8 +359,9 @@ class ModJDSimpleContactFormHelper {
       jimport('joomla.filesystem.file');
       jimport('joomla.application.component.helper');
 
-      $filename = JFile::makeSafe($name);
-      $filetype = JFile::getExt($filename);
+      $fullFileName = JFile::stripExt($name);
+      $filetype = JFile::getExt($name);
+      $filename = JFile::makeSafe($fullFileName."_".mt_rand(10000000,99999999).".".$filetype);
 
       $params = JComponentHelper::getParams('com_media');
       $allowable = array_map('trim', explode(',', $params->get('upload_extensions')));

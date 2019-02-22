@@ -20,7 +20,7 @@ $optionslayout = isset($field->optionslayout) ? $field->optionslayout : 'vertica
 foreach ($options as $key => $option) {
    ?>
    <div class="form-check<?php echo $optionslayout == 'inline' ? ' form-check-inline' : ''; ?>">
-      <input data-parsley-errors-container="#<?php echo $field->name; ?>-errors" class="form-check-input" type="checkbox" name="jdscf[<?php echo $field->name; ?>][]" value="<?php echo $option['value']; ?>" id="<?php echo $field->name; ?>-<?php echo $option['value']; ?>-<?php echo $key; ?>" <?php echo implode(' ', $attrs); ?> />
+      <input data-parsley-errors-container="#<?php echo $field->name; ?>-errors" class="form-check-input" type="checkbox" name="jdscf[<?php echo $field->name; ?>][cbs][]" value="<?php echo $option['value']; ?>" id="<?php echo $field->name; ?>-<?php echo $option['value']; ?>-<?php echo $key; ?>" <?php echo implode(' ', $attrs); ?> />
       <label class="form-check-label" for="<?php echo $field->name; ?>-<?php echo $option['value']; ?>-<?php echo $key; ?>">
          <?php echo $option['text']; ?>
       </label>
