@@ -2,10 +2,10 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
    <name>mod_jdsimplecontactform</name>
    <author>JoomDev</author>
-   <version>1.1</version>
-   <creationDate>Dec 2018</creationDate>
+   <version>1.2</version>
+   <creationDate>Feb 2019</creationDate>
    <url>https://www.joomdev.com</url>
-   <copyright>Copyright (C) 2018 Joomdev, Inc. All rights reserved.</copyright>
+   <copyright>Copyright (C) 2019 Joomdev, Inc. All rights reserved.</copyright>
    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
    <authorEmail>info@joomdev.com</authorEmail>
    <authorUrl>https://www.joomdev.com</authorUrl>
@@ -145,6 +145,36 @@
                <option value="custom">JGLOBAL_CUSTOM</option>
             </field>
             <field
+               name="sendcopy_email"
+               type="radio"
+               label="MOD_JDSCF_SEND_COPY"
+               description="MOD_JDSCF_SEND_COPY_DESCRIPTION"
+               default="0"
+               class="btn-group"
+            >
+               <option value="1">Yes</option>
+               <option value="0">No</option>
+            </field>
+
+            <field
+               showon="sendcopy_email:1"
+               name="sendcopyemail_field"
+               default=""
+               type="text"
+               label="MOD_JDSCF_SEND_COPY_EMAIL_FIELD" 
+               description=""
+            />
+
+            <field
+               showon="sendcopy_email:1"
+               name="sendcopyemailfield_title"
+               default=""
+               type="text"
+               label="MOD_JDSCF_SEND_COPY_LABEL" 
+               description=""
+            />
+
+            <field
                showon="email_template:custom"
                name="email_custom"
                type="editor"
@@ -168,7 +198,7 @@
                label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
                description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
                rows="3"
-            />
+            />            
          </fieldset>
       </fields>
    </config>
