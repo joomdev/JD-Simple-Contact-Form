@@ -18,14 +18,13 @@ $attrs[] = 'id="' . $field->name . '-file-input"';
 $params = JComponentHelper::getParams('com_media');
 $allowable = array_map('trim', explode(',', $params->get('upload_extensions')));
 $allowedMaxSize = $params->get('upload_maxsize');
+$document = JFactory::getDocument();
+$style = '.filesize-err {'
+        . 'display: none;'
+        . 'margin-top: 10px;'
+        . '}';
+$document->addStyleDeclaration($style);
 ?>
-<style>
-	.filesize-err
-	{
-		display: none;
-		margin-top: 10px;
-	}
-</style>
 <div class="custom-file">
    <input id="<?php echo $field->name; ?>-<?php echo $module->id; ?>" accept="<?php foreach ($allowable as $type) { echo ".".$type.","; } ?>" type="file" name="jdscf[<?php echo $field->name; ?>]" class="custom-file-input" <?php echo implode(' ', $attrs); ?>>
    <label class="custom-file-label" for="<?php echo $field->name; ?>-file-input"><?php echo JText::_('MOD_JDSCF_FILE_BTN_LBL'); ?></label>
