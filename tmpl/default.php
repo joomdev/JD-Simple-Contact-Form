@@ -24,12 +24,14 @@ if (!empty($message)) {
       <div class="simple-contact-form-loader module-<?php echo $module->id; ?> d-none">
          <div class="loading"></div>
       </div>
-      <?php if (!empty($title)) { ?>
-         <h5 class="card-title"><?php echo JText::_($title); ?></h5>
-      <?php } ?>
-      <?php if (!empty($description)) { ?>
-         <p class="card-subtitle mb-2 text-muted"><?php echo JText::_($description); ?></p>
-      <?php } ?>
+      <div class="jd-simple-contact-form-header">
+         <?php if (!empty($title)) { ?>
+            <h5 class="card-title"><?php echo JText::_($title); ?></h5>
+         <?php } ?>
+         <?php if (!empty($description)) { ?>
+            <p class="card-subtitle mb-2 text-muted"><?php echo JText::_($description); ?></p>
+         <?php } ?>
+      </div>
       <form method="POST" action="<?php echo JURI::root(); ?>index.php?option=com_ajax&module=jdsimplecontactform&format=json&method=submit" data-parsley-validate data-parsley-errors-wrapper="<ul class='text-danger list-unstyled mt-2 small'></ul>" data-parsley-error-class="border-danger" data-parsley-success-class="border-success" id="simple-contact-form-<?php echo $module->id; ?>" enctype="multipart/form-data">
          <div class="jdscf-row">
             <?php
