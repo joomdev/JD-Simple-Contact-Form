@@ -145,6 +145,48 @@
                <option value="custom">JGLOBAL_CUSTOM</option>
             </field>
             <field
+               showon="email_template:custom"
+               name="email_custom"
+               type="editor"
+               label="MOD_JDSCF_EMAIL_CUSTOM_TEMPLATE_LBL"
+               description="MOD_JDSCF_EMAIL_CUSTOM_TEMPLATE_LBL"
+               filter="safehtml"
+               default=""
+            />
+
+            <!-- For single email fields -->
+            <field
+               name="single_sendcopy_email"
+               type="radio"
+               label="MOD_JDSCF_SINGLE_SEND_COPY"
+               description="MOD_JDSCF_SINGLE_SEND_COPY_DESCRIPTION"
+               default="0"
+               class="btn-group"
+            >
+               <option value="1">Yes</option>
+               <option value="0">No</option>
+            </field>
+
+            <field
+               showon="single_sendcopy_email:1"
+               name="singleSendCopyEmail_field"
+               default=""
+               type="text"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_EMAIL_FIELD" 
+               description=""
+            />
+
+            <field
+               showon="single_sendcopy_email:1"
+               name="singleSendCopyEmailField_title"
+               default=""
+               type="text"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_LABEL" 
+               description=""
+            />
+
+            <!-- For multiple email fields -->
+            <field
                name="sendcopy_email"
                type="radio"
                label="MOD_JDSCF_SEND_COPY"
@@ -174,15 +216,7 @@
                description=""
             />
 
-            <field
-               showon="email_template:custom"
-               name="email_custom"
-               type="editor"
-               label="MOD_JDSCF_EMAIL_CUSTOM_TEMPLATE_LBL"
-               description="MOD_JDSCF_EMAIL_CUSTOM_TEMPLATE_LBL"
-               filter="safehtml"
-               default=""
-            />
+            
          </fieldset>
          <fieldset name="advanced">
             <field

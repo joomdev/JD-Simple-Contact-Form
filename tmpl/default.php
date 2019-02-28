@@ -12,6 +12,8 @@ $description = $params->get('description', '');
 $session = JFactory::getSession();
 $message = $session->get('jdscf-message-' . $module->id, '');
 $captcha = $params->get('captcha', 0);
+//checking if single cc is enabled
+$single_cc_enable = ModJDSimpleContactFormHelper::isSingleCCMail($params);
 ?>
 <?php
 if (!empty($message)) {
@@ -35,7 +37,7 @@ if (!empty($message)) {
       <form method="POST" action="<?php echo JURI::root(); ?>index.php?option=com_ajax&module=jdsimplecontactform&format=json&method=submit" data-parsley-validate data-parsley-errors-wrapper="<ul class='text-danger list-unstyled mt-2 small'></ul>" data-parsley-error-class="border-danger" data-parsley-success-class="border-success" id="simple-contact-form-<?php echo $module->id; ?>" enctype="multipart/form-data">
          <div class="jdscf-row">
             <?php
-            ModJDSimpleContactFormHelper::renderForm($params, $module);
+               ModJDSimpleContactFormHelper::renderForm($params, $module);
             ?>
          </div>
 
@@ -66,6 +68,18 @@ if (!empty($message)) {
             }
          }
          ?>
+
+         <div class="jdscf-row">
+            <div class="jdscf-col">
+               <div class="form-group">
+               <?php
+                  if($single_cc_enable) {
+                        $singleCC = new JLayoutFile('fields.singlecc', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
+                        echo $singleCC->render(['params' => $params]);
+                  } ?>
+               </div>
+            </div>
+         </div>
 
          <div class="jdscf-row">
             <?php

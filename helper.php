@@ -95,7 +95,12 @@ class ModJDSimpleContactFormHelper {
          if(is_array($value)) {
             if(isset($value['email'])) {
                $values[$name] = $value['email'];
+               //multiple cc
                if(isset($value['cc']) && $value['cc'] == 1) {
+                  $cc_emails[] = $value['email'];
+               }
+               //single cc
+               if(isset($value['single_cc']) && $value['single_cc'] == 1) {
                   $cc_emails[] = $value['email'];
                }
             }
@@ -344,13 +349,25 @@ class ModJDSimpleContactFormHelper {
       return $GLOBALS['mod_jdscf_js_' . $moduleid];
    }
 
-   public static function isCCMail($field, $params){
+   //for single email field (at bottom)
+   public static function isSingleCCMail($params) {      
+      $singlesendcopy_email = $params->get('single_sendcopy_email', 0);
+      $singlesendcopyemail_field = $params->get('singleSendCopyEmail_field', '');      
+      if($singlesendcopy_email && !empty($singlesendcopyemail_field)){
+         return true;
+      } else {
+         return false;
+      }
+   }
+
+   //for multiple email fields
+   public static function isCCMail($field, $params) {
       $sendcopy_email = $params->get('sendcopy_email', 0);
       $sendcopyemail_field = $params->get('sendcopyemail_field', '');
       $sendcopyemail_fields = explode(",", $sendcopyemail_field);
       if($sendcopy_email && !empty($sendcopyemail_fields) && in_array($field->name, $sendcopyemail_fields)){
          return true;
-      }else{
+      } else {
          return false;
       }
    }
