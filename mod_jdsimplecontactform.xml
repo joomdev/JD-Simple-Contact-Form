@@ -122,6 +122,12 @@
                description="MOD_JDSCF_EMAIL_TO_DESC"
             />
             <field
+               name="reply_to"
+               type="text"
+               label="MOD_JDSCF_REPLY_TO_LBL"
+               description="MOD_JDSCF_REPLY_TO_DESC"
+            />
+            <field
                name="email_cc"
                type="text"
                label="MOD_JDSCF_EMAIL_CC_LBL"

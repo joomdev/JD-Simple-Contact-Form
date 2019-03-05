@@ -213,6 +213,14 @@ class ModJDSimpleContactFormHelper {
       if (!empty($recipients)) {
          $mailer->addRecipient($recipients);
       }
+
+      // Reply-To
+      $reply_to = !empty($params->get('reply_to', '')) ? $params->get('reply_to') : '';
+      $reply_to = explode(',', $reply_to);
+      if (!empty($reply_to)) {
+         $mailer->addReplyTo($reply_to);
+      }
+
       // CC
       $cc = !empty($params->get('email_cc', '')) ? $params->get('email_cc') : '';
       $cc = empty($cc) ? [] : explode(",", $cc);
