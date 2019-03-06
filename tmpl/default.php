@@ -134,7 +134,6 @@ if (!empty($message)) {
                         contentType: false,
                         processData: false,
                         success: function (response) {
-
                            if (response.status == 'success') {
                               $('.jd-simple-contact-message-<?php echo $module->id; ?>').html(response.data.message);
                               _loading.addClass('d-none');
@@ -144,8 +143,13 @@ if (!empty($message)) {
                                  }, 2000);
                               }
                            } else {
-                              _loading.addClass('d-none');
-                              showMessage<?php echo $module->id; ?>("error", "<?php echo JText::_("MOD_JDSCF_AJAX_ERROR_ON_SUBMIT")  ?>");
+                              var errors = JSON.parse(response.message);
+                              _loading.addClass('d-none');                              
+
+                              for (index = 0; index < errors.length; ++index) {
+                                 showMessage<?php echo $module->id; ?>("error", errors[index]);
+                              }
+
                            }
                         },
                         error: function (response) {

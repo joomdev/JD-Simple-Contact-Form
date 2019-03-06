@@ -246,6 +246,7 @@ class ModJDSimpleContactFormHelper {
       }
       if(!empty($errors)) {
          $app = JFactory::getApplication();
+         $send = false;
          //showing all the validation errors
          foreach ($errors as $error) {
             $app->enqueueMessage(\JText::_($error), 'error');
@@ -256,7 +257,13 @@ class ModJDSimpleContactFormHelper {
       }
 
       if ($send !== true) {
-         throw new \Exception(JText::_('MOD_JDSCFEMAIL_SEND_ERROR'));
+         switch($params->get('ajaxsubmit'))
+         {
+            case 0: throw new \Exception(JText::_('MOD_JDSCFEMAIL_SEND_ERROR'));
+            break;
+            case 1: throw new \Exception(json_encode($errors));
+            break;
+         }         
       }
       $message = $params->get('thankyou_message', '');
       if (empty($message)) {
@@ -277,7 +284,7 @@ class ModJDSimpleContactFormHelper {
          }
          $app->redirect($return);
       }
-      return ['message' => $message, 'redirect' => $redirect_url];
+      return ['message' => $message, 'redirect' => $redirect_url, 'errors' => json_encode($errors)];
    }
 
    public static function renderVariables($variables, $source) {
@@ -398,17 +405,17 @@ class ModJDSimpleContactFormHelper {
       else
       {
          $tmppath = JPATH_SITE . '/tmp';
-         if(!file_exists($tmppath.'/jdscf')){
+         if (!file_exists($tmppath.'/jdscf')) {
             mkdir($tmppath.'/jdscf',0777);
          }
          $folder = md5(time().'-'.$filename.rand(0,99999));
-         if(!file_exists($tmppath.'/jdscf/'.$folder)){
+         if (!file_exists($tmppath.'/jdscf/'.$folder)) {
             mkdir($tmppath.'/jdscf/'.$folder,0777);
          }
          $dest = $tmppath.'/jdscf/'.$folder.'/'.$filename;
 
          $return = null;
-         if (JFile::upload($src, $dest)){
+         if (JFile::upload($src, $dest)) {
             $return = $dest;
          }
          return $return;
