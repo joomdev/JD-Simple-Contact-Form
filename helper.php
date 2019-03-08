@@ -215,10 +215,15 @@ class ModJDSimpleContactFormHelper {
       }
 
       // Reply-To
-      $reply_to = !empty($params->get('reply_to', '')) ? $params->get('reply_to') : '';
-      $reply_to = explode(',', $reply_to);
-      if (!empty($reply_to)) {
+      if (!empty($params->get('reply_to', ''))) {
+         $reply_to = $params->get('reply_to', '');
+         $reply_to = self::renderVariables($contents, $reply_to);
+         if (!filter_var($reply_to, FILTER_VALIDATE_EMAIL)) {
+            $reply_to = '';
+         }
          $mailer->addReplyTo($reply_to);
+      } else {
+         $reply_to = '';
       }
 
       // CC
