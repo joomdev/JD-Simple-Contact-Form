@@ -38,55 +38,50 @@ if (!empty($message)) {
          <div class="jdscf-row">
             <?php
                ModJDSimpleContactFormHelper::renderForm($params, $module);
-            ?>
-         </div>
 
-         <?php
-         if ($captcha) {
-            JPluginHelper::importPlugin('captcha');
-            $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
-            $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha');
-            if (!empty($plugin)) {
-               $plugin_params = new JRegistry($plugin->params);
-               $attributes = [];
-               $attributes['data-theme'] = $plugin_params->get('theme2', '');
-               $attributes['data-size'] = $plugin_params->get('size', '');
-               $attributeArray = [];
-               foreach ($attributes as $attributeKey => $attributeValue) {
-                  $attributeArray[] = $attributeKey . '="' . $attributeValue . '"';
-               }
-               ?>
-               <div class="jdscf-row">
-                  <div class="jdscf-col">
-                     <div class="form-group">
-                        <div id="jdscf_recaptcha_<?php echo $module->id; ?>" class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>" <?php echo implode(' ', $attributeArray); ?>></div>
+               if ($captcha) {
+                  JPluginHelper::importPlugin('captcha');
+                  $dispatcher = JEventDispatcher::getInstance();
+                  $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
+                  $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha');
+                  if (!empty($plugin)) {
+                     $plugin_params = new JRegistry($plugin->params);
+                     $attributes = [];
+                     $attributes['data-theme'] = $plugin_params->get('theme2', '');
+                     $attributes['data-size'] = $plugin_params->get('size', '');
+                     $attributeArray = [];
+                     foreach ($attributes as $attributeKey => $attributeValue) {
+                        $attributeArray[] = $attributeKey . '="' . $attributeValue . '"';
+                     }
+                     ?>
+                     <div class="jdscf-row">
+                        <div class="jdscf-col">
+                           <div class="form-group">
+                              <div id="jdscf_recaptcha_<?php echo $module->id; ?>" class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>" <?php echo implode(' ', $attributeArray); ?>></div>
+                           </div>
+                        </div>
                      </div>
-                  </div>
-               </div>
-               <?php
-            }
-         }
-         ?>
+                     <?php
+                  }
+               }               
+            ?>
 
-         <div class="jdscf-row">
-            <div class="jdscf-col">
-               <div class="form-group">
+            <div class="form-group">
                <?php
                   if($single_cc_enable) {
-                        $singleCC = new JLayoutFile('fields.singlecc', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
-                        echo $singleCC->render(['params' => $params]);
-                  } ?>
-               </div>
+                     $singleCC = new JLayoutFile('fields.singlecc', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
+                     echo $singleCC->render(['params' => $params]);
+                  } 
+               ?>
             </div>
-         </div>
 
-         <div class="jdscf-row">
             <?php
                $submit = new JLayoutFile('fields.submit', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
                echo $submit->render(['params' => $params]);
             ?>
+
          </div>
+         
          <input type="hidden" name="returnurl" value="<?php echo urlencode(JUri::getInstance()); ?>"/>
          <input type="hidden" name="id" value="<?php echo $module->id; ?>" />
          <?php echo JHtml::_('form.token'); ?>
