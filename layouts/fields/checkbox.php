@@ -9,10 +9,17 @@
 defined('_JEXEC') or die;
 extract($displayData);
 $options = ModJDSimpleContactFormHelper::getOptions($field->options);
+
+// die(print_r(empty(trim($field->custom_error))));
+
 $attrs = [];
 if ($field->required) {
    $attrs[] = 'required';
-   $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
+   if (!empty(trim($field->custom_error))) {
+      $attrs[] = 'data-parsley-required-message="' . JText::sprintf($field->custom_error) . '"';
+   } else {
+      $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
+   }
 }
 ?>
 <div class="form-check form-check-inline">
