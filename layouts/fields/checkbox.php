@@ -9,9 +9,6 @@
 defined('_JEXEC') or die;
 extract($displayData);
 $options = ModJDSimpleContactFormHelper::getOptions($field->options);
-
-// die(print_r(empty(trim($field->custom_error))));
-
 $attrs = [];
 if ($field->required) {
    $attrs[] = 'required';
