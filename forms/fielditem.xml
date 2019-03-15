@@ -52,7 +52,7 @@
          name="custom_error"
          type="text"
          label="MOD_JDSCF_CUSTOM_ERROR_LBL"
-         description="Show a custom error message when fields are required."
+         description="MOD_JDSCF_CUSTOM_ERROR_DESC"
       />
       <field
          name="show_label"
