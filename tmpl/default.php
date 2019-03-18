@@ -65,15 +65,13 @@ if (!empty($message)) {
                   }
                }               
             ?>
-
-            <div class="form-group">
-               <?php
-                  if($single_cc_enable) {
-                     $singleCC = new JLayoutFile('fields.singlecc', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
-                     echo $singleCC->render(['params' => $params]);
-                  } 
-               ?>
-            </div>
+            
+            <?php
+               if($single_cc_enable) {
+                  $singleCC = new JLayoutFile('fields.singlecc', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
+                  echo $singleCC->render(['params' => $params]);
+               } 
+            ?>
 
             <?php
                $submit = new JLayoutFile('fields.submit', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');

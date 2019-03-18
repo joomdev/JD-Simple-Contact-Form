@@ -80,22 +80,6 @@
                default="btn-primary"
             />
             <field
-               name="thankyou_message"
-               type="editor"
-               label="MOD_JDSCF_THANKYOU_MESSAGE_LBL"
-               description="MOD_JDSCF_THANKYOU_MESSAGE_DESC"
-               filter="safehtml"
-            />
-            <field
-               name="redirect_url"
-               type="url"
-               label="MOD_JDSCF_REDIRECT_LBL"
-               description="MOD_JDSCF_REDIRECT_DESC"
-            />
-         </fieldset>
-         <fieldset name="fields" label="MOD_JDSCF_FORM_FIELDS_OPTIONS_LBL">
-            <field name="fields" type="subform" formsource="modules/mod_jdsimplecontactform/forms/fielditem.xml" multiple="true" label="MOD_JDSCF_FIELDS_LBL" />
-            <field
                name="submit_btn_width"
                type="list"
                label="MOD_JDSCF_SUBMIT_WIDTH_LBL"
@@ -112,6 +96,22 @@
                <option value="3">3</option>
                <option value="2">2</option>
             </field>
+            <field
+               name="thankyou_message"
+               type="editor"
+               label="MOD_JDSCF_THANKYOU_MESSAGE_LBL"
+               description="MOD_JDSCF_THANKYOU_MESSAGE_DESC"
+               filter="safehtml"
+            />
+            <field
+               name="redirect_url"
+               type="url"
+               label="MOD_JDSCF_REDIRECT_LBL"
+               description="MOD_JDSCF_REDIRECT_DESC"
+            />
+         </fieldset>
+         <fieldset name="fields" label="MOD_JDSCF_FORM_FIELDS_OPTIONS_LBL">
+            <field name="fields" type="subform" formsource="modules/mod_jdsimplecontactform/forms/fielditem.xml" multiple="true" label="MOD_JDSCF_FIELDS_LBL" />
          </fieldset>
          <fieldset name="email" label="MOD_JDSCF_EMAIL_OPTIONS_LBL">
             <field
