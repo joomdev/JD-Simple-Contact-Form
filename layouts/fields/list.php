@@ -10,13 +10,15 @@ defined('_JEXEC') or die;
 extract($displayData);
 $options = ModJDSimpleContactFormHelper::getOptions($field->options);
 $attrs = [];
+
+
 if ($field->required) {
-   $attrs[] = 'required';
-   if (!empty(trim($field->custom_error))) {
+    $attrs[] = 'required';
+    if (!empty(trim($field->custom_error))) {
        $attrs[] = 'data-parsley-required-message="' . JText::sprintf($field->custom_error) . '"';
-   } else {
+    } else {
        $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
-   }
+    }
 }
 ?>
 <select name="jdscf[<?php echo $field->name; ?>]" class="form-control" <?php echo implode(' ', $attrs); ?>>

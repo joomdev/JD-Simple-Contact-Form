@@ -54,11 +54,9 @@ if (!empty($message)) {
                         $attributeArray[] = $attributeKey . '="' . $attributeValue . '"';
                      }
                      ?>
-                     <div class="jdscf-row">
-                        <div class="jdscf-col">
-                           <div class="form-group">
-                              <div id="jdscf_recaptcha_<?php echo $module->id; ?>" class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>" <?php echo implode(' ', $attributeArray); ?>></div>
-                           </div>
+                     <div class="jdscf-col-md-12">
+                        <div class="form-group">
+                           <div id="jdscf_recaptcha_<?php echo $module->id; ?>" class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>" <?php echo implode(' ', $attributeArray); ?>></div>
                         </div>
                      </div>
                      <?php
