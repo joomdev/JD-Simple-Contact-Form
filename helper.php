@@ -126,8 +126,10 @@ class ModJDSimpleContactFormHelper {
             }
          }
         
-         if ($fld['type'] == 'checkbox') {            
-            $value = $_POST['jdscf'][$name]['cb'];
+         if ($fld['type'] == 'checkbox') {
+            if (isset($_POST['jdscf'][$name]['cb'])){
+               $value = $_POST['jdscf'][$name]['cb'];
+            }            
             if (is_array($value)) {
                $value = implode(',', $value);
             } else {

@@ -55,12 +55,6 @@ $js .= 'uploadField_' . $field->name .'.onchange = function() {';
 	$js .= '}';
 $js .= '};';
 
-
-// $js .= "jQuery('#" . $field->name . '-' .$module->id . "').on('change', function() {";
-//     $js .= "var fileName = jQuery(this).val().split('\\').pop();";
-//     $js .= "jQuery(this).siblings('.custom-file-label').addClass('selected').html(fileName);";
-// $js .= "});";
-
 $js .= 'jQuery("#' . $field->name . '-' .$module->id . '").on("change", function() {';
     $js .= 'var fileName = jQuery(this).val().split("\\\").pop();';
     $js .= 'jQuery(this).siblings(".custom-file-label").addClass("selected").html(fileName);';
