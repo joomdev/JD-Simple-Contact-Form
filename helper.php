@@ -95,7 +95,12 @@ class ModJDSimpleContactFormHelper {
          if(is_array($value)) {
             if(isset($value['email'])) {
                $values[$name] = $value['email'];
+               //multiple cc
                if(isset($value['cc']) && $value['cc'] == 1) {
+                  $cc_emails[] = $value['email'];
+               }
+               //single cc
+               if(isset($value['single_cc']) && $value['single_cc'] == 1) {
                   $cc_emails[] = $value['email'];
                }
             }
@@ -121,8 +126,10 @@ class ModJDSimpleContactFormHelper {
             }
          }
         
-         if ($fld['type'] == 'checkbox') {            
-            $value = $_POST['jdscf'][$name]['cb'];
+         if ($fld['type'] == 'checkbox') {
+            if (isset($_POST['jdscf'][$name]['cb'])){
+               $value = $_POST['jdscf'][$name]['cb'];
+            }            
             if (is_array($value)) {
                $value = implode(',', $value);
             } else {
@@ -208,6 +215,19 @@ class ModJDSimpleContactFormHelper {
       if (!empty($recipients)) {
          $mailer->addRecipient($recipients);
       }
+
+      // Reply-To
+      if (!empty($params->get('reply_to', ''))) {
+         $reply_to = $params->get('reply_to', '');
+         $reply_to = self::renderVariables($contents, $reply_to);
+         if (!filter_var($reply_to, FILTER_VALIDATE_EMAIL)) {
+            $reply_to = '';
+         }
+         $mailer->addReplyTo($reply_to);
+      } else {
+         $reply_to = '';
+      }
+
       // CC
       $cc = !empty($params->get('email_cc', '')) ? $params->get('email_cc') : '';
       $cc = empty($cc) ? [] : explode(",", $cc);
@@ -233,6 +253,7 @@ class ModJDSimpleContactFormHelper {
       }
       if(!empty($errors)) {
          $app = JFactory::getApplication();
+         $send = false;
          //showing all the validation errors
          foreach ($errors as $error) {
             $app->enqueueMessage(\JText::_($error), 'error');
@@ -243,7 +264,13 @@ class ModJDSimpleContactFormHelper {
       }
 
       if ($send !== true) {
-         throw new \Exception(JText::_('MOD_JDSCFEMAIL_SEND_ERROR'));
+         switch($params->get('ajaxsubmit'))
+         {
+            case 0: throw new \Exception(JText::_('MOD_JDSCFEMAIL_SEND_ERROR'));
+            break;
+            case 1: throw new \Exception(json_encode($errors));
+            break;
+         }         
       }
       $message = $params->get('thankyou_message', '');
       if (empty($message)) {
@@ -264,7 +291,7 @@ class ModJDSimpleContactFormHelper {
          }
          $app->redirect($return);
       }
-      return ['message' => $message, 'redirect' => $redirect_url];
+      return ['message' => $message, 'redirect' => $redirect_url, 'errors' => json_encode($errors)];
    }
 
    public static function renderVariables($variables, $source) {
@@ -344,13 +371,25 @@ class ModJDSimpleContactFormHelper {
       return $GLOBALS['mod_jdscf_js_' . $moduleid];
    }
 
-   public static function isCCMail($field, $params){
+   //for single email field (at bottom)
+   public static function isSingleCCMail($params) {      
+      $singlesendcopy_email = $params->get('single_sendcopy_email', 0);
+      $singlesendcopyemail_field = $params->get('singleSendCopyEmail_field', '');      
+      if($singlesendcopy_email && !empty($singlesendcopyemail_field)){
+         return true;
+      } else {
+         return false;
+      }
+   }
+
+   //for multiple email fields
+   public static function isCCMail($field, $params) {
       $sendcopy_email = $params->get('sendcopy_email', 0);
       $sendcopyemail_field = $params->get('sendcopyemail_field', '');
       $sendcopyemail_fields = explode(",", $sendcopyemail_field);
       if($sendcopy_email && !empty($sendcopyemail_fields) && in_array($field->name, $sendcopyemail_fields)){
          return true;
-      }else{
+      } else {
          return false;
       }
    }
@@ -373,17 +412,17 @@ class ModJDSimpleContactFormHelper {
       else
       {
          $tmppath = JPATH_SITE . '/tmp';
-         if(!file_exists($tmppath.'/jdscf')){
+         if (!file_exists($tmppath.'/jdscf')) {
             mkdir($tmppath.'/jdscf',0777);
          }
          $folder = md5(time().'-'.$filename.rand(0,99999));
-         if(!file_exists($tmppath.'/jdscf/'.$folder)){
+         if (!file_exists($tmppath.'/jdscf/'.$folder)) {
             mkdir($tmppath.'/jdscf/'.$folder,0777);
          }
          $dest = $tmppath.'/jdscf/'.$folder.'/'.$filename;
 
          $return = null;
-         if (JFile::upload($src, $dest)){
+         if (JFile::upload($src, $dest)) {
             $return = $dest;
          }
          return $return;

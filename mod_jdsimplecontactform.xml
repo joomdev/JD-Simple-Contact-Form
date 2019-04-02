@@ -2,8 +2,8 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
    <name>mod_jdsimplecontactform</name>
    <author>JoomDev</author>
-   <version>1.2</version>
-   <creationDate>Feb 2019</creationDate>
+   <version>1.3</version>
+   <creationDate>Apr 2019</creationDate>
    <url>https://www.joomdev.com</url>
    <copyright>Copyright (C) 2019 Joomdev, Inc. All rights reserved.</copyright>
    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
@@ -80,6 +80,23 @@
                default="btn-primary"
             />
             <field
+               name="submit_btn_width"
+               type="list"
+               label="MOD_JDSCF_SUBMIT_WIDTH_LBL"
+               description="MOD_JDSCF_SUBMIT_WIDTH_DESC"
+               >
+               <option value="12">12</option>
+               <option value="10">10</option>
+               <option value="9">9</option>
+               <option value="8">8</option>
+               <option value="7">7</option>
+               <option value="6">6</option>
+               <option value="5">5</option>
+               <option value="4">4</option>
+               <option value="3">3</option>
+               <option value="2">2</option>
+            </field>
+            <field
                name="thankyou_message"
                type="editor"
                label="MOD_JDSCF_THANKYOU_MESSAGE_LBL"
@@ -122,6 +139,12 @@
                description="MOD_JDSCF_EMAIL_TO_DESC"
             />
             <field
+               name="reply_to"
+               type="text"
+               label="MOD_JDSCF_REPLY_TO_LBL"
+               description="MOD_JDSCF_REPLY_TO_DESC"
+            />
+            <field
                name="email_cc"
                type="text"
                label="MOD_JDSCF_EMAIL_CC_LBL"
@@ -133,6 +156,63 @@
                label="MOD_JDSCF_EMAIL_BCC_LBL"
                description="MOD_JDSCF_EMAIL_BCC_DESC"
             />
+            <!-- For single email fields -->
+            <field
+               name="single_sendcopy_email"
+               type="radio"
+               label="MOD_JDSCF_SINGLE_SEND_COPY"
+               description="MOD_JDSCF_SINGLE_SEND_COPY_DESCRIPTION"
+               default="0"
+               class="btn-group"
+            >
+               <option value="1">Yes</option>
+               <option value="0">No</option>
+            </field>
+            <field
+               showon="single_sendcopy_email:1"
+               name="singleSendCopyEmail_field"
+               default=""
+               type="text"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_EMAIL_FIELD" 
+               description=""
+            />
+            <field
+               showon="single_sendcopy_email:1"
+               name="singleSendCopyEmailField_title"
+               default=""
+               type="text"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_LABEL" 
+               description=""
+            />
+            <!-- For multiple email fields -->
+            <field
+               name="sendcopy_email"
+               type="radio"
+               label="MOD_JDSCF_SEND_COPY"
+               description="MOD_JDSCF_SEND_COPY_DESCRIPTION"
+               default="0"
+               class="btn-group"
+            >
+               <option value="1">Yes</option>
+               <option value="0">No</option>
+            </field>
+            <field
+               showon="sendcopy_email:1"
+               name="sendcopyemail_field"
+               default=""
+               type="text"
+               label="MOD_JDSCF_SEND_COPY_EMAIL_FIELD" 
+               description=""
+            />
+            <field
+               showon="sendcopy_email:1"
+               name="sendcopyemailfield_title"
+               default=""
+               type="text"
+               label="MOD_JDSCF_SEND_COPY_LABEL" 
+               description=""
+            />
+            
             <field
                name="email_template"
                type="radio"
@@ -145,36 +225,6 @@
                <option value="custom">JGLOBAL_CUSTOM</option>
             </field>
             <field
-               name="sendcopy_email"
-               type="radio"
-               label="MOD_JDSCF_SEND_COPY"
-               description="MOD_JDSCF_SEND_COPY_DESCRIPTION"
-               default="0"
-               class="btn-group"
-            >
-               <option value="1">Yes</option>
-               <option value="0">No</option>
-            </field>
-
-            <field
-               showon="sendcopy_email:1"
-               name="sendcopyemail_field"
-               default=""
-               type="text"
-               label="MOD_JDSCF_SEND_COPY_EMAIL_FIELD" 
-               description=""
-            />
-
-            <field
-               showon="sendcopy_email:1"
-               name="sendcopyemailfield_title"
-               default=""
-               type="text"
-               label="MOD_JDSCF_SEND_COPY_LABEL" 
-               description=""
-            />
-
-            <field
                showon="email_template:custom"
                name="email_custom"
                type="editor"
@@ -182,7 +232,7 @@
                description="MOD_JDSCF_EMAIL_CUSTOM_TEMPLATE_LBL"
                filter="safehtml"
                default=""
-            />
+            />            
          </fieldset>
          <fieldset name="advanced">
             <field

@@ -10,25 +10,29 @@ defined('_JEXEC') or die;
 extract($displayData);
 $attrs = [];
 if (isset($field->placeholder) && !empty($field->placeholder)) {
-   $attrs[] = 'placeholder="' . $field->placeholder . '"';
+    $attrs[] = 'placeholder="' . $field->placeholder . '"';
 }
 
 if (!empty($field->id)) {
-   $attrs[] = 'id="' . $field->id . '"';
+    $attrs[] = 'id="' . $field->id . '"';
 }
 
 if ($field->required) {
-   $attrs[] = 'required';
-   $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
+    $attrs[] = 'required';
+    if (!empty(trim($field->custom_error))) {
+        $attrs[] = 'data-parsley-required-message="' . JText::sprintf($field->custom_error) . '"';
+    } else {
+        $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
+    }
 }
 
 $document = JFactory::getDocument();
 $style = 'label.calendar_icon {'
-        . 'display: inherit;'
-        . 'cursor: pointer;'
-        . 'margin: 0px;'
-        . 'border-radius: 0;'
-        . '}';
+    . 'display: inherit;'
+    . 'cursor: pointer;'
+    . 'margin: 0px;'
+    . 'border-radius: 0;'
+    . '}';
 $document->addStyleDeclaration($style);
 ?>
 
@@ -45,17 +49,17 @@ $document->addStyleDeclaration($style);
 
 <?php
 $js = 'var jdscf_picker_' . $module->id . ' = new Pikaday({'
-        . 'field: document.getElementById("' . $field->id . '")';
+. 'field: document.getElementById("' . $field->id . '")';
 if (isset($field->calendar_min) && !empty($field->calendar_min) && $field->calendar_min != '0000-00-00 00:00:00') {
-   $js .= ',minDate: moment("' . $field->calendar_min . '").toDate()';
+    $js .= ',minDate: moment("' . $field->calendar_min . '").toDate()';
 }
 if (isset($field->calendar_max) && !empty($field->calendar_max) && $field->calendar_max != '0000-00-00 00:00:00') {
-   $js .= ',maxDate: moment("' . $field->calendar_max . '").toDate()';
+    $js .= ',maxDate: moment("' . $field->calendar_max . '").toDate()';
 }
 if (isset($field->calendar_format) && !empty($field->calendar_format)) {
-   $js .= ',format: "' . $field->calendar_format . '"';
+    $js .= ',format: "' . $field->calendar_format . '"';
 } else {
-   $js .= ',format: "MM-DD-YYYY"';
+    $js .= ',format: "MM-DD-YYYY"';
 }
 
 $js .= ',defaultDate: moment("' . date('Y-m-d') . '").toDate(),setDefaultDate:true';

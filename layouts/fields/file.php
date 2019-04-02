@@ -10,9 +10,13 @@ defined('_JEXEC') or die;
 extract($displayData);
 $attrs = [];
 if ($field->required) {
-   $attrs[] = 'required';
-   $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
-}
+    $attrs[] = 'required';
+    if (!empty(trim($field->custom_error))) {
+       $attrs[] = 'data-parsley-required-message="' . JText::sprintf($field->custom_error) . '"';
+    } else {
+       $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
+    }
+ }
 $attrs[] = 'id="' . $field->name . '-file-input"';
 //fetching allowed types
 $params = JComponentHelper::getParams('com_media');
@@ -27,7 +31,7 @@ $document->addStyleDeclaration($style);
 ?>
 <div class="custom-file">
    <input id="<?php echo $field->name; ?>-<?php echo $module->id; ?>" accept="<?php foreach ($allowable as $type) { echo ".".$type.","; } ?>" type="file" name="jdscf[<?php echo $field->name; ?>]" class="custom-file-input" <?php echo implode(' ', $attrs); ?>>
-   <label class="custom-file-label" for="<?php echo $field->name; ?>-file-input"><?php echo JText::_('MOD_JDSCF_FILE_BTN_LBL'); ?></label>
+   <label class="custom-file-label" for="<?php echo $field->name; ?>-<?php echo $module->id; ?>"><?php echo JText::_('MOD_JDSCF_FILE_BTN_LBL'); ?></label>
 </div>
 
 <div class="filesize-err filesize-error-<?php echo $field->name; ?>-<?php echo $module->id; ?> alert alert-danger alert-dismissable">
@@ -50,6 +54,11 @@ $js .= 'uploadField_' . $field->name .'.onchange = function() {';
 		$js .= 'jQuery(".filesize-error-' . $field->name . '-' . $module->id . '").show();';
 	$js .= '}';
 $js .= '};';
+
+$js .= 'jQuery("#' . $field->name . '-' .$module->id . '").on("change", function() {';
+    $js .= 'var fileName = jQuery(this).val().split("\\\").pop();';
+    $js .= 'jQuery(this).siblings(".custom-file-label").addClass("selected").html(fileName);';
+$js .= '});';
 
 ModJDSimpleContactFormHelper::addJS($js, $module->id);
 ?>

@@ -47,12 +47,16 @@ if ($field->type == 'text' || $field->type == 'number') {
 
 if ($field->required) {
    $attrs[] = 'required';
-   $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
+   if (!empty(trim($field->custom_error))) {
+      $attrs[] = 'data-parsley-required-message="' . JText::sprintf($field->custom_error) . '"';
+   } else {
+      $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
+   }
 }
 ?>
 <input type="text" name="jdscf[<?php echo $field->name; ?>][email]" class="form-control" <?php echo implode(' ', $attrs); ?> />
 <?php
-if($field->type == 'email' && $isCCMail){ ?>
+if($field->type == 'email' && $isCCMail) { ?>
    <label><input type="checkbox" name="jdscf[<?php echo $field->name; ?>][cc]" value="1" /> <?php echo JText::_($params->get('sendcopyemailfield_title', 'MOD_JDSCF_SEND_COPY_LBL_TITLE')); ?></label>
 <?php }
 ?>

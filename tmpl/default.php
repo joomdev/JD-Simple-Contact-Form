@@ -12,6 +12,8 @@ $description = $params->get('description', '');
 $session = JFactory::getSession();
 $message = $session->get('jdscf-message-' . $module->id, '');
 $captcha = $params->get('captcha', 0);
+//checking if single cc is enabled
+$single_cc_enable = ModJDSimpleContactFormHelper::isSingleCCMail($params);
 ?>
 <?php
 if (!empty($message)) {
@@ -24,53 +26,58 @@ if (!empty($message)) {
       <div class="simple-contact-form-loader module-<?php echo $module->id; ?> d-none">
          <div class="loading"></div>
       </div>
-      <?php if (!empty($title)) { ?>
-         <h5 class="card-title"><?php echo JText::_($title); ?></h5>
-      <?php } ?>
-      <?php if (!empty($description)) { ?>
-         <p class="card-subtitle mb-2 text-muted"><?php echo JText::_($description); ?></p>
-      <?php } ?>
+      <div class="jd-simple-contact-form-header">
+         <?php if (!empty($title)) { ?>
+            <h5 class="card-title"><?php echo JText::_($title); ?></h5>
+         <?php } ?>
+         <?php if (!empty($description)) { ?>
+            <p class="card-subtitle mb-2 text-muted"><?php echo JText::_($description); ?></p>
+         <?php } ?>
+      </div>
       <form method="POST" action="<?php echo JURI::root(); ?>index.php?option=com_ajax&module=jdsimplecontactform&format=json&method=submit" data-parsley-validate data-parsley-errors-wrapper="<ul class='text-danger list-unstyled mt-2 small'></ul>" data-parsley-error-class="border-danger" data-parsley-success-class="border-success" id="simple-contact-form-<?php echo $module->id; ?>" enctype="multipart/form-data">
          <div class="jdscf-row">
             <?php
-            ModJDSimpleContactFormHelper::renderForm($params, $module);
-            ?>
-         </div>
+               ModJDSimpleContactFormHelper::renderForm($params, $module);
 
-         <?php
-         if ($captcha) {
-            JPluginHelper::importPlugin('captcha');
-            $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
-            $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha');
-            if (!empty($plugin)) {
-               $plugin_params = new JRegistry($plugin->params);
-               $attributes = [];
-               $attributes['data-theme'] = $plugin_params->get('theme2', '');
-               $attributes['data-size'] = $plugin_params->get('size', '');
-               $attributeArray = [];
-               foreach ($attributes as $attributeKey => $attributeValue) {
-                  $attributeArray[] = $attributeKey . '="' . $attributeValue . '"';
-               }
-               ?>
-               <div class="jdscf-row">
-                  <div class="jdscf-col">
-                     <div class="form-group">
-                        <div id="jdscf_recaptcha_<?php echo $module->id; ?>" class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>" <?php echo implode(' ', $attributeArray); ?>></div>
+               if ($captcha) {
+                  JPluginHelper::importPlugin('captcha');
+                  $dispatcher = JEventDispatcher::getInstance();
+                  $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
+                  $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha');
+                  if (!empty($plugin)) {
+                     $plugin_params = new JRegistry($plugin->params);
+                     $attributes = [];
+                     $attributes['data-theme'] = $plugin_params->get('theme2', '');
+                     $attributes['data-size'] = $plugin_params->get('size', '');
+                     $attributeArray = [];
+                     foreach ($attributes as $attributeKey => $attributeValue) {
+                        $attributeArray[] = $attributeKey . '="' . $attributeValue . '"';
+                     }
+                     ?>
+                     <div class="jdscf-col-md-12">
+                        <div class="form-group">
+                           <div id="jdscf_recaptcha_<?php echo $module->id; ?>" class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>" <?php echo implode(' ', $attributeArray); ?>></div>
+                        </div>
                      </div>
-                  </div>
-               </div>
-               <?php
-            }
-         }
-         ?>
+                     <?php
+                  }
+               }               
+            ?>
+            
+            <?php
+               if($single_cc_enable) {
+                  $singleCC = new JLayoutFile('fields.singlecc', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
+                  echo $singleCC->render(['params' => $params]);
+               } 
+            ?>
 
-         <div class="jdscf-row">
             <?php
                $submit = new JLayoutFile('fields.submit', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
                echo $submit->render(['params' => $params]);
             ?>
+
          </div>
+         
          <input type="hidden" name="returnurl" value="<?php echo urlencode(JUri::getInstance()); ?>"/>
          <input type="hidden" name="id" value="<?php echo $module->id; ?>" />
          <?php echo JHtml::_('form.token'); ?>
@@ -118,7 +125,6 @@ if (!empty($message)) {
                         contentType: false,
                         processData: false,
                         success: function (response) {
-
                            if (response.status == 'success') {
                               $('.jd-simple-contact-message-<?php echo $module->id; ?>').html(response.data.message);
                               _loading.addClass('d-none');
@@ -128,8 +134,13 @@ if (!empty($message)) {
                                  }, 2000);
                               }
                            } else {
-                              _loading.addClass('d-none');
-                              showMessage<?php echo $module->id; ?>("error", "<?php echo JText::_("MOD_JDSCF_AJAX_ERROR_ON_SUBMIT")  ?>");
+                              var errors = JSON.parse(response.message);
+                              _loading.addClass('d-none');                              
+
+                              for (index = 0; index < errors.length; ++index) {
+                                 showMessage<?php echo $module->id; ?>("error", errors[index]);
+                              }
+
                            }
                         },
                         error: function (response) {

@@ -48,6 +48,13 @@
          <option value="0">JNO</option>
       </field>
       <field
+         showon="required:1"
+         name="custom_error"
+         type="text"
+         label="MOD_JDSCF_CUSTOM_ERROR_LBL"
+         description="MOD_JDSCF_CUSTOM_ERROR_DESC"
+      />
+      <field
          name="show_label"
          type="radio"
          label="MOD_JDSCF_SHOW_LABEL_LBL"
