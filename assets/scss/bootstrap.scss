@@ -1,0 +1,62 @@
+.jd-simple-contact-form{
+   @import "functions";
+   @import "variables";
+   @import "mixins";
+   position: relative;
+   &,&::before,&::after {
+      box-sizing: border-box;
+   }
+   @include make-container();
+   // @import "root";
+   // @import "reboot";
+   // @import "type";
+   // @import "images";
+   // @import "code";
+   @import "grid";
+   // @import "tables";
+   @import "forms";
+   // @import "buttons";
+   // @import "transitions";
+   // @import "dropdown";
+   // @import "button-group";
+   // @import "input-group";
+   // @import "custom-forms";
+   // @import "nav";
+   // @import "navbar";
+   // @import "card";
+   // @import "breadcrumb";
+   // @import "pagination";
+   // @import "badge";
+   // @import "jumbotron";
+   @import "alert";
+   // @import "progress";
+   // @import "media";
+   // @import "list-group";
+   // @import "close";
+   // @import "modal";
+   // @import "tooltip";
+   // @import "popover";
+   // @import "carousel";
+   @import "utilities";
+   //@import "calendar";
+   // @import "print";
+   .simple-contact-form-loader{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.6);
+      z-index: 1;
+      display: flex;
+      border-radius: $card-border-radius;
+      .loading{
+         margin: auto;
+         @include loading-variant(2rem, $primary, .5s, 2px);
+      }
+   }
+   .list-unstyled {
+      margin: 0;
+      @include list-unstyled;
+   }
+}
