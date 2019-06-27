@@ -1,0 +1,95 @@
+// Toggles
+//
+// Used in conjunction with global variables to enable certain theme features.
+
+// Utilities
+@import "mixins/breakpoints";
+@import "mixins/hover";
+@import "mixins/image";
+@import "mixins/badge";
+@import "mixins/resize";
+@import "mixins/screen-reader";
+@import "mixins/size";
+@import "mixins/reset-text";
+@import "mixins/text-emphasis";
+@import "mixins/text-hide";
+@import "mixins/text-truncate";
+@import "mixins/visibility";
+
+// // Components
+@import "mixins/alert";
+@import "mixins/buttons";
+@import "mixins/caret";
+@import "mixins/pagination";
+@import "mixins/lists";
+@import "mixins/list-group";
+@import "mixins/nav-divider";
+@import "mixins/forms";
+@import "mixins/table-row";
+
+// // Skins
+@import "mixins/background-variant";
+@import "mixins/border-radius";
+@import "mixins/box-shadow";
+@import "mixins/gradients";
+@import "mixins/transition";
+
+// // Layout
+@import "mixins/clearfix";
+@import "mixins/grid-framework";
+@import "mixins/grid";
+@import "mixins/float";
+
+@mixin loading-variant ($size, $color, $speed, $border) {
+   display: block;
+   position: relative;
+   height: $size;
+   width: $size;
+   color: $color;
+   &:before{
+      border-radius: 50%;
+      border: $border solid currentColor;
+      opacity: .15;
+   }
+   &:after{
+      -webkit-animation: loader $speed linear;
+      animation: loader $speed linear;
+      -webkit-animation-iteration-count: infinite;
+      animation-iteration-count: infinite;
+      border-radius: 50%;
+      border: $border solid;
+      border-color: transparent;
+      border-top-color: currentColor;
+      box-shadow: 0 0 0 1px transparent;
+   }
+   &:before, &:after{
+      width: $size;
+      height: $size;
+      margin: -($size/2) 0 0 -($size/2);
+      position: absolute;
+      content: '';
+      top: 50%;
+      left: 50%;
+   }
+}
+@-webkit-keyframes loader {
+   from {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+   }
+   to {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+   }
+}
+
+@keyframes loader {
+   from {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+   }
+   to {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+   }
+}

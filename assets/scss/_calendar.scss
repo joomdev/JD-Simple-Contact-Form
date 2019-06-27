@@ -1,0 +1,231 @@
+$color_1: black;
+$color_2: white;
+$color_3: gray;
+$font_family_1: sans-serif;
+$border_color_1: gray;
+$border_right_color_1: black;
+$border_right_color_2: gray;
+$border_left_color_1: black;
+$border_left_color_2: gray;
+
+$calendar-width: 250px;
+$calendar-border-width: 1px;
+$calendar-transition: .3s;
+$calendar-font-size: 14;
+
+.jdscfdp-datepicker {
+   color: $color_1;
+   position: absolute;
+   width: $calendar-width;
+   display: flex;
+   flex-direction: column;
+   font-family: $font_family_1;
+   font-size: $calendar-font-size;
+   z-index: 9001;
+   user-select: none;
+   border: $calendar-border-width solid #dcdcdc;
+   overflow: hidden;
+   background: white;
+   box-shadow: 0 20px 20px -15px rgba(0, 0, 0, 0.3);
+   * {
+      box-sizing: border-box;
+   }
+   .jdscfdp-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.75);
+      color: $color_2;
+      width: 100%;
+      height: 100%;
+      padding: .5em;
+      z-index: 1;
+      opacity: 1;
+      transition: opacity $calendar-transition;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .jdscfdp-close {
+         align-self: flex-end;
+         display: inline-table;
+         padding: .5em;
+         line-height: .77;
+         cursor: pointer;
+         position: absolute;
+      }
+      .jdscfdp-overlay-year {
+         display: block;
+         border: none;
+         background: transparent;
+         border-bottom: $calendar-border-width solid white;
+         border-radius: 0;
+         color: $color_2;
+         font-size: $calendar-font-size;
+         padding: .25em 0;
+         margin: auto 0 .5em;
+         width: calc(100% - 1em);
+         &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+         }
+         box-shadow: none !important;
+         outline: none !important;
+      }
+      .jdscfdp-submit {
+         border: $calendar-border-width solid white;
+         padding: .5em;
+         margin: 0 auto auto;
+         cursor: pointer;
+         background: rgba(128, 128, 128, 0.4);
+      }
+      .jdscfdp-submit.jdscfdp-disabled {
+         color: $color_3;
+         border-color: $border_color_1;
+         cursor: not-allowed;
+      }
+   }
+   .jdscfdp-overlay.jdscfdp-hidden {
+      opacity: 0;
+      z-index: -1;
+   }
+   .jdscfdp-controls {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-grow: 1;
+      flex-shrink: 0;
+      background: lightgray;
+      filter: blur(0px);
+      transition: filter $calendar-transition;
+   }
+   .jdscfdp-controls.jdscfdp-blur {
+      filter: blur(5px);
+   }
+   .jdscfdp-arrow {
+      height: 35px;
+      width: 30px;
+      position: relative;
+      cursor: pointer;
+      transition: background .15s;
+      &:hover {
+         background: rgba(0, 0, 0, 0.1);
+      }
+      &:hover.jdscfdp-left {
+         &:after {
+            border-right-color: $border_right_color_1;
+         }
+      }
+      &:hover.jdscfdp-right {
+         &:after {
+            border-left-color: $border_left_color_1;
+         }
+      }
+      &:after {
+         content: '';
+         border: 6.25px solid transparent;
+         position: absolute;
+         top: 50%;
+         transition: border .2s;
+      }
+   }
+   .jdscfdp-arrow.jdscfdp-left {
+      &:after {
+         border-right-color: $border_right_color_2;
+         right: 50%;
+         transform: translate(25%, -50%);
+      }
+   }
+   .jdscfdp-arrow.jdscfdp-right {
+      &:after {
+         border-left-color: $border_left_color_2;
+         left: 50%;
+         transform: translate(-25%, -50%);
+      }
+   }
+   .jdscfdp-month-year {
+      font-weight: bold;
+      transition: border .2s;
+      border-bottom: $calendar-border-width solid transparent;
+      cursor: pointer;
+      &:hover {
+         border-bottom: $calendar-border-width solid gray;
+      }
+      &:focus {
+         outline: none;
+      }
+      &:active {
+         &:focus {
+            outline: none;
+         }
+      }
+   }
+   .jdscfdp-month {
+      padding-right: .5ex;
+   }
+   .jdscfdp-year {
+      padding-left: .5ex;
+   }
+   .jdscfdp-squares {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 5px;
+      filter: blur(0px);
+      transition: filter $calendar-transition;
+   }
+   .jdscfdp-squares.jdscfdp-blur {
+      filter: blur(5px);
+   }
+   .jdscfdp-square {
+      width: 14.285714285714286%;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .1s;
+      &:not(.jdscfdp-empty) {
+         &:not(.jdscfdp-disabled) {
+            &:not(.jdscfdp-day) {
+               &:not(.jdscfdp-active) {
+                  &:hover {
+                     background: #007bff;
+                     color: #fff;
+                  }
+               }
+            }
+         }
+      }
+   }
+   .jdscfdp-square.jdscfdp-current {
+      font-weight: bold;
+      background: #d1e7ff;
+   }
+   .jdscfdp-square.jdscfdp-active {
+      background: #00c7e6;
+      color: #fff;
+   }
+   .jdscfdp-square.jdscfdp-disabled {
+      span {
+         opacity: .2;
+      }
+      cursor: not-allowed;
+   }
+   .jdscfdp-square.jdscfdp-empty {
+      cursor: default;
+   }
+   .jdscfdp-square.jdscfdp-day {
+      cursor: default;
+      color: #000;
+      text-transform: uppercase;
+      font-size: 11px;
+   }
+}
+.jdscfdp-datepicker.jdscfdp-centered {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+.jdscfdp-datepicker.jdscfdp-hidden {
+   display: none;
+}
