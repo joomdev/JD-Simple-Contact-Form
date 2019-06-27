@@ -93,9 +93,11 @@ class ModJDSimpleContactFormHelper {
       $values = [];
       foreach ($jdscf as $name => $value) {
          if(is_array($value)) {
+
+            // Type email values
             if(isset($value['email'])) {
                $values[$name] = $value['email'];
-               //multiple cc
+               // Multiple cc
                if(isset($value['cc']) && $value['cc'] == 1) {
                   $cc_emails[] = $value['email'];
                }
@@ -104,6 +106,16 @@ class ModJDSimpleContactFormHelper {
                   $cc_emails[] = $value['email'];
                }
             }
+			
+            // Type text values
+            ( isset($value['text']) ? $values[$name] = $value['text'] : '');
+            
+            // Type number values
+            ( isset($value['number']) ? $values[$name] = $value['number'] : '');
+
+            // Type url values
+            ( isset($value['url']) ? $values[$name] = $value['url'] : '');
+
          } else {
             $values[$name] = $value;
          }
@@ -114,9 +126,8 @@ class ModJDSimpleContactFormHelper {
       $errors = [];
       foreach ($labels as $name => $fld) {
          $value = isset($values[$name]) ? $values[$name] : '';
-         
-         if ($fld['type'] == 'checkboxes') {
-             
+
+         if ($fld['type'] == 'checkboxes') {             
             $value = $_POST['jdscf'][$name]['cbs'];
             
             if (is_array($value)) {
@@ -124,8 +135,7 @@ class ModJDSimpleContactFormHelper {
             } else {
                $value = $value;
             }
-         }
-        
+         }        
          if ($fld['type'] == 'checkbox') {
             if (isset($_POST['jdscf'][$name]['cb'])){
                $value = $_POST['jdscf'][$name]['cb'];

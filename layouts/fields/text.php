@@ -10,6 +10,9 @@ defined('_JEXEC') or die;
 extract($displayData);
 $attrs = [];
 switch ($field->type) {
+   case 'text':
+      $attrs[] = 'data-parsley-type="text"';
+      break;
    case 'email':
       $attrs[] = 'data-parsley-type="email"';
       $isCCMail = ModJDSimpleContactFormHelper::isCCMail($field, $params);
@@ -54,7 +57,7 @@ if ($field->required) {
    }
 }
 ?>
-<input type="text" name="jdscf[<?php echo $field->name; ?>][email]" class="form-control" <?php echo implode(' ', $attrs); ?> />
+<input type="text" name="jdscf[<?php echo $field->name; ?>][<?php echo $field->type; ?>]" class="form-control" <?php echo implode(' ', $attrs); ?> />
 <?php
 if($field->type == 'email' && $isCCMail) { ?>
    <label><input type="checkbox" name="jdscf[<?php echo $field->name; ?>][cc]" value="1" /> <?php echo JText::_($params->get('sendcopyemailfield_title', 'MOD_JDSCF_SEND_COPY_LBL_TITLE')); ?></label>
