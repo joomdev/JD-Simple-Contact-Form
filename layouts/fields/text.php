@@ -10,9 +10,6 @@ defined('_JEXEC') or die;
 extract($displayData);
 $attrs = [];
 switch ($field->type) {
-   case 'text':
-      $attrs[] = 'data-parsley-type="text"';
-      break;
    case 'email':
       $attrs[] = 'data-parsley-type="email"';
       $isCCMail = ModJDSimpleContactFormHelper::isCCMail($field, $params);
