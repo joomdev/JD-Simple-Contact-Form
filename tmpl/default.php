@@ -125,6 +125,7 @@ if (!empty($message)) {
                         contentType: false,
                         processData: false,
                         success: function (response) {
+                           
                            if (response.status == 'success') {
                               $('.jd-simple-contact-message-<?php echo $module->id; ?>').html(response.data.message);
                               _loading.addClass('d-none');
@@ -134,13 +135,22 @@ if (!empty($message)) {
                                  }, 2000);
                               }
                            } else {
-                              var errors = JSON.parse(response.message);
-                              _loading.addClass('d-none');                              
+                              
+                              _loading.addClass('d-none');
 
-                              for (index = 0; index < errors.length; ++index) {
-                                 showMessage<?php echo $module->id; ?>("error", errors[index]);
+                              if(typeof response.message == "string") 
+                              { 
+                                 showMessage<?php echo $module->id; ?>("error", response.message);
+                              } 
+                              else 
+                              { 
+                                 var errors = JSON.parse(response.message);
+                              
+
+                                 for (index = 0; index < errors.length; ++index) {
+                                    showMessage<?php echo $module->id; ?>("error", errors[index]);
+                                 }
                               }
-
                            }
                         },
                         error: function (response) {
