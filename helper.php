@@ -108,13 +108,13 @@ class ModJDSimpleContactFormHelper {
             }
 			
             // Type text values
-            ( isset($value['text']) ? $values[$name] = $value['text'] : '');
+            ( isset($value['text'] ) ? $values[$name] = $value['text'] : '');
             
             // Type number values
-            ( isset($value['number']) ? $values[$name] = $value['number'] : '');
+            ( isset($value['number'] ) ? $values[$name] = $value['number'] : '');
 
             // Type url values
-            ( isset($value['url']) ? $values[$name] = $value['url'] : '');
+            ( isset($value['url'] ) ? $values[$name] = $value['url'] : '');
 
          } else {
             $values[$name] = $value;
@@ -175,6 +175,26 @@ class ModJDSimpleContactFormHelper {
              "name" => $name,
          ];
       }
+
+      // Fetches IP Address of Client
+      if ( $params->get('ip_info' ) ) {
+         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ipAddress = $_SERVER['HTTP_CLIENT_IP'];
+         }
+         elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ipAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+         }
+         else {
+            $ipAddress = $_SERVER['REMOTE_ADDR'];
+         }
+
+         $contents[] = array( 
+            "value" => "<a href='http://whois.domaintools.com/$ipAddress'>$ipAddress</a>",  
+            "label" => "IP Address", 
+            "name" => "ip"
+         );
+      }
+
       if ($params->get('email_template', '') == 'custom') {
          $html = $params->get('email_custom', '');
          $html = self::renderVariables($contents, $html);
