@@ -113,7 +113,7 @@
               name="ip_info"
               type="radio"
               label="MOD_JDSCF_IPADDR_LBL"
-              description="MOD_JDSCF_IPADDR_LBL"
+              description="MOD_JDSCF_IPADDR_DESC"
               class="btn-group btn-group-yesno"
               default="0">
               <option value="1">JYES</option>
