@@ -24,7 +24,7 @@ class ModJDSimpleContactFormHelper {
       $field_layout = self::getFieldLayout($field->type);
       $input = new JLayoutFile('fields.' . $field_layout, JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
       $layout = new JLayoutFile('field', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
-      if ($field->type == 'checkbox') {
+      if ($field->type == 'checkbox' || $field->type == 'hidden') {
          $field->show_label = 0;
       }
       echo $layout->render(['field' => $field, 'label' => $label->render(['field' => $field]), 'input' => $input->render(['field' => $field, 'label' => self::getLabelText($field), 'module' => $module, 'params' => $params]), 'module' => $module]);
@@ -115,6 +115,9 @@ class ModJDSimpleContactFormHelper {
 
             // Type url values
             ( isset($value['url'] ) ? $values[$name] = $value['url'] : '');
+
+            // Type Hidden Value
+            ( isset($value['hidden'] ) ? $values[$name] = $value['hidden'] : '');
 
          } else {
             $values[$name] = $value;
@@ -284,7 +287,7 @@ class ModJDSimpleContactFormHelper {
       if(!empty($errors)) {
          $app = JFactory::getApplication();
          $send = false;
-         //showing all the validation errors
+         // showing all the validation errors
          foreach ($errors as $error) {
             $app->enqueueMessage(\JText::_($error), 'error');
          }
