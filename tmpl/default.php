@@ -21,6 +21,9 @@ if (!empty($message)) {
    $session->set('jdscf-message-' . $module->id, '');
 } else {
    ?>
+   <div class="cookie-notice alert alert-info" role="alert">
+      Your browser has cookies disabled. Make sure that your cookies are enabled and try again. <u><a href="https://support.google.com/accounts/answer/61416?hl=en-GB">Learn More</a></u>
+   </div>
    <div class="jd-simple-contact-form jd-simple-contact-message-<?php echo $module->id; ?> <?php echo $moduleclass_sfx; ?>">
       <div id="jdscf-message-<?php echo $module->id; ?>"></div>
       <div class="simple-contact-form-loader module-<?php echo $module->id; ?> d-none">
@@ -161,6 +164,20 @@ if (!empty($message)) {
                   }
                });
             });
+
+            // Checking for 🍪s
+            function checkCookie() {
+               var cookieEnabled = navigator.cookieEnabled;
+               if ( !cookieEnabled ) {
+                  document.cookie = "cookieforjdscf";
+                  cookieEnabled = document.cookie.indexOf("cookieforjdscf") != -1;
+               }
+               if ( cookieEnabled == false ) {
+                  $('.cookie-notice').show();
+               }
+            }
+            checkCookie();
+
          })(jQuery_3_3_1);
       </script>
    <?php } ?>
