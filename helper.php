@@ -130,8 +130,10 @@ class ModJDSimpleContactFormHelper {
       foreach ($labels as $name => $fld) {
          $value = isset($values[$name]) ? $values[$name] : '';
 
-         if ($fld['type'] == 'checkboxes') {             
-            $value = $_POST['jdscf'][$name]['cbs'];
+         if ($fld['type'] == 'checkboxes') {
+            if ( isset ($_POST['jdscf'][$name]['cbs'] ) ) {
+               $value = $_POST['jdscf'][$name]['cbs'];
+            }
             
             if (is_array($value)) {
                $value = implode(', ', $value);
