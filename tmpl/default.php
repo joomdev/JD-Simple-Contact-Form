@@ -44,12 +44,13 @@ if (!empty($message)) {
 
                if ($captcha) {
                   $captchaType = JFactory::getConfig()->get('captcha');
-
+                  JPluginHelper::importPlugin('captcha', $captchaType);
+                  $dispatcher = JEventDispatcher::getInstance();
+                  $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
+                  $plugin = JPluginHelper::getPlugin('captcha', $captchaType);
+                  
                   if ( $captchaType == "recaptcha" ) {
-                     JPluginHelper::importPlugin('captcha', 'recaptcha');
-                     $dispatcher = JEventDispatcher::getInstance();
-                     $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
-                     $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha');
+                     // Recaptcha: I am not a robot
                      if (!empty($plugin)) {
                         $plugin_params = new JRegistry($plugin->params);
                         $attributes = [];
@@ -68,21 +69,11 @@ if (!empty($message)) {
                         <?php
                      }
                   } elseif ( $captchaType == "recaptcha_invisible" ) {
-                     JPluginHelper::importPlugin('captcha', 'recaptcha_invisible');
-                     $dispatcher = JEventDispatcher::getInstance();
-                     $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
-                     $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha_invisible');
+                     // Invisible recaptcha
                      if (!empty($plugin)) {
                         $plugin_params = new JRegistry($plugin->params);
-                        $attributes = [];
-                        $attributes['data-theme'] = $plugin_params->get('theme2', '');
-                        $attributes['data-size'] = $plugin_params->get('size', '');
-                        $attributeArray = [];
-                        foreach ($attributes as $attributeKey => $attributeValue) {
-                           $attributeArray[] = $attributeKey . '="' . $attributeValue . '"';
-                        }
                      ?>
-                           <div id='recaptcha' class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>"  data-size="invisible"></div>
+                        <div id='recaptcha' class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>"  data-size="invisible"></div>
                      <?php
                      }
                   } 
