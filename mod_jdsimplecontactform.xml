@@ -175,16 +175,16 @@
                default="0"
                class="btn-group"
             >
-               <option value="1">Yes</option>
-               <option value="0">No</option>
+               <option value="1">JYES</option>
+               <option value="0">JNO</option>
             </field>
             <field
                showon="single_sendcopy_email:1"
                name="singleSendCopyEmail_field"
                default=""
                type="text"
-               label="MOD_JDSCF_SINGLE_SEND_COPY_EMAIL_FIELD" 
-               description=""
+               label="MOD_JDSCF_SINGLE_SEND_COPY_EMAIL_FIELD_LABEL" 
+               description="MOD_JDSCF_SINGLE_SEND_COPY_EMAIL_FIELD_DESC"
             />
             <field
                showon="single_sendcopy_email:1"
@@ -192,7 +192,7 @@
                default=""
                type="text"
                label="MOD_JDSCF_SINGLE_SEND_COPY_LABEL" 
-               description=""
+               description="MOD_JDSCF_SINGLE_SEND_COPY_DESC"
             />
             <!-- For multiple email fields -->
             <field
@@ -203,16 +203,16 @@
                default="0"
                class="btn-group"
             >
-               <option value="1">Yes</option>
-               <option value="0">No</option>
+               <option value="1">JYES</option>
+               <option value="0">JNO</option>
             </field>
             <field
                showon="sendcopy_email:1"
                name="sendcopyemail_field"
                default=""
                type="text"
-               label="MOD_JDSCF_SEND_COPY_EMAIL_FIELD" 
-               description=""
+               label="MOD_JDSCF_SEND_COPY_EMAIL_FIELD_LABEL" 
+               description="MOD_JDSCF_SEND_COPY_EMAIL_FIELD_DESC"
             />
             <field
                showon="sendcopy_email:1"
@@ -220,7 +220,7 @@
                default=""
                type="text"
                label="MOD_JDSCF_SEND_COPY_LABEL" 
-               description=""
+               description="MOD_JDSCF_SEND_COPY_DESC"
             />
             
             <field
