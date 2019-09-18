@@ -43,7 +43,7 @@ if (!empty($message)) {
                ModJDSimpleContactFormHelper::renderForm($params, $module);
 
                if ($captcha) {
-                  JPluginHelper::importPlugin('captcha');
+                  JPluginHelper::importPlugin('captcha', 'recaptcha');
                   $dispatcher = JEventDispatcher::getInstance();
                   $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
                   $plugin = JPluginHelper::getPlugin('captcha', 'recaptcha');
