@@ -76,11 +76,23 @@ class ModJDSimpleContactFormHelper {
       $params = self::getModuleParams();
 
       if ($params->get('captcha', 0)) {
-         JPluginHelper::importPlugin('captcha', 'recaptcha');
-         $dispatcher = JEventDispatcher::getInstance();
-         $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('recaptcha_response_field'));
-         if (!$check_captcha[0]) {
-            throw new \Exception(JText::_('Invalid Captcha'), 0);
+
+         $captchaType = JFactory::getApplication()->get('captcha');
+
+         if ( $captchaType == "recaptcha" ) {
+            JPluginHelper::importPlugin('captcha', 'recaptcha');
+            $dispatcher = JEventDispatcher::getInstance();
+            $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('recaptcha_response_field'));
+            if (!$check_captcha[0]) {
+               throw new \Exception(JText::_('Invalid Captcha'), 0);
+            }
+         } elseif ( $captchaType == "recaptcha_invisible" ) {
+            JPluginHelper::importPlugin('captcha', 'recaptcha_invisible');
+            $dispatcher = JEventDispatcher::getInstance();
+            $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('g-recaptcha-response'));
+            if (!$check_captcha[0]) {
+               throw new \Exception(JText::_('Invalid Captcha'), 0);
+            }
          }
       }
 
