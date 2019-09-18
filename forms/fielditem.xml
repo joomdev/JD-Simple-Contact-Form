@@ -46,7 +46,7 @@
          description="MOD_JDSCF_VALUE_DESC"
       />
       <field
-         showon="!type:hidden"
+         showon="type!:hidden"
          name="required"
          type="radio"
          label="MOD_JDSCF_REQUIRED_LBL"
@@ -65,7 +65,7 @@
          description="MOD_JDSCF_CUSTOM_ERROR_DESC"
       />
       <field
-         showon="!type:hidden"
+         showon="type!:hidden"
          name="show_label"
          type="radio"
          label="MOD_JDSCF_SHOW_LABEL_LBL"
@@ -84,7 +84,7 @@
          description="MOD_JDSCF_OPTIONS_DESC"
       />
       <field
-         showon="!type:hidden"
+         showon="type!:hidden"
          name="width"
          type="list"
          label="MOD_JDSCF_WIDTH_LBL"
