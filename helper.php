@@ -200,7 +200,12 @@ class ModJDSimpleContactFormHelper {
 
       if ($params->get('email_template', '') == 'custom') {
          $html = $params->get('email_custom', '');
-         $html = self::renderVariables($contents, $html);
+         if ( empty( $html ) ) {
+            $layout = new JLayoutFile('emails.default', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
+            $html = $layout->render(['contents' => $contents]);
+         } else {
+            $html = self::renderVariables($contents, $html);  
+         }
       } else {
          $layout = new JLayoutFile('emails.default', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
          $html = $layout->render(['contents' => $contents]);
