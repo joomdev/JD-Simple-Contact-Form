@@ -59,11 +59,11 @@
       margin: 0;
       @include list-unstyled;
    }
-}
-.cookie-notice {
-   display: none;
-}
-.form-group {
-   z-index: 9;
-   position: relative;
+   .cookie-notice {
+      display: none;
+   }
+   .form-group {
+      z-index: 9;
+      position: relative;
+   }
 }
