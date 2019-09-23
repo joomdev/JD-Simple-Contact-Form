@@ -60,3 +60,8 @@
       @include list-unstyled;
    }
 }
+
+.form-group {
+   z-index: 9;
+   position: relative;
+}
