@@ -12,6 +12,6 @@ $singleCCName = $params->get('singleSendCopyEmail_field', '');
 $singleCCTitle = $params->get('singleSendCopyEmailField_title', 'MOD_JDSCF_SINGLE_SEND_COPY_LBL_TITLE');
 ?>
 <div class="form-group form-check">
-    <label class="form-check-label"><input type="checkbox" name="jdscf[<?php echo $singleCCName; ?>][single_cc]" value="1" /> 
+    <input id="<?php echo $singleCCName; ?>" type="checkbox" name="jdscf[<?php echo $singleCCName; ?>][single_cc]" value="1" />
+    <label for="<?php echo $singleCCName; ?>" class="form-check-label"><?php echo JText::_($singleCCTitle); ?></label>
 </div>
-<?php echo JText::_($singleCCTitle); ?></label>
