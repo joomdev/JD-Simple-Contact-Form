@@ -151,17 +151,18 @@ if (!empty($message)) {
                                  }, 2000);
                               }
                            } else {
-                              
                               _loading.addClass('d-none');
-
-                              if(typeof response.message == "string") 
-                              { 
-                                 showMessage<?php echo $module->id; ?>("error", response.message);
-                              } 
-                              else 
-                              { 
-                                 var errors = JSON.parse(response.message);
                               
+                              if ( response.message == "[]" ) {
+                                 showMessage<?php echo $module->id; ?>("error", "<?php echo JText::_("MOD_JDSCF_UNSUPPORTED_MAIL_CLIENT_ERROR"); ?>");
+                              }
+                              else if(typeof response.message == "string") 
+                              {
+                                 showMessage<?php echo $module->id; ?>("error", response.message);
+                              }
+                              else 
+                              {
+                                 var errors = JSON.parse(response.message);
 
                                  for (index = 0; index < errors.length; ++index) {
                                     showMessage<?php echo $module->id; ?>("error", errors[index]);
