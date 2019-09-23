@@ -22,7 +22,7 @@ if (!empty($message)) {
 } else {
    ?>
    <div class="cookie-notice alert alert-info" role="alert">
-      Your browser has cookies disabled. Make sure that your cookies are enabled and try again. <u><a href="https://support.google.com/accounts/answer/61416?hl=en-GB">Learn More</a></u>
+      <?php echo JText::_("MOD_JDSCF_NOTICE_ON_COOKIES_DISABLED"); ?>
    </div>
    <div class="jd-simple-contact-form jd-simple-contact-message-<?php echo $module->id; ?> <?php echo $moduleclass_sfx; ?>">
       <div id="jdscf-message-<?php echo $module->id; ?>"></div>
