@@ -166,7 +166,7 @@
                label="MOD_JDSCF_EMAIL_BCC_LBL"
                description="MOD_JDSCF_EMAIL_BCC_DESC"
             />
-            <!-- For single email fields -->
+            <!-- For Send Copy Checkbox -->
             <field
                name="single_sendcopy_email"
                type="radio"
@@ -193,36 +193,8 @@
                type="text"
                label="MOD_JDSCF_SINGLE_SEND_COPY_LABEL" 
                description="MOD_JDSCF_SINGLE_SEND_COPY_DESC"
-            />
-            <!-- For multiple email fields -->
-            <field
-               name="sendcopy_email"
-               type="radio"
-               label="MOD_JDSCF_SEND_COPY"
-               description="MOD_JDSCF_SEND_COPY_DESCRIPTION"
-               default="0"
-               class="btn-group"
-            >
-               <option value="1">JYES</option>
-               <option value="0">JNO</option>
-            </field>
-            <field
-               showon="sendcopy_email:1"
-               name="sendcopyemail_field"
-               default=""
-               type="text"
-               label="MOD_JDSCF_SEND_COPY_EMAIL_FIELD_LABEL" 
-               description="MOD_JDSCF_SEND_COPY_EMAIL_FIELD_DESC"
-            />
-            <field
-               showon="sendcopy_email:1"
-               name="sendcopyemailfield_title"
-               default=""
-               type="text"
-               label="MOD_JDSCF_SEND_COPY_LABEL" 
-               description="MOD_JDSCF_SEND_COPY_DESC"
-            />
-            
+            />            
+            <!-- Custom Email Template -->
             <field
                name="email_template"
                type="radio"
