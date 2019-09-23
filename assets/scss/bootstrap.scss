@@ -47,7 +47,7 @@
       width: 100%;
       height: 100%;
       background: rgba(255,255,255,0.6);
-      z-index: 1;
+      z-index: 9;
       display: flex;
       border-radius: $card-border-radius;
       .loading{
@@ -60,7 +60,9 @@
       @include list-unstyled;
    }
 }
-
+.cookie-notice {
+   display: none;
+}
 .form-group {
    z-index: 9;
    position: relative;
