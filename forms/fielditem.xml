@@ -47,6 +47,18 @@
       />
       <field
          showon="type!:hidden"
+         name="show_label"
+         type="radio"
+         label="MOD_JDSCF_SHOW_LABEL_LBL"
+         description="MOD_JDSCF_SHOW_LABEL_DESC"
+         class="btn-group btn-group-yesno"
+         default="1"
+      >
+         <option value="1">JYES</option>
+         <option value="0">JNO</option>
+      </field>
+      <field
+         showon="type!:hidden"
          name="required"
          type="radio"
          label="MOD_JDSCF_REQUIRED_LBL"
@@ -64,18 +76,6 @@
          label="MOD_JDSCF_CUSTOM_ERROR_LBL"
          description="MOD_JDSCF_CUSTOM_ERROR_DESC"
       />
-      <field
-         showon="type!:hidden"
-         name="show_label"
-         type="radio"
-         label="MOD_JDSCF_SHOW_LABEL_LBL"
-         description="MOD_JDSCF_SHOW_LABEL_DESC"
-         class="btn-group btn-group-yesno"
-         default="1"
-      >
-         <option value="1">JYES</option>
-         <option value="0">JNO</option>
-      </field>
       <field
          showon="type:list[OR]type:radio[OR]type:checkboxes"
          name="options"
