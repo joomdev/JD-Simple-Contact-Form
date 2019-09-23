@@ -21,10 +21,10 @@ if (!empty($message)) {
    $session->set('jdscf-message-' . $module->id, '');
 } else {
    ?>
-   <div class="cookie-notice alert alert-info" role="alert">
-      <?php echo JText::_("MOD_JDSCF_NOTICE_ON_COOKIES_DISABLED"); ?>
-   </div>
    <div class="jd-simple-contact-form jd-simple-contact-message-<?php echo $module->id; ?> <?php echo $moduleclass_sfx; ?>">
+      <div class="cookie-notice alert alert-info" role="alert">
+         <?php echo JText::_("MOD_JDSCF_NOTICE_ON_COOKIES_DISABLED"); ?>
+      </div>
       <div id="jdscf-message-<?php echo $module->id; ?>"></div>
       <div class="simple-contact-form-loader module-<?php echo $module->id; ?> d-none">
          <div class="loading"></div>
