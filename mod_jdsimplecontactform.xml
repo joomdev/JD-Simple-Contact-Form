@@ -68,8 +68,8 @@
             <field 
                name="captchaPlugins"
                type="plugins"
-               label="MOD_JDSCF_DEAFAULT_CAPTCHA_LBL"
-               description="MOD_JDSCF_DEAFAULT_CAPTCHA_DESC"
+               label="MOD_JDSCF_CAPTCHA_TYPE_LBL"
+               description="MOD_JDSCF_CAPTCHA_TYPE_DESC"
                folder="captcha"
                filter="cmd"
                useglobal="true"
