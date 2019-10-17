@@ -65,6 +65,17 @@
                <option value="1">JYES</option>
                <option value="0">JNO</option>
             </field>
+            <field 
+               name="captchaPlugins"
+               type="plugins"
+               label="MOD_JDSCF_DEAFAULT_CAPTCHA_LBL"
+               description="MOD_JDSCF_DEAFAULT_CAPTCHA_DESC"
+               folder="captcha"
+               filter="cmd"
+               useglobal="true"
+               showon="params.captcha:1"
+               >
+		</field>
             <field
                name="submittext"
                type="text"
