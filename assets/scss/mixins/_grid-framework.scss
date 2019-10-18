@@ -37,6 +37,11 @@
             flex-grow: 1;
             max-width: 100%;
          }
+         .jdscf-col#{$infix}-auto {
+            flex: 0 0 auto;
+            width: auto;
+            max-width: 100%; // Reset earlier grid tiers
+         }
          @for $i from 1 through $columns {
             .jdscf-col#{$infix}-#{$i} {
                @include make-col($i, $columns);

@@ -90,6 +90,7 @@
          label="MOD_JDSCF_WIDTH_LBL"
          description="MOD_JDSCF_WIDTH_DESC"
       >
+         <option value="auto">JGLOBAL_AUTO</option>
          <option value="12">12</option>
          <option value="10">10</option>
          <option value="9">9</option>
