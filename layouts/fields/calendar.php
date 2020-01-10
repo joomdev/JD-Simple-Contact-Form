@@ -48,7 +48,14 @@ $document->addStyleDeclaration($style);
 </div>
 
 <?php
-$js = 'var jdscf_picker_' . $module->id . ' = new Pikaday({'
+
+$js = 'var monthNames = [ "'. JText::_("MOD_JDSCF_JANUARY") .'", "'. JText::_("MOD_JDSCF_FEBRUARY") .'", "'. JText::_("MOD_JDSCF_MARCH") .'", "'. JText::_("MOD_JDSCF_APRIL") .'", "'. JText::_("MOD_JDSCF_MAY") .'", "'. JText::_("MOD_JDSCF_JUNE") .'", "'. JText::_("MOD_JDSCF_JULY") .'", "'. JText::_("MOD_JDSCF_AUGUST") .'", "'. JText::_("MOD_JDSCF_SEPTEMBER") .'", "'. JText::_("MOD_JDSCF_OCTOBER") .'", "'. JText::_("MOD_JDSCF_NOVEMBER") .'", "'. JText::_("MOD_JDSCF_DECEMBER") .'" ];';
+
+$js .= 'var weekDays = [ "'. JText::_("MOD_JDSCF_MONDAY") .'", "'. JText::_("MOD_JDSCF_TUESDAY") .'", "'. JText::_("MOD_JDSCF_WEDNESDAY") .'", "'. JText::_("MOD_JDSCF_THURSDAY") .'", "'. JText::_("MOD_JDSCF_FRIDAY") .'", "'. JText::_("MOD_JDSCF_SATURDAY") .'", "'. JText::_("MOD_JDSCF_SUNDAY") .'" ];';
+
+$js .= 'var shortWeekDays    = [ "'. JText::_("MOD_JDSCF_MON") .'", "'. JText::_("MOD_JDSCF_TUE") .'", "'. JText::_("MOD_JDSCF_WED") .'", "'. JText::_("MOD_JDSCF_THUR") .'", "'. JText::_("MOD_JDSCF_FRI") .'", "'. JText::_("MOD_JDSCF_SAT") .'", "'. JText::_("MOD_JDSCF_SUN") .'" ];';
+
+$js .= 'var jdscf_picker_' . $module->id . ' = new Pikaday({'
 . 'field: document.getElementById("' . $field->id . '")';
 if (isset($field->calendar_min) && !empty($field->calendar_min) && $field->calendar_min != '0000-00-00 00:00:00') {
     $js .= ',minDate: moment("' . $field->calendar_min . '").toDate()';
@@ -61,9 +68,13 @@ if (isset($field->calendar_format) && !empty($field->calendar_format)) {
 } else {
     $js .= ',format: "MM-DD-YYYY"';
 }
-
+$js .= ',i18n: {';
+$js .= 'months       : monthNames,';
+$js .= 'weekdays     : weekDays,';
+$js .= 'weekdaysShort: shortWeekDays';
+$js .= '}';
 $js .= ',defaultDate: moment("' . date('Y-m-d') . '").toDate(),setDefaultDate:true';
-
 $js .= '});';
+
 ModJDSimpleContactFormHelper::addJS($js, $module->id);
 ?>
