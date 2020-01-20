@@ -20,6 +20,7 @@
       <filename>helper.php</filename>
       <folder>tmpl</folder>
       <folder>layouts</folder>
+      <folder>fields</folder>
       <folder>forms</folder>
    </files>
    <media folder="media" destination="mod_jdsimplecontactform">
@@ -27,8 +28,9 @@
       <folder>assets/js</folder>
    </media>
    <config>
-      <fields name="params">
+      <fields name="params" addfieldpath="/modules/mod_jdsimplecontactform/fields/">
          <fieldset name="basic">
+		 	<field name="help" type="help" default="module" label="Help" description="Click on the help button to get some help"/>
             <field
                name="title"
                type="text"
