@@ -12,6 +12,6 @@ $buttonText = $params->get('submittext', 'JSUBMIT');
 $buttonClass = $params->get('submitclass', 'btn-primary');
 $buttonWidth = $params->get('submit_btn_width', '12');
 ?>
-<div class="jdscf-col-md-<?php echo $buttonWidth ?>">
+<div class="jdscf-submit-btn jdscf-col-md-<?php echo $buttonWidth ?>">
    <button type="submit" class="btn<?php echo!empty($buttonClass) ? ' ' . $buttonClass : ''; ?> btn-block"><?php echo JText::_($buttonText); ?></button>
 </div>

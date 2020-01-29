@@ -88,6 +88,7 @@
          showon="type!:hidden"
          name="width"
          type="list"
+         default="12"
          label="MOD_JDSCF_WIDTH_LBL"
          description="MOD_JDSCF_WIDTH_DESC"
       >

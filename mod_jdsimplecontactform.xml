@@ -95,6 +95,7 @@
             <field
                name="submit_btn_width"
                type="list"
+               default="12"
                label="MOD_JDSCF_SUBMIT_WIDTH_LBL"
                description="MOD_JDSCF_SUBMIT_WIDTH_DESC"
                >
