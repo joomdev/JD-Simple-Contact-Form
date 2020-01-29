@@ -2,10 +2,10 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
    <name>mod_jdsimplecontactform</name>
    <author>JoomDev</author>
-   <version>1.4</version>
-   <creationDate>Sept 2019</creationDate>
+   <version>1.5</version>
+   <creationDate>Jan 2020</creationDate>
    <url>https://www.joomdev.com</url>
-   <copyright>Copyright (C) 2019 Joomdev, Inc. All rights reserved.</copyright>
+   <copyright>Copyright (C) 2020 Joomdev, Inc. All rights reserved.</copyright>
    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
    <authorEmail>info@joomdev.com</authorEmail>
    <authorUrl>https://www.joomdev.com</authorUrl>
@@ -20,6 +20,7 @@
       <filename>helper.php</filename>
       <folder>tmpl</folder>
       <folder>layouts</folder>
+      <folder>fields</folder>
       <folder>forms</folder>
    </files>
    <media folder="media" destination="mod_jdsimplecontactform">
@@ -27,8 +28,9 @@
       <folder>assets/js</folder>
    </media>
    <config>
-      <fields name="params">
+      <fields name="params" addfieldpath="/modules/mod_jdsimplecontactform/fields/">
          <fieldset name="basic">
+		 	<field name="help" type="help" default="module" label="Help" description="Click on the help button to get some help"/>
             <field
                name="title"
                type="text"
@@ -65,6 +67,17 @@
                <option value="1">JYES</option>
                <option value="0">JNO</option>
             </field>
+            <field 
+               name="captchaPlugins"
+               type="plugins"
+               label="MOD_JDSCF_CAPTCHA_TYPE_LBL"
+               description="MOD_JDSCF_CAPTCHA_TYPE_DESC"
+               folder="captcha"
+               filter="cmd"
+               useglobal="true"
+               showon="params.captcha:1"
+               >
+		</field>
             <field
                name="submittext"
                type="text"
@@ -82,9 +95,11 @@
             <field
                name="submit_btn_width"
                type="list"
+               default="12"
                label="MOD_JDSCF_SUBMIT_WIDTH_LBL"
                description="MOD_JDSCF_SUBMIT_WIDTH_DESC"
                >
+               <option value="auto">JGLOBAL_AUTO</option>
                <option value="12">12</option>
                <option value="10">10</option>
                <option value="9">9</option>

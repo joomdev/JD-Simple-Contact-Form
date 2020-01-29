@@ -2,7 +2,7 @@
 /**
  * @package   JD Simple Contact Form
  * @author    JoomDev https://www.joomdev.com
- * @copyright Copyright (C) 2009 - 2019 JoomDev.
+ * @copyright Copyright (C) 2009 - 2020 JoomDev.
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  */
 // no direct access
@@ -43,7 +43,7 @@ if (!empty($message)) {
                ModJDSimpleContactFormHelper::renderForm($params, $module);
 
                if ($captcha) {
-                  $captchaType = JFactory::getConfig()->get('captcha');
+                  $captchaType = $params->get('captchaPlugins') == "" ?  JFactory::getConfig()->get('captcha') : $params->get('captchaPlugins');
                   JPluginHelper::importPlugin('captcha', $captchaType);
                   $dispatcher = JEventDispatcher::getInstance();
                   $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
