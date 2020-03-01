@@ -285,7 +285,7 @@ class ModJDSimpleContactFormHelper {
       }
       // BCC
       $bcc = !empty($params->get('email_bcc', '')) ? $params->get('email_bcc') : '';
-      $bcc = explode(',', $bcc);
+      $bcc = empty($bcc) ? [] : explode(',', $bcc);
       if (!empty($bcc)) {
          $mailer->addBcc($bcc);
       }
