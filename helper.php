@@ -88,6 +88,8 @@ class ModJDSimpleContactFormHelper {
             }
          } elseif ( $captchaType == "recaptcha_invisible" ) {
             $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('g-recaptcha-response'));
+         } elseif ( $captchaType == "aimycaptchalessformguard" ) {
+            $check_captcha = $dispatcher->trigger('onCheckAnswer');
          }
       }
 
@@ -131,6 +133,13 @@ class ModJDSimpleContactFormHelper {
       $contents = [];
       $attachments = [];
       $errors = [];
+      // Get all error messages and add them to $errors variable
+      $messages = $app->getMessageQueue();
+      if (!empty($messages)) {
+         for ($i=0; $i < count($messages); $i++) { 
+            $errors[] = $messages[$i]["message"];
+         }
+      }
       foreach ($labels as $name => $fld) {
          $value = isset($values[$name]) ? $values[$name] : '';
 
