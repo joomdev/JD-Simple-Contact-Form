@@ -88,7 +88,7 @@ class ModJDSimpleContactFormHelper {
             }
          } elseif ( $captchaType == "recaptcha_invisible" ) {
             $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('g-recaptcha-response'));
-         } elseif ( $captchaType == "aimycaptchalessformguard" ) {
+         } elseif (!empty($captchaType)) {
             $check_captcha = $dispatcher->trigger('onCheckAnswer');
          }
       }

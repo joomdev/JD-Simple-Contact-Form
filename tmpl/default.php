@@ -76,16 +76,24 @@ if (!empty($message)) {
                         <div id='recaptcha' class="g-recaptcha" data-sitekey="<?php echo $plugin_params->get('public_key', ''); ?>"  data-size="invisible"></div>
                      <?php
                      }
-                  } elseif ( $captchaType == "aimycaptchalessformguard" ) {
+                  } elseif ( !empty($captchaType) ) {
                      // Display captcha plugin fields
                      if (!empty($plugin)) {
                         $plugin_params = new JRegistry($plugin->params);
                         $captchaHtml = $dispatcher->trigger('onDisplay', array('jdscf_recaptcha_' . $module->id, 'jdscf_recaptcha_' . $module->id));
                         if (!empty($captchaHtml)) {
-                           foreach ($captchaHtml as $cHtml) {
-                              // Add captcha generated html to page
-                              echo $cHtml;
-                           }
+                           ?>
+                           <div class="jdscf-col-md-12">
+                              <div class="form-group">
+                                 <?php
+                                 foreach ($captchaHtml as $cHtml) {
+                                    // Add captcha generated html to page
+                                    echo $cHtml;
+                                 }
+                                 ?>
+                              </div>
+                           </div>
+                           <?php
                         }
                      }
                   }
