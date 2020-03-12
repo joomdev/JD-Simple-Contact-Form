@@ -88,6 +88,8 @@ class ModJDSimpleContactFormHelper {
             }
          } elseif ( $captchaType == "recaptcha_invisible" ) {
             $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('g-recaptcha-response'));
+         } elseif (!empty($captchaType)) {
+            $check_captcha = $dispatcher->trigger('onCheckAnswer');
          }
       }
 
@@ -131,6 +133,13 @@ class ModJDSimpleContactFormHelper {
       $contents = [];
       $attachments = [];
       $errors = [];
+      // Get all error messages and add them to $errors variable
+      $messages = $app->getMessageQueue();
+      if (!empty($messages)) {
+         for ($i=0; $i < count($messages); $i++) { 
+            $errors[] = $messages[$i]["message"];
+         }
+      }
       foreach ($labels as $name => $fld) {
          $value = isset($values[$name]) ? $values[$name] : '';
 
@@ -285,7 +294,7 @@ class ModJDSimpleContactFormHelper {
       }
       // BCC
       $bcc = !empty($params->get('email_bcc', '')) ? $params->get('email_bcc') : '';
-      $bcc = explode(',', $bcc);
+      $bcc = empty($bcc) ? [] : explode(',', $bcc);
       if (!empty($bcc)) {
          $mailer->addBcc($bcc);
       }

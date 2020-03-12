@@ -13,6 +13,8 @@
    <languages folder="language">
       <language tag="en-GB">en-GB/en-GB.mod_jdsimplecontactform.ini</language>
       <language tag="en-GB">en-GB/en-GB.mod_jdsimplecontactform.sys.ini</language>
+      <language tag="nl-NL">nl-NL/nl-NL.mod_jdsimplecontactform.ini</language>
+      <language tag="nl-NL">nl-NL/nl-NL.mod_jdsimplecontactform.sys.ini</language>
    </languages>   
    <files>
       <filename>mod_jdsimplecontactform.xml</filename>
