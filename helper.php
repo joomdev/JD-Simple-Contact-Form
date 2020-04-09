@@ -213,6 +213,16 @@ class ModJDSimpleContactFormHelper {
          );
       }
 
+      // Fetches Source URL of Submission Page
+      if ( $params->get('source_url' ) ) {
+         $link = urldecode( $jinput->get('returnurl', '', 'RAW') );
+         $contents[] = array( 
+            "value" => "<a href='$link'>$link</a>",
+            "label" => "Source URL", 
+            "name" => "sourceURL"
+         );
+      }
+
       if ($params->get('email_template', '') == 'custom') {
          $html = $params->get('email_custom', '');
          if ( empty( $html ) ) {
