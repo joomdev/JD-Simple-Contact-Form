@@ -43,7 +43,7 @@ if (!empty($message)) {
                ModJDSimpleContactFormHelper::renderForm($params, $module);
 
                if ($captcha) {
-                  $captchaType = $params->get('captchaPlugins') == "" ?  JFactory::getConfig()->get('captcha') : $params->get('captchaPlugins');
+                  $captchaType = $params->get('captchaPlugins') == "" ? JFactory::getConfig()->get('captcha') : $params->get('captchaPlugins');
                   JPluginHelper::importPlugin('captcha', $captchaType);
                   $dispatcher = JEventDispatcher::getInstance();
                   $dispatcher->trigger('onInit', 'jdscf_recaptcha_' . $module->id);
@@ -93,7 +93,7 @@ if (!empty($message)) {
                                  ?>
                               </div>
                            </div>
-                           <?php
+                        <?php
                         }
                      }
                   }

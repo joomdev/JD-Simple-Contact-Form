@@ -77,7 +77,7 @@ class ModJDSimpleContactFormHelper {
 
       if ($params->get('captcha', 0)) {
 
-         $captchaType = JFactory::getApplication()->get('captcha');
+         $captchaType = $params->get('captchaPlugins') == "" ? JFactory::getConfig()->get('captcha') : $params->get('captchaPlugins');
          JPluginHelper::importPlugin('captcha', $captchaType);
          $dispatcher = JEventDispatcher::getInstance();
 
