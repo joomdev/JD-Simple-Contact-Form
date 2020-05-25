@@ -13,6 +13,8 @@
    <languages folder="language">
       <language tag="en-GB">en-GB/en-GB.mod_jdsimplecontactform.ini</language>
       <language tag="en-GB">en-GB/en-GB.mod_jdsimplecontactform.sys.ini</language>
+      <language tag="nl-NL">nl-NL/nl-NL.mod_jdsimplecontactform.ini</language>
+      <language tag="nl-NL">nl-NL/nl-NL.mod_jdsimplecontactform.sys.ini</language>
    </languages>   
    <files>
       <filename>mod_jdsimplecontactform.xml</filename>
@@ -129,6 +131,16 @@
               type="radio"
               label="MOD_JDSCF_IPADDR_LBL"
               description="MOD_JDSCF_IPADDR_DESC"
+              class="btn-group btn-group-yesno"
+              default="0">
+              <option value="1">JYES</option>
+              <option value="0">JNO</option>
+           </field>
+           <field
+              name="source_url"
+              type="radio"
+              label="MOD_JDSCF_SRC_URL_LBL"
+              description="MOD_JDSCF_SRC_URL_DESC"
               class="btn-group btn-group-yesno"
               default="0">
               <option value="1">JYES</option>
