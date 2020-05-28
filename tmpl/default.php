@@ -37,7 +37,7 @@ if (!empty($message)) {
             <p class="jd-simple-contact-description card-subtitle mb-2 text-muted"><?php echo JText::_($description); ?></p>
          <?php } ?>
       </div>
-      <form method="POST" action="<?php echo JURI::root(); ?>index.php?option=com_ajax&module=jdsimplecontactform&format=json&method=submit" data-parsley-validate data-parsley-errors-wrapper="<ul class='text-danger list-unstyled mt-2 small'></ul>" data-parsley-error-class="border-danger" data-parsley-success-class="border-success" id="simple-contact-form-<?php echo $module->id; ?>" enctype="multipart/form-data">
+      <form method="POST" action="<?php echo JURI::root(); ?>index.php?option=com_ajax&module=jdsimplecontactform&format=json&method=submit" data-parsley-type-message="<?php echo JText::_("MOD_JDSCF_EMAIL_REQUIRED_ERROR"); ?>" data-parsley-validate data-parsley-errors-wrapper="<ul class='text-danger list-unstyled mt-2 small'></ul>" data-parsley-error-class="border-danger" data-parsley-success-class="border-success" id="simple-contact-form-<?php echo $module->id; ?>" enctype="multipart/form-data">
          <div class="jdscf-row">
             <?php
                ModJDSimpleContactFormHelper::renderForm($params, $module);
