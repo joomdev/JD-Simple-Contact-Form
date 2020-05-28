@@ -142,6 +142,10 @@ if (!empty($message)) {
                   setTimeout(function () {
                      $('#jdscf-message-<?php echo $module->id; ?>').html('');
                   }, 3000);
+                  
+                  $('html, body').animate({
+                     scrollTop: $('#simple-contact-form-<?php echo $module->id; ?>').offset().top - 150
+                  }, 300);
                }
                $('#simple-contact-form-<?php echo $module->id; ?>').on('submit', function (e) {
                   e.preventDefault();
