@@ -12,6 +12,7 @@ $attrs = [];
 switch ($field->type) {
    case 'email':
       $attrs[] = 'data-parsley-type="email"';
+      $attrs[] = 'data-parsley-type-message="' . JText::_("MOD_JDSCF_EMAIL_REQUIRED_ERROR") . '"';
       break;
    case 'number':
       $attrs[] = 'data-parsley-type="number"';
