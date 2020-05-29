@@ -147,6 +147,17 @@ if (!empty($message)) {
                      scrollTop: $('#simple-contact-form-<?php echo $module->id; ?>').offset().top - 150
                   }, 300);
                }
+
+               // Smooth Scroll to parsley errors
+               $('#simple-contact-form-<?php echo $module->id; ?>').parsley().on('field:validated', function() {
+                  var errorNotice = $('ul.text-danger li');
+                  if ( errorNotice.length ) {
+                     $('html, body').animate({
+                        scrollTop: errorNotice.offset().top - 100
+                     }, 300);
+                  }
+               });
+
                $('#simple-contact-form-<?php echo $module->id; ?>').on('submit', function (e) {
                   e.preventDefault();
                   var formData = new FormData(this);
