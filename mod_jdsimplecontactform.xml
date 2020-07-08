@@ -79,7 +79,7 @@
                useglobal="true"
                showon="params.captcha:1"
                >
-		</field>
+		    </field>
             <field
                name="submittext"
                type="text"
@@ -220,7 +220,28 @@
                type="text"
                label="MOD_JDSCF_SINGLE_SEND_COPY_LABEL" 
                description="MOD_JDSCF_SINGLE_SEND_COPY_DESC"
-            />            
+            />       
+            <field
+               showon="single_sendcopy_email:1"
+               name="singleSendCopyEmailField_template"
+               default=""
+               type="radio"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_TEMPLATE_LBL" 
+               description="MOD_JDSCF_SINGLE_SEND_COPY_TEMPLATE_DESC"
+               class="btn-group"
+            >
+               <option value="">JDEFAULT</option>
+               <option value="custom">JGLOBAL_CUSTOM</option>
+            </field>        
+            <field
+               showon="singleSendCopyEmailField_template:custom"
+               name="singleSendCopyEmailField_email_custom"
+               type="editor"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_CUSTOM_TEMPLATE_LBL"
+               description="MOD_JDSCF_SINGLE_SEND_COPY_CUSTOM_TEMPLATE_LBL"
+               filter="safehtml"
+               default=""
+            />   
             <!-- Custom Email Template -->
             <field
                name="email_template"
