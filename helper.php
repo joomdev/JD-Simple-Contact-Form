@@ -213,7 +213,7 @@ class ModJDSimpleContactFormHelper {
          );
       }
 
-      $send = self::sendMail($params, $contents, $attachments, $cc_emails, $errors, $app);  
+      $send = self::sendMail($params, 'email', $contents, $attachments, $cc_emails, $errors, $app);  
 
       if ($send !== true) {
          switch($params->get('ajaxsubmit'))
@@ -386,6 +386,7 @@ class ModJDSimpleContactFormHelper {
     * Send mail with configured content to configured mail address
     *
     * @param \Joomla\Registry\Registry $params
+    * @param string $fieldPrefix Prefix with fields of the email
     * @param array $contents
     * @param string[] $attachments
     * @param string[] $cc_emails
@@ -393,10 +394,10 @@ class ModJDSimpleContactFormHelper {
     * @param \Joomla\CMS\Application\CMSApplication $app
     * @return boolean
     */
-   private static function sendMail($params, $contents, $attachments, $cc_emails, $errors, $app) {
+   private static function sendMail($params, $fieldPrefix, $contents, $attachments, $cc_emails, $errors, $app) {
       
-      if ($params->get('email_template', '') == 'custom') {
-         $html = $params->get('email_custom', '');
+      if ($params->get($fieldPrefix . '_template', '') == 'custom') {
+         $html = $params->get($fieldPrefix . '_custom', '');
          if ( empty( $html ) ) {
             $layout = new JLayoutFile('emails.default', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
             $html = $layout->render(['contents' => $contents]);
@@ -416,8 +417,8 @@ class ModJDSimpleContactFormHelper {
          $title = ' : ' . $title;
       }
       // Sender
-      if (!empty($params->get('email_from', ''))) {
-         $email_from = $params->get('email_from', '');
+      if (!empty($params->get($fieldPrefix . '_from', ''))) {
+         $email_from = $params->get($fieldPrefix . '_from', '');
          $email_from = self::renderVariables($contents, $email_from);
          if (!filter_var($email_from, FILTER_VALIDATE_EMAIL)) {
             $email_from = $config->get('mailfrom');
@@ -426,8 +427,8 @@ class ModJDSimpleContactFormHelper {
          $email_from = $config->get('mailfrom');
       }
 
-      if (!empty($params->get('email_name', ''))) {
-         $email_name = $params->get('email_name', '');
+      if (!empty($params->get($fieldPrefix . '_name', ''))) {
+         $email_name = $params->get($fieldPrefix . '_name', '');
          $email_name = self::renderVariables($contents, $email_name);
          if (empty($email_name)) {
             $email_name = $config->get('fromname');
@@ -440,20 +441,24 @@ class ModJDSimpleContactFormHelper {
       $mailer->setSender($sender);
 
       // Subject
-      $email_subject = !empty($params->get('email_subject', '')) ? $params->get('email_subject') : JText::_('MOD_JDSCF_DEFAULT_SUBJECT', $title);
+      $email_subject = !empty($params->get($fieldPrefix . '_subject', '')) ? $params->get($fieldPrefix . '_subject') : JText::_('MOD_JDSCF_DEFAULT_SUBJECT', $title);
       $email_subject = self::renderVariables($contents, $email_subject);
       $mailer->setSubject($email_subject);
 
       // Recipient
-      $recipients = !empty($params->get('email_to', '')) ? $params->get('email_to') : $config->get('mailfrom');
+      $recipients = !empty($params->get($fieldPrefix . '_to', '')) ? $params->get($fieldPrefix . '_to') : $config->get('mailfrom');
       $recipients = explode(',', $recipients);
       if (!empty($recipients)) {
          $mailer->addRecipient($recipients);
       }
 
       // Reply-To
-      if (!empty($params->get('reply_to', ''))) {
-         $reply_to = $params->get('reply_to', '');
+      $replyToFieldName = $fieldPrefix . 'reply_to';
+      if ($fieldPrefix === 'email') {
+         $replyToFieldName = 'reply_to';
+      }
+      if (!empty($params->get($replyToFieldName, ''))) {
+         $reply_to = $params->get($replyToFieldName, '');
          $reply_to = self::renderVariables($contents, $reply_to);
          if (!filter_var($reply_to, FILTER_VALIDATE_EMAIL)) {
             $reply_to = '';
@@ -464,7 +469,7 @@ class ModJDSimpleContactFormHelper {
       }
 
       // CC
-      $cc = !empty($params->get('email_cc', '')) ? $params->get('email_cc') : '';
+      $cc = !empty($params->get($fieldPrefix . '_cc', '')) ? $params->get($fieldPrefix . '_cc') : '';
       $cc = empty($cc) ? [] : explode(",", $cc);
       if(!empty($cc_emails)){
          $cc = array_merge($cc, $cc_emails);
@@ -475,7 +480,7 @@ class ModJDSimpleContactFormHelper {
          $mailer->addCc($cc);
       }
       // BCC
-      $bcc = !empty($params->get('email_bcc', '')) ? $params->get('email_bcc') : '';
+      $bcc = !empty($params->get($fieldPrefix . '_bcc', '')) ? $params->get($fieldPrefix . '_bcc') : '';
       $bcc = empty($bcc) ? [] : explode(',', $bcc);
       if (!empty($bcc)) {
          $mailer->addBcc($bcc);
