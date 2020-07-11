@@ -216,7 +216,7 @@
             />
             <field
                showon="single_sendcopy_email:1"
-               name="singleSendCopyEmailField_title"
+               name="singleSendCopyEmail_title"
                default=""
                type="text"
                label="MOD_JDSCF_SINGLE_SEND_COPY_LABEL" 
@@ -224,35 +224,35 @@
             />
             <field
                showon="single_sendcopy_email:2"
-               name="singleSendCopyEmailField_from"
+               name="singleSendCopyEmail_from"
                type="text"
                label="MOD_JDSCF_SINGLE_SEND_COPY_FROM_LBL"
                description="MOD_JDSCF_SINGLE_SEND_COPY_FROM_DESC"
             />
             <field
                showon="single_sendcopy_email:2"
-               name="singleSendCopyEmailField_name"
+               name="singleSendCopyEmail_name"
                type="text"
                label="MOD_JDSCF_SINGLE_SEND_COPY_NAME_LBL"
                description="MOD_JDSCF_SINGLE_SEND_COPY_NAME_DESC"
             />
             <field
                showon="single_sendcopy_email:2"
-               name="singleSendCopyEmailField_subject"
+               name="singleSendCopyEmail_subject"
                type="text"
                label="MOD_JDSCF_SINGLE_SEND_COPY_SUBJECT_LBL"
                description="MOD_JDSCF_SINGLE_SEND_COPY_SUBJECT_DESC"
             />
             <field
                showon="single_sendcopy_email:2"
-               name="singleSendCopyEmailField_reply_to"
+               name="singleSendCopyEmail_reply_to"
                type="text"
                label="MOD_JDSCF_SINGLE_SEND_COPY_REPLY_TO_LBL"
                description="MOD_JDSCF_SINGLE_SEND_COPY_REPLY_TO_DESC"
             />       
             <field
                showon="single_sendcopy_email:2"
-               name="singleSendCopyEmailField_template"
+               name="singleSendCopyEmail_template"
                default=""
                type="radio"
                label="MOD_JDSCF_SINGLE_SEND_COPY_TEMPLATE_LBL" 
@@ -263,8 +263,8 @@
                <option value="custom">JGLOBAL_CUSTOM</option>
             </field>        
             <field
-               showon="single_sendcopy_email:2[AND]singleSendCopyEmailField_template:custom"
-               name="singleSendCopyEmailField_email_custom"
+               showon="single_sendcopy_email:2[AND]singleSendCopyEmail_template:custom"
+               name="singleSendCopyEmail_email_custom"
                type="editor"
                label="MOD_JDSCF_SINGLE_SEND_COPY_CUSTOM_TEMPLATE_LBL"
                description="MOD_JDSCF_SINGLE_SEND_COPY_CUSTOM_TEMPLATE_LBL"

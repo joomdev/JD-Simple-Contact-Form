@@ -98,7 +98,7 @@ class ModJDSimpleContactFormHelper {
          $labels[$field->name] = ['label' => self::getLabelText($field), 'type' => $field->type];
       }
 
-      $cc_emails = [];
+      $singleSendCopyMailAddress = [];
       $values = [];
       foreach ($jdscf as $name => $value) {
          if(is_array($value)) {
@@ -109,7 +109,7 @@ class ModJDSimpleContactFormHelper {
                
                //single cc
                if(isset($value['single_cc']) && $value['single_cc'] == 1) {
-                  $cc_emails[] = $value['email'];
+                  $singleSendCopyMailAddress[] = $value['email'];
                }
             }
 			
@@ -213,7 +213,15 @@ class ModJDSimpleContactFormHelper {
          );
       }
 
-      $send = self::sendMail($params, 'email', $contents, $attachments, $cc_emails, $errors, $app);  
+      // Send mail to backend
+      $mailParamsBackend = self::getMailParams($params, 'email', $singleSendCopyMailAddress);
+      $send = self::sendMail($mailParamsBackend, $contents, $attachments, $errors, $app);  
+
+      if ($send === true) {
+         // Send mail to visitor
+         $mailParamsVisitor = self::getMailParams($params, 'singleSendCopyEmail', $singleSendCopyMailAddress);
+         $send = self::sendMail($mailParamsVisitor, $contents, $attachments, $errors, $app);
+      }
 
       if ($send !== true) {
          switch($params->get('ajaxsubmit'))
@@ -383,21 +391,51 @@ class ModJDSimpleContactFormHelper {
    }
 
    /**
+    * Get the mail paramaters from the params object
+    *
+    * @param \Joomla\Registry\Registry $params Contains the parameters of the module
+    * @param string $fieldPrefix Prefix with fields of the email
+    * @param string[] $singleSendCopyMailAddress Mailaddress to be used to sent confirmation mail to visitor
+    * @return string[] Parameter values of the mail
+    */
+   private static function getMailParams($params, $fieldPrefix, $singleSendCopyMailAddress){
+      $mailParams = [];
+      $mailParams['template'] = $params->get($fieldPrefix . '_template', '');
+      $mailParams['custom'] = $params->get($fieldPrefix . '_custom', '');
+      $mailParams['from'] = $params->get($fieldPrefix . '_from', '');
+      $mailParams['name'] = $params->get($fieldPrefix . '_name', '');
+      $mailParams['subject'] = $params->get($fieldPrefix . '_subject', '');
+      $mailParams['to'] = $params->get($fieldPrefix . '_to', '');
+      $mailParams['cc'] = $params->get($fieldPrefix . '_cc', '');
+      $mailParams['bcc'] = $params->get($fieldPrefix . '_bcc', '');
+      $mailParams['title'] = $params->get('title', '');
+      $mailParams['singleSendCopyMailAddress'] = $singleSendCopyMailAddress;
+
+      // For custom visitor mail, we need the mailaddress of the visitor.
+      $mailParams['from'] = $fieldPrefix === 'singleSendCopyEmail' ? $singleSendCopyMailAddress : $params->get($fieldPrefix . '_from', '');
+ 
+      // Compensate for inconsistent naming. In future maybe update the field name.
+      $replyToFieldName = $fieldPrefix === 'email' ? 'reply_to' : $fieldPrefix . 'reply_to';
+      $mailParams['reply_to'] = $params->get($replyToFieldName, '');
+
+      return $mailParams;
+      
+   }
+
+   /**
     * Send mail with configured content to configured mail address
     *
-    * @param \Joomla\Registry\Registry $params
-    * @param string $fieldPrefix Prefix with fields of the email
+    * @param string[] $mailParams Parameter values needed for sending the mail
     * @param array $contents
     * @param string[] $attachments
-    * @param string[] $cc_emails
     * @param string[] $errors
     * @param \Joomla\CMS\Application\CMSApplication $app
     * @return boolean
     */
-   private static function sendMail($params, $fieldPrefix, $contents, $attachments, $cc_emails, $errors, $app) {
+   private static function sendMail($mailParams, $contents, $attachments, $errors, $app) {
       
-      if ($params->get($fieldPrefix . '_template', '') == 'custom') {
-         $html = $params->get($fieldPrefix . '_custom', '');
+      if ($mailParams['template'] == 'custom') {
+         $html = $mailParams['custom'];
          if ( empty( $html ) ) {
             $layout = new JLayoutFile('emails.default', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
             $html = $layout->render(['contents' => $contents]);
@@ -412,13 +450,13 @@ class ModJDSimpleContactFormHelper {
       // sending mail
       $mailer = JFactory::getMailer();
       $config = JFactory::getConfig();
-      $title = $params->get('title', '');
+      $title = $mailParams['title'];
       if (!empty($title)) {
          $title = ' : ' . $title;
       }
       // Sender
-      if (!empty($params->get($fieldPrefix . '_from', ''))) {
-         $email_from = $params->get($fieldPrefix . '_from', '');
+      if (!empty($mailParams['from'])) {
+         $email_from = $mailParams['from'];
          $email_from = self::renderVariables($contents, $email_from);
          if (!filter_var($email_from, FILTER_VALIDATE_EMAIL)) {
             $email_from = $config->get('mailfrom');
@@ -427,8 +465,8 @@ class ModJDSimpleContactFormHelper {
          $email_from = $config->get('mailfrom');
       }
 
-      if (!empty($params->get($fieldPrefix . '_name', ''))) {
-         $email_name = $params->get($fieldPrefix . '_name', '');
+      if (!empty($mailParams['name'])) {
+         $email_name = $mailParams['name'];
          $email_name = self::renderVariables($contents, $email_name);
          if (empty($email_name)) {
             $email_name = $config->get('fromname');
@@ -441,24 +479,20 @@ class ModJDSimpleContactFormHelper {
       $mailer->setSender($sender);
 
       // Subject
-      $email_subject = !empty($params->get($fieldPrefix . '_subject', '')) ? $params->get($fieldPrefix . '_subject') : JText::_('MOD_JDSCF_DEFAULT_SUBJECT', $title);
+      $email_subject = !empty($mailParams['subject']) ? $mailParams['subject'] : JText::_('MOD_JDSCF_DEFAULT_SUBJECT', $title);
       $email_subject = self::renderVariables($contents, $email_subject);
       $mailer->setSubject($email_subject);
 
       // Recipient
-      $recipients = !empty($params->get($fieldPrefix . '_to', '')) ? $params->get($fieldPrefix . '_to') : $config->get('mailfrom');
+      $recipients = !empty($mailParams['to']) ? $mailParams['to'] : $config->get('mailfrom');
       $recipients = explode(',', $recipients);
       if (!empty($recipients)) {
          $mailer->addRecipient($recipients);
       }
 
       // Reply-To
-      $replyToFieldName = $fieldPrefix . 'reply_to';
-      if ($fieldPrefix === 'email') {
-         $replyToFieldName = 'reply_to';
-      }
-      if (!empty($params->get($replyToFieldName, ''))) {
-         $reply_to = $params->get($replyToFieldName, '');
+      if (!empty($mailParams['reply_to'])) {
+         $reply_to = $mailParams['reply_to'];
          $reply_to = self::renderVariables($contents, $reply_to);
          if (!filter_var($reply_to, FILTER_VALIDATE_EMAIL)) {
             $reply_to = '';
@@ -469,10 +503,10 @@ class ModJDSimpleContactFormHelper {
       }
 
       // CC
-      $cc = !empty($params->get($fieldPrefix . '_cc', '')) ? $params->get($fieldPrefix . '_cc') : '';
+      $cc = !empty($mailParams['cc']) ? $mailParams['cc'] : '';
       $cc = empty($cc) ? [] : explode(",", $cc);
-      if(!empty($cc_emails)){
-         $cc = array_merge($cc, $cc_emails);
+      if(!empty($mailParams['singleSendCopyMailAddress'])){
+         $cc = array_merge($cc, $mailParams['singleSendCopyMailAddress']);
          $cc = array_unique($cc);
       }
 
@@ -480,7 +514,7 @@ class ModJDSimpleContactFormHelper {
          $mailer->addCc($cc);
       }
       // BCC
-      $bcc = !empty($params->get($fieldPrefix . '_bcc', '')) ? $params->get($fieldPrefix . '_bcc') : '';
+      $bcc = !empty($mailParams['bcc']) ? $mailParams['bcc'] : '';
       $bcc = empty($bcc) ? [] : explode(',', $bcc);
       if (!empty($bcc)) {
          $mailer->addBcc($bcc);
