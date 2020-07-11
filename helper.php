@@ -187,7 +187,7 @@ class ModJDSimpleContactFormHelper {
             }
          }
 
-         $contents[] = [
+         $contents[$name] = [
              "value" => $value,
              "label" => $fld['label'],
              "name" => $name,
@@ -206,7 +206,7 @@ class ModJDSimpleContactFormHelper {
             $ipAddress = $_SERVER['REMOTE_ADDR'];
          }
 
-         $contents[] = array( 
+         $contents["jdsimple_ip"] = array( 
             "value" => "<a href='http://whois.domaintools.com/$ipAddress'>$ipAddress</a>",  
             "label" => "IP Address", 
             "name" => "ip"
@@ -214,12 +214,12 @@ class ModJDSimpleContactFormHelper {
       }
 
       // Send mail to backend
-      $mailParamsBackend = self::getMailParams($params, 'email', $singleSendCopyMailAddress);
+      $mailParamsBackend = self::getMailParams($params, 'email', $singleSendCopyMailAddress, $contents);
       $send = self::sendMail($mailParamsBackend, $contents, $attachments, $errors, $app);  
 
       if ($send === true) {
          // Send mail to visitor
-         $mailParamsVisitor = self::getMailParams($params, 'singleSendCopyEmail', $singleSendCopyMailAddress);
+         $mailParamsVisitor = self::getMailParams($params, 'singleSendCopyEmail', $singleSendCopyMailAddress, $contents);
          $send = self::sendMail($mailParamsVisitor, $contents, $attachments, $errors, $app);
       }
 
@@ -391,14 +391,30 @@ class ModJDSimpleContactFormHelper {
    }
 
    /**
+    * Returns the value for a specific field
+    *
+    * @param string $fieldname Name of the field for which the value should be returned
+    * @param array[] $contents Collections of fields and there values
+    * @return string
+    */
+   private static function getContentsValue($fieldname,$contents){
+      $contentValue = $contents[$fieldname];
+      if (!empty($contentValue)) {
+         return $contentValue['value'];
+      }
+      return '';
+   }
+
+   /**
     * Get the mail paramaters from the params object
     *
     * @param \Joomla\Registry\Registry $params Contains the parameters of the module
     * @param string $fieldPrefix Prefix with fields of the email
     * @param string[] $singleSendCopyMailAddress Mailaddress to be used to sent confirmation mail to visitor
+    * @param array[string] $contents Values filled in to the form
     * @return string[] Parameter values of the mail
     */
-   private static function getMailParams($params, $fieldPrefix, $singleSendCopyMailAddress){
+   private static function getMailParams($params, $fieldPrefix, $singleSendCopyMailAddress, $contents){
       $mailParams = [];
       $mailParams['template'] = $params->get($fieldPrefix . '_template', '');
       $mailParams['custom'] = $params->get($fieldPrefix . '_custom', '');
@@ -408,10 +424,21 @@ class ModJDSimpleContactFormHelper {
       $mailParams['cc'] = $params->get($fieldPrefix . '_cc', '');
       $mailParams['bcc'] = $params->get($fieldPrefix . '_bcc', '');
       $mailParams['title'] = $params->get('title', '');
-      $mailParams['singleSendCopyMailAddress'] = $singleSendCopyMailAddress;
+      
+      if ($fieldPrefix === 'email') {
+         $mailParams['singleSendCopyMailAddress'] = $singleSendCopyMailAddress;
+      }
 
       // For custom visitor mail, we need the mailaddress of the visitor.
-      $mailParams['to'] = $fieldPrefix === 'singleSendCopyEmail' ? $singleSendCopyMailAddress[0] : $params->get($fieldPrefix . '_to', '');
+      if ($fieldPrefix === 'singleSendCopyEmail') {
+         $mailField = $params->get('singleSendCopyEmail_field', '');
+         $mailValue = self::getContentsValue($mailField, $contents);
+         if (!empty($mailValue)) {
+            $mailParams['to'] = $mailValue;
+         }
+      } else {
+         $mailParams['to'] = $params->get($fieldPrefix . '_to', '');
+      }
  
       // Compensate for inconsistent naming. In future maybe update the field name.
       $replyToFieldName = $fieldPrefix === 'email' ? 'reply_to' : $fieldPrefix . '_reply_to';
