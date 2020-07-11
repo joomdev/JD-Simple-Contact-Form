@@ -405,17 +405,16 @@ class ModJDSimpleContactFormHelper {
       $mailParams['from'] = $params->get($fieldPrefix . '_from', '');
       $mailParams['name'] = $params->get($fieldPrefix . '_name', '');
       $mailParams['subject'] = $params->get($fieldPrefix . '_subject', '');
-      $mailParams['to'] = $params->get($fieldPrefix . '_to', '');
       $mailParams['cc'] = $params->get($fieldPrefix . '_cc', '');
       $mailParams['bcc'] = $params->get($fieldPrefix . '_bcc', '');
       $mailParams['title'] = $params->get('title', '');
       $mailParams['singleSendCopyMailAddress'] = $singleSendCopyMailAddress;
 
       // For custom visitor mail, we need the mailaddress of the visitor.
-      $mailParams['from'] = $fieldPrefix === 'singleSendCopyEmail' ? $singleSendCopyMailAddress : $params->get($fieldPrefix . '_from', '');
+      $mailParams['to'] = $fieldPrefix === 'singleSendCopyEmail' ? $singleSendCopyMailAddress[0] : $params->get($fieldPrefix . '_to', '');
  
       // Compensate for inconsistent naming. In future maybe update the field name.
-      $replyToFieldName = $fieldPrefix === 'email' ? 'reply_to' : $fieldPrefix . 'reply_to';
+      $replyToFieldName = $fieldPrefix === 'email' ? 'reply_to' : $fieldPrefix . '_reply_to';
       $mailParams['reply_to'] = $params->get($replyToFieldName, '');
 
       return $mailParams;

@@ -264,7 +264,7 @@
             </field>        
             <field
                showon="single_sendcopy_email:2[AND]singleSendCopyEmail_template:custom"
-               name="singleSendCopyEmail_email_custom"
+               name="singleSendCopyEmail_custom"
                type="editor"
                label="MOD_JDSCF_SINGLE_SEND_COPY_CUSTOM_TEMPLATE_LBL"
                description="MOD_JDSCF_SINGLE_SEND_COPY_CUSTOM_TEMPLATE_LBL"
