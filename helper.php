@@ -265,6 +265,19 @@ class ModJDSimpleContactFormHelper {
       return $source;
    }
 
+   /**
+    * Checks if string has one or more variables in it
+    *
+    * @param string $content String to check if it contains one or more variables
+    * @return boolean
+    */
+   private static function hasVariable($content) {
+      if (preg_match('/\{.+?:((label)|(value))\}/', $content)) {
+         return true;
+      }
+      return false;
+   }
+
    public static function getModuleParams() {
       $app = JFactory::getApplication();
       $jinput = $app->input->post;
@@ -406,6 +419,22 @@ class ModJDSimpleContactFormHelper {
    }
 
    /**
+    * Replaces variables with field label/field value, if token is present 
+    *
+    * @param string $fieldname Name of the field
+    * @param \Joomla\Registry\Registry $params Contains the parameters of the module
+    * @param array[string] $contents Values filled in to the form
+    * @return string
+    */
+   private static function getRenderedValue($fieldname, $params, $contents){
+      $returnValue = $params->get($fieldname);
+      if (!empty($returnValue) && self::hasVariable($returnValue)) {
+         $returnValue = self::renderVariables($contents, $returnValue);
+      }
+      return $returnValue;
+   }
+
+   /**
     * Get the mail paramaters from the params object
     *
     * @param \Joomla\Registry\Registry $params Contains the parameters of the module
@@ -418,13 +447,13 @@ class ModJDSimpleContactFormHelper {
       $mailParams = [];
       $mailParams['template'] = $params->get($fieldPrefix . '_template', '');
       $mailParams['custom'] = $params->get($fieldPrefix . '_custom', '');
-      $mailParams['from'] = $params->get($fieldPrefix . '_from', '');
-      $mailParams['name'] = $params->get($fieldPrefix . '_name', '');
       $mailParams['subject'] = $params->get($fieldPrefix . '_subject', '');
       $mailParams['cc'] = $params->get($fieldPrefix . '_cc', '');
       $mailParams['bcc'] = $params->get($fieldPrefix . '_bcc', '');
       $mailParams['title'] = $params->get('title', '');
-      
+      $mailParams['from'] = self::getRenderedValue($fieldPrefix . '_from', $params, $contents);
+      $mailParams['name'] = self::getRenderedValue($fieldPrefix . '_name', $params, $contents);
+
       if ($fieldPrefix === 'email') {
          $mailParams['singleSendCopyMailAddress'] = $singleSendCopyMailAddress;
       }
@@ -442,7 +471,7 @@ class ModJDSimpleContactFormHelper {
  
       // Compensate for inconsistent naming. In future maybe update the field name.
       $replyToFieldName = $fieldPrefix === 'email' ? 'reply_to' : $fieldPrefix . '_reply_to';
-      $mailParams['reply_to'] = $params->get($replyToFieldName, '');
+      $mailParams['reply_to'] = self::getRenderedValue($replyToFieldName, $params, $contents);
 
       return $mailParams;
       
