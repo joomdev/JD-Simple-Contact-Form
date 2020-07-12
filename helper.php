@@ -354,7 +354,7 @@ class ModJDSimpleContactFormHelper {
    public static function isSingleCCMail($params) {      
       $singlesendcopy_email = $params->get('single_sendcopy_email', 0);
       $singlesendcopyemail_field = $params->get('singleSendCopyEmail_field', '');      
-      if($singlesendcopy_email && !empty($singlesendcopyemail_field)){
+      if($singlesendcopy_email && $singlesendcopy_email === "1" && !empty($singlesendcopyemail_field)){
          return true;
       } else {
          return false;
