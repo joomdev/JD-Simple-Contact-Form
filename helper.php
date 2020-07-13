@@ -463,7 +463,9 @@ class ModJDSimpleContactFormHelper {
          $mailField = $params->get('singleSendCopyEmail_field', '');
          $mailValue = self::getContentsValue($mailField, $contents);
          if (!empty($mailValue)) {
-            $mailParams['to'] = $mailValue;
+            if (filter_var($mailValue, FILTER_VALIDATE_EMAIL)) {
+               $mailParams['to'] = $mailValue;
+            }
          }
       } else {
          $mailParams['to'] = $params->get($fieldPrefix . '_to', '');
