@@ -98,7 +98,7 @@ class ModJDSimpleContactFormHelper {
          $labels[$field->name] = ['label' => self::getLabelText($field), 'type' => $field->type];
       }
 
-      $cc_emails = [];
+      $singleSendCopyMailAddress = [];
       $values = [];
       foreach ($jdscf as $name => $value) {
          if(is_array($value)) {
@@ -109,7 +109,7 @@ class ModJDSimpleContactFormHelper {
                
                //single cc
                if(isset($value['single_cc']) && $value['single_cc'] == 1) {
-                  $cc_emails[] = $value['email'];
+                  $singleSendCopyMailAddress[] = $value['email'];
                }
             }
 			
@@ -187,7 +187,7 @@ class ModJDSimpleContactFormHelper {
             }
          }
 
-         $contents[] = [
+         $contents[$name] = [
              "value" => $value,
              "label" => $fld['label'],
              "name" => $name,
@@ -206,114 +206,21 @@ class ModJDSimpleContactFormHelper {
             $ipAddress = $_SERVER['REMOTE_ADDR'];
          }
 
-         $contents[] = array( 
+         $contents["jdsimple_ip"] = array( 
             "value" => "<a href='http://whois.domaintools.com/$ipAddress'>$ipAddress</a>",  
             "label" => "IP Address", 
             "name" => "ip"
          );
       }
 
-      if ($params->get('email_template', '') == 'custom') {
-         $html = $params->get('email_custom', '');
-         if ( empty( $html ) ) {
-            $layout = new JLayoutFile('emails.default', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
-            $html = $layout->render(['contents' => $contents]);
-         } else {
-            $html = self::renderVariables($contents, $html);  
-         }
-      } else {
-         $layout = new JLayoutFile('emails.default', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
-         $html = $layout->render(['contents' => $contents]);
-      }
+      // Send mail to backend
+      $mailParamsBackend = self::getMailParams($params, 'email', $singleSendCopyMailAddress, $contents);
+      $send = self::sendMail($mailParamsBackend, $contents, $attachments, $errors, $app);  
 
-      // sending mail
-      $mailer = JFactory::getMailer();
-      $config = JFactory::getConfig();
-      $title = $params->get('title', '');
-      if (!empty($title)) {
-         $title = ' : ' . $title;
-      }
-      // Sender
-      if (!empty($params->get('email_from', ''))) {
-         $email_from = $params->get('email_from', '');
-         $email_from = self::renderVariables($contents, $email_from);
-         if (!filter_var($email_from, FILTER_VALIDATE_EMAIL)) {
-            $email_from = $config->get('mailfrom');
-         }
-      } else {
-         $email_from = $config->get('mailfrom');
-      }
-
-      if (!empty($params->get('email_name', ''))) {
-         $email_name = $params->get('email_name', '');
-         $email_name = self::renderVariables($contents, $email_name);
-         if (empty($email_name)) {
-            $email_name = $config->get('fromname');
-         }
-      } else {
-         $email_name = $config->get('fromname');
-      }
-
-      $sender = array($email_from, $email_name);
-      $mailer->setSender($sender);
-
-      // Subject
-      $email_subject = !empty($params->get('email_subject', '')) ? $params->get('email_subject') : JText::_('MOD_JDSCF_DEFAULT_SUBJECT', $title);
-      $email_subject = self::renderVariables($contents, $email_subject);
-      $mailer->setSubject($email_subject);
-
-      // Recipient
-      $recipients = !empty($params->get('email_to', '')) ? $params->get('email_to') : $config->get('mailfrom');
-      $recipients = explode(',', $recipients);
-      if (!empty($recipients)) {
-         $mailer->addRecipient($recipients);
-      }
-
-      // Reply-To
-      if (!empty($params->get('reply_to', ''))) {
-         $reply_to = $params->get('reply_to', '');
-         $reply_to = self::renderVariables($contents, $reply_to);
-         if (!filter_var($reply_to, FILTER_VALIDATE_EMAIL)) {
-            $reply_to = '';
-         }
-         $mailer->addReplyTo($reply_to);
-      } else {
-         $reply_to = '';
-      }
-
-      // CC
-      $cc = !empty($params->get('email_cc', '')) ? $params->get('email_cc') : '';
-      $cc = empty($cc) ? [] : explode(",", $cc);
-      if(!empty($cc_emails)){
-         $cc = array_merge($cc, $cc_emails);
-         $cc = array_unique($cc);
-      }
-
-      if (!empty($cc)) {
-         $mailer->addCc($cc);
-      }
-      // BCC
-      $bcc = !empty($params->get('email_bcc', '')) ? $params->get('email_bcc') : '';
-      $bcc = empty($bcc) ? [] : explode(',', $bcc);
-      if (!empty($bcc)) {
-         $mailer->addBcc($bcc);
-      }
-      $mailer->isHtml(true);
-      $mailer->Encoding = 'base64';
-      $mailer->setBody($html);
-      foreach($attachments as $attachment){
-         $mailer->addAttachment($attachment);
-      }
-      if(!empty($errors)) {
-         $app = JFactory::getApplication();
-         $send = false;
-         // showing all the validation errors
-         foreach ($errors as $error) {
-            $app->enqueueMessage(\JText::_($error), 'error');
-         }
-      }
-      else {
-         $send = $mailer->Send();
+      if ($send === true) {
+         // Send mail to visitor
+         $mailParamsVisitor = self::getMailParams($params, 'singleSendCopyEmail', $singleSendCopyMailAddress, $contents);
+         $send = self::sendMail($mailParamsVisitor, $contents, $attachments, $errors, $app);
       }
 
       if ($send !== true) {
@@ -356,6 +263,19 @@ class ModJDSimpleContactFormHelper {
          $source = str_replace('{' . $content['name'] . ':value}', $value, $source);
       }
       return $source;
+   }
+
+   /**
+    * Checks if string has one or more variables in it
+    *
+    * @param string $content String to check if it contains one or more variables
+    * @return boolean
+    */
+   private static function hasVariable($content) {
+      if (preg_match('/\{.+?:((label)|(value))\}/', $content)) {
+         return true;
+      }
+      return false;
    }
 
    public static function getModuleParams() {
@@ -424,17 +344,30 @@ class ModJDSimpleContactFormHelper {
       return $GLOBALS['mod_jdscf_js_' . $moduleid];
    }
 
-   //for single email field (at bottom)
+
+   /**
+    * Is Single CC enabled. For single email field (at bottom)
+    *
+    * @param \Joomla\Registry\Registry $params Parameters of the module
+    * @return boolean
+    */
    public static function isSingleCCMail($params) {      
       $singlesendcopy_email = $params->get('single_sendcopy_email', 0);
       $singlesendcopyemail_field = $params->get('singleSendCopyEmail_field', '');      
-      if($singlesendcopy_email && !empty($singlesendcopyemail_field)){
+      if($singlesendcopy_email && $singlesendcopy_email === "1" && !empty($singlesendcopyemail_field)){
          return true;
       } else {
          return false;
       }
    }
 
+   /**
+    * Upload a file and return it's full path
+    *
+    * @param [type] $name
+    * @param [type] $src
+    * @return string Full path file name
+    */
    public static function uploadFile($name, $src) {
       jimport('joomla.filesystem.file');
       jimport('joomla.application.component.helper');
@@ -467,6 +400,199 @@ class ModJDSimpleContactFormHelper {
             $return = $dest;
          }
          return $return;
+      }
+   }
+
+   /**
+    * Returns the value for a specific field
+    *
+    * @param string $fieldname Name of the field for which the value should be returned
+    * @param array[] $contents Collections of fields and there values
+    * @return string
+    */
+   private static function getContentsValue($fieldname,$contents){
+      $contentValue = $contents[$fieldname];
+      if (!empty($contentValue)) {
+         return $contentValue['value'];
+      }
+      return '';
+   }
+
+   /**
+    * Replaces variables with field label/field value, if token is present 
+    *
+    * @param string $fieldname Name of the field
+    * @param \Joomla\Registry\Registry $params Contains the parameters of the module
+    * @param array[string] $contents Values filled in to the form
+    * @return string
+    */
+   private static function getRenderedValue($fieldname, $params, $contents){
+      $returnValue = $params->get($fieldname);
+      if (!empty($returnValue) && self::hasVariable($returnValue)) {
+         $returnValue = self::renderVariables($contents, $returnValue);
+      }
+      return $returnValue;
+   }
+
+   /**
+    * Get the mail paramaters from the params object
+    *
+    * @param \Joomla\Registry\Registry $params Contains the parameters of the module
+    * @param string $fieldPrefix Prefix with fields of the email
+    * @param string[] $singleSendCopyMailAddress Mailaddress to be used to sent confirmation mail to visitor
+    * @param array[string] $contents Values filled in to the form
+    * @return string[] Parameter values of the mail
+    */
+   private static function getMailParams($params, $fieldPrefix, $singleSendCopyMailAddress, $contents){
+      $mailParams = [];
+      $mailParams['template'] = $params->get($fieldPrefix . '_template', '');
+      $mailParams['custom'] = $params->get($fieldPrefix . '_custom', '');
+      $mailParams['subject'] = $params->get($fieldPrefix . '_subject', '');
+      $mailParams['cc'] = $params->get($fieldPrefix . '_cc', '');
+      $mailParams['bcc'] = $params->get($fieldPrefix . '_bcc', '');
+      $mailParams['title'] = $params->get('title', '');
+      $mailParams['from'] = self::getRenderedValue($fieldPrefix . '_from', $params, $contents);
+      $mailParams['name'] = self::getRenderedValue($fieldPrefix . '_name', $params, $contents);
+
+      if ($fieldPrefix === 'email') {
+         $mailParams['singleSendCopyMailAddress'] = $singleSendCopyMailAddress;
+      }
+
+      // For custom visitor mail, we need the mailaddress of the visitor.
+      if ($fieldPrefix === 'singleSendCopyEmail') {
+         $mailField = $params->get('singleSendCopyEmail_field', '');
+         $mailValue = self::getContentsValue($mailField, $contents);
+         if (!empty($mailValue)) {
+            if (filter_var($mailValue, FILTER_VALIDATE_EMAIL)) {
+               $mailParams['to'] = $mailValue;
+            }
+         }
+      } else {
+         $mailParams['to'] = $params->get($fieldPrefix . '_to', '');
+      }
+ 
+      // Compensate for inconsistent naming. In future maybe update the field name.
+      $replyToFieldName = $fieldPrefix === 'email' ? 'reply_to' : $fieldPrefix . '_reply_to';
+      $mailParams['reply_to'] = self::getRenderedValue($replyToFieldName, $params, $contents);
+
+      return $mailParams;
+      
+   }
+
+   /**
+    * Send mail with configured content to configured mail address
+    *
+    * @param string[] $mailParams Parameter values needed for sending the mail
+    * @param array $contents
+    * @param string[] $attachments
+    * @param string[] $errors
+    * @param \Joomla\CMS\Application\CMSApplication $app
+    * @return boolean
+    */
+   private static function sendMail($mailParams, $contents, $attachments, $errors, $app) {
+      
+      if ($mailParams['template'] == 'custom') {
+         $html = $mailParams['custom'];
+         if ( empty( $html ) ) {
+            $layout = new JLayoutFile('emails.default', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
+            $html = $layout->render(['contents' => $contents]);
+         } else {
+            $html = self::renderVariables($contents, $html);  
+         }
+      } else {
+         $layout = new JLayoutFile('emails.default', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
+         $html = $layout->render(['contents' => $contents]);
+      }
+
+      // sending mail
+      $mailer = JFactory::getMailer();
+      $config = JFactory::getConfig();
+      $title = $mailParams['title'];
+      if (!empty($title)) {
+         $title = ' : ' . $title;
+      }
+      // Sender
+      if (!empty($mailParams['from'])) {
+         $email_from = $mailParams['from'];
+         $email_from = self::renderVariables($contents, $email_from);
+         if (!filter_var($email_from, FILTER_VALIDATE_EMAIL)) {
+            $email_from = $config->get('mailfrom');
+         }
+      } else {
+         $email_from = $config->get('mailfrom');
+      }
+
+      if (!empty($mailParams['name'])) {
+         $email_name = $mailParams['name'];
+         $email_name = self::renderVariables($contents, $email_name);
+         if (empty($email_name)) {
+            $email_name = $config->get('fromname');
+         }
+      } else {
+         $email_name = $config->get('fromname');
+      }
+
+      $sender = array($email_from, $email_name);
+      $mailer->setSender($sender);
+
+      // Subject
+      $email_subject = !empty($mailParams['subject']) ? $mailParams['subject'] : JText::_('MOD_JDSCF_DEFAULT_SUBJECT', $title);
+      $email_subject = self::renderVariables($contents, $email_subject);
+      $mailer->setSubject($email_subject);
+
+      // Recipient
+      $recipients = !empty($mailParams['to']) ? $mailParams['to'] : $config->get('mailfrom');
+      $recipients = explode(',', $recipients);
+      if (!empty($recipients)) {
+         $mailer->addRecipient($recipients);
+      }
+
+      // Reply-To
+      if (!empty($mailParams['reply_to'])) {
+         $reply_to = $mailParams['reply_to'];
+         $reply_to = self::renderVariables($contents, $reply_to);
+         if (!filter_var($reply_to, FILTER_VALIDATE_EMAIL)) {
+            $reply_to = '';
+         }
+         $mailer->addReplyTo($reply_to);
+      } else {
+         $reply_to = '';
+      }
+
+      // CC
+      $cc = !empty($mailParams['cc']) ? $mailParams['cc'] : '';
+      $cc = empty($cc) ? [] : explode(",", $cc);
+      if(!empty($mailParams['singleSendCopyMailAddress'])){
+         $cc = array_merge($cc, $mailParams['singleSendCopyMailAddress']);
+         $cc = array_unique($cc);
+      }
+
+      if (!empty($cc)) {
+         $mailer->addCc($cc);
+      }
+      // BCC
+      $bcc = !empty($mailParams['bcc']) ? $mailParams['bcc'] : '';
+      $bcc = empty($bcc) ? [] : explode(',', $bcc);
+      if (!empty($bcc)) {
+         $mailer->addBcc($bcc);
+      }
+      $mailer->isHtml(true);
+      $mailer->Encoding = 'base64';
+      $mailer->setBody($html);
+      foreach($attachments as $attachment){
+         $mailer->addAttachment($attachment);
+      }
+      if(!empty($errors)) {
+         $app = JFactory::getApplication();
+         $send = false;
+         // showing all the validation errors
+         foreach ($errors as $error) {
+            $app->enqueueMessage(\JText::_($error), 'error');
+         }
+         return $send;
+      }
+      else {
+          return $mailer->Send();
       }
    }
 }

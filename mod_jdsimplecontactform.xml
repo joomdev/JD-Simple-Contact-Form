@@ -79,7 +79,7 @@
                useglobal="true"
                showon="params.captcha:1"
                >
-		</field>
+		    </field>
             <field
                name="submittext"
                type="text"
@@ -204,9 +204,10 @@
             >
                <option value="1">JYES</option>
                <option value="0">JNO</option>
+               <option value="2">JGLOBAL_CUSTOM</option>
             </field>
             <field
-               showon="single_sendcopy_email:1"
+               showon="single_sendcopy_email:1[OR]single_sendcopy_email:2"
                name="singleSendCopyEmail_field"
                default=""
                type="text"
@@ -215,12 +216,61 @@
             />
             <field
                showon="single_sendcopy_email:1"
-               name="singleSendCopyEmailField_title"
+               name="singleSendCopyEmail_title"
                default=""
                type="text"
                label="MOD_JDSCF_SINGLE_SEND_COPY_LABEL" 
                description="MOD_JDSCF_SINGLE_SEND_COPY_DESC"
-            />            
+            />
+            <field
+               showon="single_sendcopy_email:2"
+               name="singleSendCopyEmail_from"
+               type="text"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_FROM_LBL"
+               description="MOD_JDSCF_SINGLE_SEND_COPY_FROM_DESC"
+            />
+            <field
+               showon="single_sendcopy_email:2"
+               name="singleSendCopyEmail_name"
+               type="text"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_NAME_LBL"
+               description="MOD_JDSCF_SINGLE_SEND_COPY_NAME_DESC"
+            />
+            <field
+               showon="single_sendcopy_email:2"
+               name="singleSendCopyEmail_subject"
+               type="text"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_SUBJECT_LBL"
+               description="MOD_JDSCF_SINGLE_SEND_COPY_SUBJECT_DESC"
+            />
+            <field
+               showon="single_sendcopy_email:2"
+               name="singleSendCopyEmail_reply_to"
+               type="text"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_REPLY_TO_LBL"
+               description="MOD_JDSCF_SINGLE_SEND_COPY_REPLY_TO_DESC"
+            />       
+            <field
+               showon="single_sendcopy_email:2"
+               name="singleSendCopyEmail_template"
+               default=""
+               type="radio"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_TEMPLATE_LBL" 
+               description="MOD_JDSCF_SINGLE_SEND_COPY_TEMPLATE_DESC"
+               class="btn-group"
+            >
+               <option value="">JDEFAULT</option>
+               <option value="custom">JGLOBAL_CUSTOM</option>
+            </field>        
+            <field
+               showon="single_sendcopy_email:2[AND]singleSendCopyEmail_template:custom"
+               name="singleSendCopyEmail_custom"
+               type="editor"
+               label="MOD_JDSCF_SINGLE_SEND_COPY_CUSTOM_TEMPLATE_LBL"
+               description="MOD_JDSCF_SINGLE_SEND_COPY_CUSTOM_TEMPLATE_LBL"
+               filter="safehtml"
+               default=""
+            />   
             <!-- Custom Email Template -->
             <field
                name="email_template"
