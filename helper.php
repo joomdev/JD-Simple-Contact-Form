@@ -53,7 +53,10 @@ class ModJDSimpleContactFormHelper {
 
    public static function getFieldLayout($type) {
       $return = '';
-      if (file_exists(JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts/fields/' . $type . '.php')) {
+      if (file_exists(JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts/fields/' . $type . '-custom.php')) {
+         // For adding custom files
+         $return = $type . '-custom';
+      } else if (file_exists(JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts/fields/' . $type . '.php')) {
          $return = $type;
       } else {
          $return = 'text';
