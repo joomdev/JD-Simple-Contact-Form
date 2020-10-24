@@ -136,16 +136,6 @@
               <option value="1">JYES</option>
               <option value="0">JNO</option>
            </field>
-           <field
-              name="source_url"
-              type="radio"
-              label="MOD_JDSCF_SRC_URL_LBL"
-              description="MOD_JDSCF_SRC_URL_DESC"
-              class="btn-group btn-group-yesno"
-              default="0">
-              <option value="1">JYES</option>
-              <option value="0">JNO</option>
-           </field>
          </fieldset>
          <fieldset name="fields" label="MOD_JDSCF_FORM_FIELDS_OPTIONS_LBL">
             <field name="fields" type="subform" formsource="modules/mod_jdsimplecontactform/forms/fielditem.xml" multiple="true" label="MOD_JDSCF_FIELDS_LBL" />
