@@ -26,17 +26,20 @@ $document = JFactory::getDocument();
 $style = '.filesize-err {'
         . 'display: none;'
         . 'margin-top: 10px;'
+        . '}'
+        . '.custom-file-label::after {'
+        . 'content: "' . JText::sprintf('MOD_JDSCF_FILE_BTN_LBL') . '" !important;'
         . '}';
 $document->addStyleDeclaration($style);
 ?>
 <div class="custom-file">
    <input id="<?php echo $field->name; ?>-<?php echo $module->id; ?>" accept="<?php foreach ($allowable as $type) { echo ".".$type.","; } ?>" type="file" name="jdscf[<?php echo $field->name; ?>]" class="custom-file-input" <?php echo implode(' ', $attrs); ?>>
-   <label class="custom-file-label" for="<?php echo $field->name; ?>-<?php echo $module->id; ?>"><?php echo JText::_('MOD_JDSCF_FILE_BTN_LBL'); ?></label>
+   <label class="custom-file-label" for="<?php echo $field->name; ?>-<?php echo $module->id; ?>"><?php echo JText::_('MOD_JDSCF_FILE_LBL'); ?></label>
 </div>
 
 <div class="filesize-err filesize-error-<?php echo $field->name; ?>-<?php echo $module->id; ?> alert alert-danger alert-dismissable">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        File size is too big!
+      File size is too big!
 </div>
 
 
