@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 extract($displayData);
 $attrs = [];
+$attrs[] = 'id="' . $field->id . '"';
 if (isset($field->placeholder) && !empty($field->placeholder)) {
     $attrs[] = 'placeholder="' . $field->placeholder . '"';
 }

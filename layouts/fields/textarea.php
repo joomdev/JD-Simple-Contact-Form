@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 extract($displayData);
 $attrs = [];
+$attrs[] = 'id="' . $field->id . '"';
 if ($field->required) {
     $attrs[] = 'required';
     if (isset($field->custom_error) && !empty(trim($field->custom_error))) {
