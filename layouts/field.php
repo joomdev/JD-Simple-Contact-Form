@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   JD Simple Contact Form
  * @author    JoomDev https://www.joomdev.com
@@ -9,16 +10,14 @@
 defined('_JEXEC') or die;
 extract($displayData);
 $show_label = $field->show_label === null ? 1 : $field->show_label;
-if ($field->type == 'hidden' ) {
+if ($field->type == 'hidden') {
    echo $input;
 } else {
 ?>
-<div class="jdscf-col-md-<?php echo $field->width; ?>">
-   <div class="form-group">
-      <?php if ($show_label) { ?>
+   <div class="jdscf-col-md-<?php echo $field->width; ?>">
+      <div class="form-group">
          <?php echo $label; ?>
-      <?php } ?>
-      <?php echo $input; ?>
+         <?php echo $input; ?>
+      </div>
    </div>
-</div>
 <?php } ?>

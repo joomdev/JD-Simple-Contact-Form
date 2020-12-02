@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 extract($displayData);
 $attrs = [];
+$attrs[] = 'id="' . $field->id . '"';
 switch ($field->type) {
    case 'email':
       $attrs[] = 'data-parsley-type="email"';
