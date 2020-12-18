@@ -2,8 +2,8 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
    <name>mod_jdsimplecontactform</name>
    <author>JoomDev</author>
-   <version>1.6</version>
-   <creationDate>May 2020</creationDate>
+   <version>1.7</version>
+   <creationDate>Dec 2020</creationDate>
    <url>https://www.joomdev.com</url>
    <copyright>Copyright (C) 2020 Joomdev, Inc. All rights reserved.</copyright>
    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
