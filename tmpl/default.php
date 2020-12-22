@@ -41,7 +41,10 @@ if (!empty($message)) {
          <div class="jdscf-row">
             <?php
                ModJDSimpleContactFormHelper::renderForm($params, $module);
-
+               if($single_cc_enable) {
+                  $singleCC = new JLayoutFile('fields.singlecc', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
+                  echo $singleCC->render(['params' => $params]);
+               }
                if ($captcha) {
                   $captchaType = $params->get('captchaPlugins') == "" ? JFactory::getConfig()->get('captcha') : $params->get('captchaPlugins');
                   JPluginHelper::importPlugin('captcha', $captchaType);
@@ -98,13 +101,6 @@ if (!empty($message)) {
                      }
                   }
                }
-            ?>
-            
-            <?php
-               if($single_cc_enable) {
-                  $singleCC = new JLayoutFile('fields.singlecc', JPATH_SITE . '/modules/mod_jdsimplecontactform/layouts');
-                  echo $singleCC->render(['params' => $params]);
-               } 
             ?>
 
             <?php
