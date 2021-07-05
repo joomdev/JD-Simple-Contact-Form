@@ -35,7 +35,7 @@ class ModJDSimpleContactFormHelper {
       $array = [];
       foreach ($options as $option) {
          if (!empty($option)) {
-            $array[] = ['text' => $option, 'value' => $option];
+            $array[] = ['text' => $option, 'value' => trim( $option )];
          }
       }
       return $array;
