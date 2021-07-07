@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 extract($displayData);
 $options = ModJDSimpleContactFormHelper::getOptions($field->options);
 $attrs = [];
-$attrs[] = 'id="' . $field->id . '"';
+$attrs[] = 'id="' . $field->name . '-' . $module->id .'"';
 if ($field->required) {
     $attrs[] = 'required';
     if (isset($field->custom_error) && !empty(trim($field->custom_error))) {
@@ -21,8 +21,8 @@ if ($field->required) {
 }
 ?>
 <div class="form-check form-check-inline">
-   <input class="form-check-input" type="checkbox" name="jdscf[<?php echo $field->name; ?>][cb]" value="1" id="<?php echo $field->name; ?>" <?php echo implode(' ', $attrs); ?> />
-   <label class="form-check-label" for="<?php echo $field->name; ?>">
+   <input class="form-check-input" type="checkbox" name="jdscf[<?php echo $field->name; ?>][cb]" value="1" <?php echo implode(' ', $attrs); ?> />
+   <label class="form-check-label" for="<?php echo $field->name; ?>-<?php echo $module->id; ?>">
       <?php echo $label; ?>
    </label>
 </div>

@@ -9,17 +9,17 @@
 defined('_JEXEC') or die;
 extract($displayData);
 $attrs = [];
-$attrs[] = 'id="' . $field->id . '"';
+$attrs[] = 'id="' . $field->name . '-' . $module->id . '"';
 if ($field->required) {
-    $attrs[] = 'required';
-    if (isset($field->custom_error) && !empty(trim($field->custom_error))) {
-       $attrs[] = 'data-parsley-required-message="' . JText::sprintf($field->custom_error) . '"';
-    } else {
-       $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
-    }
- }
-$attrs[] = 'id="' . $field->name . '-file-input"';
-//fetching allowed types
+   $attrs[] = 'required';
+   if (isset($field->custom_error) && !empty(trim($field->custom_error))) {
+      $attrs[] = 'data-parsley-required-message="' . JText::sprintf($field->custom_error) . '"';
+   } else {
+      $attrs[] = 'data-parsley-required-message="' . JText::sprintf('MOD_JDSCF_REQUIRED_ERROR', strip_tags($label)) . '"';
+   }
+}
+
+// fetching allowed types
 $params = JComponentHelper::getParams('com_media');
 $allowable = array_map('trim', explode(',', $params->get('upload_extensions')));
 $allowedMaxSize = $params->get('upload_maxsize');
@@ -34,7 +34,7 @@ $style = '.filesize-err {'
 $document->addStyleDeclaration($style);
 ?>
 <div class="custom-file">
-   <input id="<?php echo $field->name; ?>-<?php echo $module->id; ?>" accept="<?php echo '.' . implode( ',.', $allowable ); ?>" type="file" name="jdscf[<?php echo $field->name; ?>]" class="custom-file-input" <?php echo implode(' ', $attrs); ?>>
+   <input accept="<?php echo '.' . implode( ',.', $allowable ); ?>" type="file" name="jdscf[<?php echo $field->name; ?>]" class="custom-file-input" <?php echo implode(' ', $attrs); ?>>
    <label class="custom-file-label" for="<?php echo $field->name; ?>-<?php echo $module->id; ?>"><?php echo JText::_('MOD_JDSCF_FILE_LBL'); ?></label>
 </div>
 
