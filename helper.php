@@ -447,7 +447,7 @@ class ModJDSimpleContactFormHelper {
       $filename = JFile::makeSafe($fullFileName."_".mt_rand(10000000,99999999).".".$filetype);
 
       $params = JComponentHelper::getParams('com_media');
-      $allowable = array_map('trim', explode(',', $params->get('upload_extensions')));
+      $allowable = array_map('trim', explode(',', $params->get('restrict_uploads_extensions')));
 
       if ($filetype == '' || $filetype == false || (!in_array($filetype, $allowable) ))
       {
