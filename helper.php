@@ -82,17 +82,17 @@ class ModJDSimpleContactFormHelper {
 
          $captchaType = $params->get('captchaPlugins') == "" ? JFactory::getConfig()->get('captcha') : $params->get('captchaPlugins');
          JPluginHelper::importPlugin('captcha', $captchaType);
-         $dispatcher = JEventDispatcher::getInstance();
+         $dispatcher = \Joomla\CMS\Factory::getApplication();
 
          if ( $captchaType == "recaptcha" ) {
-            $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('recaptcha_response_field'));
+            $check_captcha = $dispatcher->triggerEvent('onCheckAnswer', [ $jinput->get('recaptcha_response_field') ] );
             if (!$check_captcha[0]) {
                throw new \Exception(JText::_('Invalid Captcha'), 0);
             }
          } elseif ( $captchaType == "recaptcha_invisible" ) {
-            $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('g-recaptcha-response'));
+            $check_captcha = $dispatcher->triggerEvent('onCheckAnswer', [ $jinput->get('g-recaptcha-response') ] );
          } elseif (!empty($captchaType)) {
-            $check_captcha = $dispatcher->trigger('onCheckAnswer');
+            $check_captcha = $dispatcher->triggerEvent('onCheckAnswer', [] );
          }
       }
 
