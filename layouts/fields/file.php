@@ -21,7 +21,7 @@ if ($field->required) {
 
 // fetching allowed types
 $params = JComponentHelper::getParams('com_media');
-$allowable = array_map('trim', explode(',', $params->get('upload_extensions')));
+$allowable = array_map('trim', explode(',', $params->get('restrict_uploads_extensions')));
 $allowedMaxSize = $params->get('upload_maxsize');
 $document = JFactory::getDocument();
 $style = '.filesize-err {'
