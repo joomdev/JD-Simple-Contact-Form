@@ -48,8 +48,15 @@ if (!empty($message)) {
                if ($captcha) {
                   $captchaType = $params->get('captchaPlugins') == "" ? JFactory::getConfig()->get('captcha') : $params->get('captchaPlugins');
                   JPluginHelper::importPlugin('captcha', $captchaType);
-                  $dispatcher = \Joomla\CMS\Factory::getApplication();
-                  $dispatcher->triggerEvent('onInit', ['jdscf_recaptcha_' . $module->id]);
+
+                  if( ModJDSimpleContactFormHelper::getJoomlaVersion() < 4 ) {
+                     $dispatcher = JEventDispatcher::getInstance();
+                     $dispatcher->trigger('onInit', ['jdscf_recaptcha_' . $module->id]);
+                  } else {
+                     $dispatcher = \Joomla\CMS\Factory::getApplication();
+                     $dispatcher->triggerEvent('onInit', ['jdscf_recaptcha_' . $module->id]);
+                  }
+                  
                   $plugin = JPluginHelper::getPlugin('captcha', $captchaType);
                   
                   if ( $captchaType == "recaptcha" ) {
@@ -83,7 +90,13 @@ if (!empty($message)) {
                      // Display captcha plugin fields
                      if (!empty($plugin)) {
                         $plugin_params = new JRegistry($plugin->params);
-                        $captchaHtml = $dispatcher->triggerEvent('onDisplay', ['jdscf_recaptcha_' . $module->id, 'jdscf_recaptcha_' . $module->id]);
+                        
+                        if( ModJDSimpleContactFormHelper::getJoomlaVersion() < 4 ) {
+                           $captchaHtml = $dispatcher->trigger('onDisplay', ['jdscf_recaptcha_' . $module->id, 'jdscf_recaptcha_' . $module->id]);
+                        } else {
+                           $captchaHtml = $dispatcher->triggerEvent('onDisplay', ['jdscf_recaptcha_' . $module->id, 'jdscf_recaptcha_' . $module->id]);
+                        }
+                        
                         if (!empty($captchaHtml)) {
                            ?>
                            <div class="jdscf-col-md-12">

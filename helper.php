@@ -11,6 +11,8 @@ defined('_JEXEC') or die;
 
 class ModJDSimpleContactFormHelper {
 
+   const JOOMLA_VERSION = \Joomla\CMS\Version::MAJOR_VERSION;
+
    public static function renderForm($params, $module) {
       $fields = $params->get('fields', []);
       foreach ($fields as $field) {
@@ -82,17 +84,35 @@ class ModJDSimpleContactFormHelper {
 
          $captchaType = $params->get('captchaPlugins') == "" ? JFactory::getConfig()->get('captcha') : $params->get('captchaPlugins');
          JPluginHelper::importPlugin('captcha', $captchaType);
-         $dispatcher = \Joomla\CMS\Factory::getApplication();
+         if( ModJDSimpleContactFormHelper::getJoomlaVersion() < 4 ) {
+            $dispatcher = JEventDispatcher::getInstance();
+         } else {
+            $dispatcher = \Joomla\CMS\Factory::getApplication();
+         }
 
          if ( $captchaType == "recaptcha" ) {
-            $check_captcha = $dispatcher->triggerEvent('onCheckAnswer', [ $jinput->get('recaptcha_response_field') ] );
+            if( ModJDSimpleContactFormHelper::getJoomlaVersion() < 4 ) {
+               $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('recaptcha_response_field'));
+            } else {
+               $check_captcha = $dispatcher->triggerEvent('onCheckAnswer', [ $jinput->get('recaptcha_response_field') ] );
+            }
+            
             if (!$check_captcha[0]) {
                throw new \Exception(JText::_('Invalid Captcha'), 0);
             }
          } elseif ( $captchaType == "recaptcha_invisible" ) {
-            $check_captcha = $dispatcher->triggerEvent('onCheckAnswer', [ $jinput->get('g-recaptcha-response') ] );
+            if( ModJDSimpleContactFormHelper::getJoomlaVersion() < 4 ) {
+               $check_captcha = $dispatcher->trigger('onCheckAnswer', $jinput->get('g-recaptcha-response'));
+            } else {
+               $check_captcha = $dispatcher->triggerEvent('onCheckAnswer', [ $jinput->get('g-recaptcha-response') ] );
+            }
+            
          } elseif (!empty($captchaType)) {
-            $check_captcha = $dispatcher->triggerEvent('onCheckAnswer', [] );
+            if( ModJDSimpleContactFormHelper::getJoomlaVersion() < 4 ) {
+               $check_captcha = $dispatcher->trigger('onCheckAnswer');
+            } else {
+               $check_captcha = $dispatcher->triggerEvent('onCheckAnswer', [] );
+            }  
          }
       }
 
@@ -447,7 +467,12 @@ class ModJDSimpleContactFormHelper {
       $filename = JFile::makeSafe($fullFileName."_".mt_rand(10000000,99999999).".".$filetype);
 
       $params = JComponentHelper::getParams('com_media');
-      $allowable = array_map('trim', explode(',', $params->get('restrict_uploads_extensions')));
+      
+      if( ModJDSimpleContactFormHelper::getJoomlaVersion() < 4 ) {
+         $allowable = array_map('trim', explode(',', $params->get('upload_extensions')));
+      } else {
+         $allowable = array_map('trim', explode(',', $params->get('restrict_uploads_extensions')));
+      }
 
       if ($filetype == '' || $filetype == false || (!in_array($filetype, $allowable) ))
       {
@@ -471,5 +496,10 @@ class ModJDSimpleContactFormHelper {
          }
          return $return;
       }
+   }
+
+   public static function getJoomlaVersion() {
+      $jversion = new JVersion();
+      return $jversion::MAJOR_VERSION;
    }
 }
