@@ -2,7 +2,7 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
    <name>mod_jdsimplecontactform</name>
    <author>JoomDev</author>
-   <version>1.8</version>
+   <version>1.9</version>
    <creationDate>July 2021</creationDate>
    <url>https://www.joomdev.com</url>
    <copyright>Copyright (C) 2021 Joomdev, Inc. All rights reserved.</copyright>
