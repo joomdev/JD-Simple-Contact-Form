@@ -17,9 +17,11 @@ switch ($field->type) {
       break;
    case 'number':
       $attrs[] = 'data-parsley-type="number"';
+      $attrs[] = 'data-parsley-type-message="' . JText::_("MOD_JDSCF_NUMBER_REQUIRED_ERROR") . '"';
       break;
    case 'url':
       $attrs[] = 'data-parsley-type="url"';
+      $attrs[] = 'data-parsley-type-message="' . JText::_("MOD_JDSCF_URL_REQUIRED_ERROR") . '"';
       break;
 }
 if (isset($field->placeholder) && !empty($field->placeholder)) {
