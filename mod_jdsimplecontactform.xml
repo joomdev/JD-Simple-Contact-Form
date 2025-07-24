@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="3.1" client="site" method="upgrade">
+<extension type="module" version="5.3" client="site" method="upgrade">
    <name>mod_jdsimplecontactform</name>
    <author>JoomDev</author>
-   <version>1.8</version>
-   <creationDate>July 2021</creationDate>
+   <version>1.11</version>
+   <creationDate>24 July 2025</creationDate>
    <url>https://www.joomdev.com</url>
-   <copyright>Copyright (C) 2021 Joomdev, Inc. All rights reserved.</copyright>
+   <copyright>Copyright (C) 2025 Joomdev, Inc. All rights reserved.</copyright>
    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
    <authorEmail>info@joomdev.com</authorEmail>
    <authorUrl>https://www.joomdev.com</authorUrl>
